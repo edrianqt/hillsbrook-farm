@@ -39,6 +39,24 @@ npm run preview  # shows that final build at http://localhost:4173
 | Photos | `public/images/` |
 | 3D model files (.glb) | `public/models/` |
 
+## Adding a farm story
+
+1. Copy any file in `src/content/stories/` (for example `planting-napier-and-corn.md`).
+2. Rename it: the file name becomes the story's web address (`#story-your-file-name`). Use lowercase words and hyphens.
+3. Change the lines between the `---` markers: `title`, `category`, `date` (YYYY-MM-DD), `excerpt`, `image`, `imageAlt`, and `featured: true` if it should appear on the home page.
+4. Write the story below the second `---`. Blank lines start new paragraphs, `**bold**` makes bold text.
+5. Lines like `[photo: …]` or `[details: …]` show as yellow "to add" boxes until you replace them.
+
+## Where the rest of the content lives (`src/content/site.ts`)
+
+| Section | Look for |
+| --- | --- |
+| Meet the Family (names, roles, quotes, photos) | `family` |
+| What we stand for | `pillars` |
+| Products and prices (per litre, Dapa Port / General Luna) | `products` |
+| Visit & Contact, map pin, how to get here | `visit` |
+| Contact form service address | `contactForm.endpoint` |
+
 ## Tools used
 
 Vite, React, TypeScript, Three.js (@react-three/fiber, @react-three/drei), GSAP ScrollTrigger, Lenis, Tailwind CSS.

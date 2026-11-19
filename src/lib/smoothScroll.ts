@@ -53,3 +53,21 @@ export function scrollToY(y: number) {
   if (lenis) lenis.scrollTo(y, { duration: 1.2 })
   else window.scrollTo({ top: y, behavior: 'auto' })
 }
+
+/** Jump instantly (no animation), e.g. to the top of a new page. */
+export function jumpTo(y: number) {
+  if (lenis) lenis.scrollTo(y, { immediate: true, force: true })
+  window.scrollTo(0, y)
+}
+
+/** Scroll to a section by its id, once it exists on the page. */
+export function scrollToSection(id: string) {
+  const el = document.getElementById(id)
+  if (!el) return
+  // the page has just changed length (e.g. coming back from a story), so measure again first
+  ScrollTrigger.refresh()
+  if (lenis) {
+    lenis.resize()
+    lenis.scrollTo(el, { immediate: true, force: true })
+  } else el.scrollIntoView()
+}

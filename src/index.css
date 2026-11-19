@@ -106,3 +106,62 @@
     animation-duration: 0.01ms !important;
   }
 }
+
+/* Gentle fade used when switching family members */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Farm story text (Markdown) */
+.story-body {
+  font-size: 1.125rem;
+  line-height: 1.75;
+  color: var(--color-soil);
+}
+.story-body > * + * {
+  margin-top: 1.25rem;
+}
+.story-body h2 {
+  font-size: 1.75rem;
+  color: var(--color-pasture);
+  margin-top: 2.5rem;
+}
+.story-body a {
+  color: var(--color-lagoon-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.story-body strong {
+  color: var(--color-pasture);
+}
+.story-body ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+}
+/* [photo: …] and [details: …] notes waiting to be replaced */
+.story-body .story-note {
+  border: 2px dashed var(--color-cream);
+  background: var(--color-cream-50);
+  border-radius: 1rem;
+  padding: 1rem 1.25rem;
+  font-size: 0.95rem;
+  color: var(--color-soil-muted);
+}
+.story-body .story-note strong {
+  color: var(--color-barn-dark);
+}
+
+/* Swipeable rows on phones: hide the scrollbar but keep swiping */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
