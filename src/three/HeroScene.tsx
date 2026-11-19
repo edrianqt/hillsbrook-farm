@@ -7,6 +7,7 @@ import CameraRig from './hero/CameraRig'
 import Farm, { FirstFrame, WindClock } from './hero/Farm'
 import Sky, { goldenHour } from './hero/Sky'
 import { herd } from './hero/world'
+import { DisposeOnUnmount } from './bake'
 
 type Quality = 'high' | 'low'
 
@@ -81,6 +82,7 @@ export default function HeroScene({ active, soundOn, onReady }: Props) {
           setDpr(1)
         }}
       />
+      <DisposeOnUnmount />
       <WindClock />
       <FirstFrame onReady={onReady} />
       <CameraRig moving={active} />

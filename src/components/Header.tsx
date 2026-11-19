@@ -8,7 +8,7 @@ import { FacebookIcon, MenuIcon, MessengerIcon } from './ui/icons'
 /**
  * Sticky header.
  * - Transparent while you are at the top of the page (over the hero), milk-white once you scroll.
- * - Below 1024px wide the links fold into a hamburger menu.
+ * - Below 1280px wide the links fold into a hamburger menu.
  */
 export default function Header() {
   const [scrolled, setScrolled] = useState(false)
@@ -36,7 +36,7 @@ export default function Header() {
       }
     }
     // Close the menu if the screen gets wide enough for the desktop links
-    const wide = window.matchMedia('(min-width: 1024px)')
+    const wide = window.matchMedia('(min-width: 1280px)')
     const onWide = () => wide.matches && setOpen(false)
     window.addEventListener('keydown', onKey)
     wide.addEventListener('change', onWide)
@@ -57,18 +57,19 @@ export default function Header() {
       }`}
     >
       <div className="mx-auto flex h-18 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
-        <a href="#hero" aria-label={`${farm.name}, back to top`} className="rounded-full" onClick={() => setOpen(false)}>
+        <a href="#hero" className="rounded-full" onClick={() => setOpen(false)}>
           <Logo size={48} />
+          <span className="sr-only"> (back to top)</span>
         </a>
 
         {/* Desktop links */}
-        <nav aria-label="Main" className="hidden lg:block">
+        <nav aria-label="Main" className="hidden xl:block">
           <ul className="flex items-center gap-1">
             {navLinks.map((link) => (
               <li key={link.target}>
                 <a
                   href={`#${link.target}`}
-                  className="rounded-full px-4 py-2.5 text-[15px] font-medium text-soil transition-colors hover:bg-pasture-50 hover:text-pasture"
+                  className="inline-flex min-h-11 items-center rounded-full px-4 text-[15px] whitespace-nowrap font-medium text-soil transition-colors hover:bg-pasture-50 hover:text-pasture"
                 >
                   {link.label}
                 </a>
@@ -89,7 +90,7 @@ export default function Header() {
           <button
             ref={menuButton}
             type="button"
-            className="inline-flex size-11 items-center justify-center rounded-full text-pasture hover:bg-pasture-50 lg:hidden"
+            className="inline-flex size-11 items-center justify-center rounded-full text-pasture hover:bg-pasture-50 xl:hidden"
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? 'Close menu' : 'Open menu'}
@@ -104,7 +105,7 @@ export default function Header() {
       <div
         id="mobile-menu"
         hidden={!open}
-        className="h-[calc(100svh-4.5rem)] overflow-y-auto border-t border-pasture/10 bg-milk lg:hidden"
+        className="h-[calc(100svh-4.5rem)] overflow-y-auto border-t border-pasture/10 bg-milk xl:hidden"
       >
         <nav aria-label="Main" className="px-6 py-8">
           <ul className="space-y-1">

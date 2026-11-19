@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from 'react'
-import { CanvasTexture, DoubleSide, PlaneGeometry, SRGBColorSpace } from 'three'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { CanvasTexture, DoubleSide, Group, PlaneGeometry, SRGBColorSpace } from 'three'
+import { useBakeStatic } from '../bake'
 import { heightAt } from './world'
 
 // ---------- shared materials ----------
@@ -91,7 +92,7 @@ function Sign({ text, width = 1.7, height = 0.45 }: { text: string; width?: numb
   }, [text, width, height])
 
   return (
-    <group>
+    <group userData={{ noBake: true }}>
       <mesh castShadow>
         <boxGeometry args={[width + 0.08, height + 0.08, 0.05]} />
         <meshStandardMaterial {...wood} />
@@ -123,8 +124,10 @@ export function CowShed({ x, z, rotation = 0 }: { x: number; z: number; rotation
   const d = 3.8
   const postH = 2.3
   const y = heightAt(x, z)
+  const ref = useRef<Group>(null)
+  useBakeStatic(ref)
   return (
-    <group position={[x, y, z]} rotation={[0, rotation, 0]}>
+    <group ref={ref} position={[x, y, z]} rotation={[0, rotation, 0]}>
       {/* floor slab */}
       <mesh position={[0, 0.05, 0]} receiveShadow>
         <boxGeometry args={[w, 0.12, d]} />
@@ -177,8 +180,10 @@ export function MilkingParlor({ x, z, rotation = 0 }: { x: number; z: number; ro
   const wallH = 2.1
   const y = heightAt(x, z)
   const wall = { color: '#f1ede2', roughness: 0.9, flatShading: true }
+  const ref = useRef<Group>(null)
+  useBakeStatic(ref)
   return (
-    <group position={[x, y, z]} rotation={[0, rotation, 0]}>
+    <group ref={ref} position={[x, y, z]} rotation={[0, rotation, 0]}>
       <mesh position={[0, 0.05, 0]} receiveShadow>
         <boxGeometry args={[w, 0.12, d]} />
         <meshStandardMaterial {...concrete} />

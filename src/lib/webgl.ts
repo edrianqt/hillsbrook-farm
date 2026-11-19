@@ -13,7 +13,13 @@ export function prefersReducedMotion(): boolean {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches
 }
 
-/** True on touch-first devices (phones, most tablets). */
+/** True on touch-first devices (phones, most tablets), or any narrow phone-sized screen. */
 export function isTouchDevice(): boolean {
-  return window.matchMedia('(pointer: coarse)').matches
+  return window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 768
 }
+
+/**
+ * True when at least one pixel of an element is really on screen.
+ * (The browser also reports elements that only touch the edge of the screen as "intersecting".)
+ */
+export const reallyVisible = (e: IntersectionObserverEntry) => e.isIntersecting && e.intersectionRect.height > 0

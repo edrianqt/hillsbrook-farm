@@ -1,6 +1,7 @@
 import { useLayoutEffect, useMemo, useRef } from 'react'
 import {
   Color,
+  Group,
   ConeGeometry,
   CylinderGeometry,
   IcosahedronGeometry,
@@ -13,6 +14,7 @@ import {
   Vector3,
 } from 'three'
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js'
+import { useBakeStatic } from '../bake'
 import { addWind } from './wind'
 import { CORN_PLOT, heightAt, NAPIER_PLOT, rng } from './world'
 
@@ -32,9 +34,9 @@ function makeFrond() {
   return geo
 }
 
-const palmTrunkMat = new MeshStandardMaterial({ color: '#8b6a48', roughness: 0.95, flatShading: true })
+const palmTrunkMat = new MeshStandardMaterial({ color: '#8b6a48', roughness: 0.85, flatShading: true })
 const palmLeafMat = new MeshStandardMaterial({ color: '#4d8b3b', roughness: 0.85, flatShading: true, side: 2 })
-const coconutMat = new MeshStandardMaterial({ color: '#6b5a2a', roughness: 0.8, flatShading: true })
+const coconutMat = new MeshStandardMaterial({ color: '#6b5a2a', roughness: 0.85, flatShading: true })
 
 export function Palm({
   x,
@@ -62,9 +64,11 @@ export function Palm({
       top: topPoint,
     }
   }, [height, lean])
+  const root = useRef<Group>(null)
+  useBakeStatic(root)
 
   return (
-    <group position={[x, y ?? heightAt(x, z), z]} rotation={[0, rotation, 0]}>
+    <group ref={root} position={[x, y ?? heightAt(x, z), z]} rotation={[0, rotation, 0]}>
       <mesh geometry={trunk} material={palmTrunkMat} castShadow />
       <group position={top}>
         {Array.from({ length: 8 }, (_, i) => (
@@ -77,7 +81,7 @@ export function Palm({
           />
         ))}
         {[0, 2.1, 4.2].map((a) => (
-          <mesh key={a} geometry={nut} material={coconutMat} position={[Math.cos(a) * 0.18, -0.2, Math.sin(a) * 0.18]} />
+          <mesh key={a} geometry={nut} material={coconutMat} castShadow position={[Math.cos(a) * 0.18, -0.2, Math.sin(a) * 0.18]} />
         ))}
       </group>
     </group>

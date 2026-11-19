@@ -1,0 +1,72 @@
+{
+  "images/hero-fallback-mobile.jpg": {
+    "width": 780,
+    "height": 1688,
+    "base": "images/optimized/hero-fallback-mobile",
+    "widths": [
+      480,
+      780
+    ]
+  },
+  "images/hero-fallback.jpg": {
+    "width": 1600,
+    "height": 900,
+    "base": "images/optimized/hero-fallback",
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ]
+  },
+  "images/journey-1.jpg": {
+    "width": 1200,
+    "height": 750,
+    "base": "images/optimized/journey-1",
+    "widths": [
+      480,
+      800,
+      1200
+    ]
+  },
+  "images/journey-2.jpg": {
+    "width": 1200,
+    "height": 750,
+    "base": "images/optimized/journey-2",
+    "widths": [
+      480,
+      800,
+      1200
+    ]
+  },
+  "images/journey-3.jpg": {
+    "width": 1200,
+    "height": 750,
+    "base": "images/optimized/journey-3",
+    "widths": [
+      480,
+      800,
+      1200
+    ]
+  },
+  "images/journey-4.jpg": {
+    "width": 1200,
+    "height": 750,
+    "base": "images/optimized/journey-4",
+    "widths": [
+      480,
+      800,
+      1200
+    ]
+  },
+  "images/journey-5.jpg": {
+    "width": 1200,
+    "height": 750,
+    "base": "images/optimized/journey-5",
+    "widths": [
+      480,
+      800,
+      1200
+    ]
+  }
+}

@@ -3,6 +3,7 @@ import { useMemo, useRef } from 'react'
 import { CatmullRomCurve3, Group, IcosahedronGeometry, MeshStandardMaterial, Vector3 } from 'three'
 import { Palm } from '../hero/Plants'
 import { SEA_LEVEL, smoothstep } from '../hero/world'
+import { useBakeStatic } from '../bake'
 import { Bottle, useLabelTexture } from './Bottles'
 
 const wood = new MeshStandardMaterial({ color: '#9a6b44', roughness: 0.9, flatShading: true })
@@ -35,6 +36,7 @@ export const boatRoute = new CatmullRomCurve3([
 export function Bangka({ progress }: { progress: { current: number } }) {
   const group = useRef<Group>(null)
   const ahead = useMemo(() => new Vector3(), [])
+  useBakeStatic(group)
 
   useFrame(({ clock }) => {
     if (!group.current) return
@@ -205,9 +207,11 @@ export function SiargaoShore() {
   const pierLen = pierStart.distanceTo(pierEnd)
   const pierMid = pierStart.clone().add(pierEnd).multiplyScalar(0.5)
   const pierYaw = -Math.atan2(pierEnd.z - pierStart.z, pierEnd.x - pierStart.x)
+  const ref = useRef<Group>(null)
+  useBakeStatic(ref)
 
   return (
-    <group>
+    <group ref={ref}>
       {/* sandy island with a green back */}
       <mesh geometry={mound} position={[ISLAND.x, SEA_LEVEL - 0.55, ISLAND.z]} scale={[9, 1.4, 6.5]} receiveShadow>
         <meshStandardMaterial color="#ecd9a6" flatShading roughness={1} />

@@ -8,6 +8,7 @@ import Sky, { type SkyPalette } from './hero/Sky'
 import { clamp, heightAt, journeyHerd, parlorFloor, parlorToWorld, SEA_LEVEL, smoothstep } from './hero/world'
 import { BottlingTable, ChillGlow } from './journey/Bottles'
 import { Bangka, boatProgress, DECK_Y, SiargaoShore } from './journey/Shore'
+import { DisposeOnUnmount } from './bake'
 
 /** Shared with the page: `scroll` is how far through the journey section the visitor has scrolled (0–1). */
 export type JourneyState = { scroll: number }
@@ -232,6 +233,7 @@ export default function JourneyScene({ state, active, onReady }: Props) {
         onIncline={() => setDpr((d) => Math.min(maxDpr, d + 0.25))}
         onFallback={() => setDpr(1)}
       />
+      <DisposeOnUnmount />
       <WindClock />
       <FirstFrame onReady={onReady} />
       <Director state={state} palette={palette} lite={lite} route={route} boat={boat} chill={chill} />

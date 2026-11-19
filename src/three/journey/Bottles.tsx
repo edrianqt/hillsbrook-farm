@@ -1,6 +1,7 @@
 import { useFrame } from '@react-three/fiber'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { CanvasTexture, Group, Mesh, MeshStandardMaterial, SRGBColorSpace } from 'three'
+import { useBakeStatic } from '../bake'
 
 /** The Island Pure label, drawn on a canvas so there is no image file to load. */
 function useLabelTexture() {
@@ -85,7 +86,7 @@ function FillingBottle({ position }: { position: [number, number, number] }) {
     if (stream.current) stream.current.visible = cycle < 0.8
   })
   return (
-    <group position={position}>
+    <group position={position} userData={{ noBake: true }}>
       <mesh material={clearPlastic} position={[0, 0.1, 0]}>
         <cylinderGeometry args={[0.042, 0.042, 0.2, 12]} />
       </mesh>
@@ -112,9 +113,11 @@ export function BottlingTable({ position, rotation = 0 }: { position: [number, n
     for (let i = 0; i < 4; i++) list.push({ kind: 'hdpe', x: 0.0 + i * 0.11, z: -0.1 })
     return list
   }, [])
+  const ref = useRef<Group>(null)
+  useBakeStatic(ref)
 
   return (
-    <group position={position} rotation={[0, rotation, 0]}>
+    <group ref={ref} position={position} rotation={[0, rotation, 0]}>
       {/* table */}
       <mesh material={steel} position={[0, tableTop - 0.02, 0]} castShadow receiveShadow>
         <boxGeometry args={[1.5, 0.04, 0.7]} />

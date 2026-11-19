@@ -15,7 +15,7 @@ export default function Card({ children, tone = 'milk', className = '', as: Tag 
     milk: 'bg-white border-pasture/10',
   }
   return (
-    <Tag className={`rounded-3xl border p-6 shadow-[0_1px_2px_rgb(43_36_32/0.06),0_8px_24px_-12px_rgb(12_82_71/0.18)] sm:p-8 ${tones[tone]} ${className}`}>
+    <Tag className={`relative rounded-3xl border p-6 shadow-[0_1px_2px_rgb(43_36_32/0.06),0_8px_24px_-12px_rgb(12_82_71/0.18)] sm:p-8 ${tones[tone]} ${className}`}>
       {children}
     </Tag>
   )

@@ -2,6 +2,7 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { useRef } from 'react'
 import type { Group } from 'three'
 import { Bottle, useLabelTexture } from './journey/Bottles'
+import { DisposeOnUnmount } from './bake'
 
 function Spinner({ spin }: { spin: boolean }) {
   const group = useRef<Group>(null)
@@ -31,6 +32,7 @@ export default function BottleShowcase({ active, spin }: { active: boolean; spin
       gl={{ alpha: true, antialias: true }}
       aria-hidden="true"
     >
+      <DisposeOnUnmount />
       <hemisphereLight args={['#fff6e6', '#cfe5d9', 1.3]} />
       <directionalLight position={[2.5, 3, 4]} intensity={2.4} color="#fff1dc" />
       <directionalLight position={[-3, 1, -2]} intensity={0.8} color="#bfe3f2" />

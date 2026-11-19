@@ -1,6 +1,6 @@
 import { storiesSection } from '../content/site'
 import { formatDate, homeStories, type Story } from '../lib/stories'
-import { asset } from './Logo'
+import Picture from './Picture'
 import Button from './ui/Button'
 import SectionHeading from './ui/SectionHeading'
 
@@ -12,11 +12,10 @@ export function StoryCard({ story, headingLevel = 'h3' }: { story: Story; headin
     <article className="group relative flex flex-col overflow-hidden rounded-3xl border border-pasture/10 bg-white shadow-[0_1px_2px_rgb(43_36_32/0.06),0_8px_24px_-12px_rgb(12_82_71/0.18)]">
       <div className="aspect-[16/10] overflow-hidden bg-pasture-50">
         {story.image && (
-          <img
-            src={asset(story.image)}
+          <Picture
+            src={story.image}
             alt={story.imageAlt}
-            loading="lazy"
-            decoding="async"
+            sizes="(min-width: 1024px) 400px, (min-width: 768px) 33vw, 100vw"
             className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
         )}

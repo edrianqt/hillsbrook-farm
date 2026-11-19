@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { lazy, Suspense, useEffect, useRef } from 'react'
 import Family from './components/Family'
 import Footer from './components/Footer'
 import Header from './components/Header'
@@ -11,8 +11,10 @@ import Visit from './components/Visit'
 import { farm } from './content/site'
 import { useRoute } from './lib/router'
 import { jumpTo, scrollToSection, startSmoothScroll } from './lib/smoothScroll'
-import AllStories from './pages/AllStories'
-import StoryPage from './pages/StoryPage'
+
+// story pages are downloaded only when someone opens a story
+const AllStories = lazy(() => import('./pages/AllStories'))
+const StoryPage = lazy(() => import('./pages/StoryPage'))
 
 function Home() {
   useEffect(() => {
@@ -42,12 +44,21 @@ export default function App() {
   useEffect(() => {
     const cameFromOtherPage = previousPage.current !== route.page
     previousPage.current = route.page
+    // keyboard and screen-reader users start reading the new page from the top, not where the old page was
+    const moveFocus = (id: string) => (document.getElementById(id) as HTMLElement | null)?.focus({ preventScroll: true })
     if (route.page !== 'home') {
       jumpTo(0)
+      requestAnimationFrame(() => moveFocus('main'))
     } else if (cameFromOtherPage) {
       const section = route.section
       // wait two frames so the home page has been laid out before scrolling
-      requestAnimationFrame(() => requestAnimationFrame(() => (section ? scrollToSection(section) : jumpTo(0))))
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => {
+          if (section) scrollToSection(section)
+          else jumpTo(0)
+          moveFocus(section ? `${section}-title` : 'main')
+        }),
+      )
     }
   }, [route])
 
@@ -63,8 +74,10 @@ export default function App() {
 
       <Header />
 
-      {route.page === 'story' && <StoryPage key={route.slug} slug={route.slug} />}
-      {route.page === 'stories' && <AllStories />}
+      <Suspense fallback={<main id="main" className="min-h-svh" />}>
+        {route.page === 'story' && <StoryPage key={route.slug} slug={route.slug} />}
+        {route.page === 'stories' && <AllStories />}
+      </Suspense>
       {route.page === 'home' && <Home />}
 
       <Footer />

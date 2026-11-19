@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect, useRef, useState, type KeyboardEvent } from 'react'
 import { deliveryPoints, type DeliveryPointId, farm, links, type Product, products } from '../content/site'
-import { hasWebGL, prefersReducedMotion } from '../lib/webgl'
-import { asset } from './Logo'
+import { hasWebGL, prefersReducedMotion, reallyVisible } from '../lib/webgl'
+import Picture from './Picture'
 import ProductArt from './ProductArt'
 import Button from './ui/Button'
 import Card from './ui/Card'
@@ -20,14 +20,13 @@ function orderLink(product: Product, place: string) {
   return `${links.messenger}?text=${encodeURIComponent(text)}`
 }
 
-function Picture({ product }: { product: Product }) {
+function ProductPicture({ product }: { product: Product }) {
   if (product.photo) {
     return (
-      <img
-        src={asset(product.photo)}
+      <Picture
+        src={product.photo}
         alt={`${product.name}, ${product.container}, ${product.size}`}
-        loading="lazy"
-        decoding="async"
+        sizes="320px"
         className="size-full object-cover"
       />
     )
@@ -111,7 +110,7 @@ function FeaturedProduct({ product, point, place }: { product: Product; point: D
   useEffect(() => {
     if (!box.current) return
     const a = new IntersectionObserver(([e]) => e.isIntersecting && setNear(true), { rootMargin: '50% 0px' })
-    const b = new IntersectionObserver(([e]) => setVisible(e.isIntersecting))
+    const b = new IntersectionObserver(([e]) => setVisible(reallyVisible(e)))
     a.observe(box.current)
     b.observe(box.current)
     return () => {
@@ -124,11 +123,11 @@ function FeaturedProduct({ product, point, place }: { product: Product; point: D
     <Card as="article" tone="milk" className="grid gap-6 overflow-hidden md:grid-cols-[1fr_1.2fr] md:items-center lg:col-span-2">
       <div ref={box} className="relative mx-auto aspect-square w-full max-w-xs rounded-3xl bg-[radial-gradient(circle_at_50%_40%,var(--color-cream-50),var(--color-pasture-50))]">
         {use3D && near && !product.photo ? (
-          <Suspense fallback={<Picture product={product} />}>
+          <Suspense fallback={<ProductPicture product={product} />}>
             <BottleShowcase active={visible} spin={!prefersReducedMotion()} />
           </Suspense>
         ) : (
-          <Picture product={product} />
+          <ProductPicture product={product} />
         )}
       </div>
       <div>
@@ -171,7 +170,7 @@ export default function Products() {
           {others.map((product) => (
             <Card as="article" key={product.id} className="flex flex-col">
               <div className="mx-auto aspect-square w-40 overflow-hidden rounded-2xl">
-                <Picture product={product} />
+                <ProductPicture product={product} />
               </div>
               <h3 className="mt-4 text-2xl font-semibold text-pasture">{product.name}</h3>
               <p className="text-soil-muted">

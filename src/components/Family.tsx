@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type KeyboardEvent } from 'react'
 import { family } from '../content/site'
 import { gsap } from '../lib/smoothScroll'
 import { prefersReducedMotion } from '../lib/webgl'
-import { asset } from './Logo'
+import Picture from './Picture'
 import SectionHeading from './ui/SectionHeading'
 
 type Member = (typeof family.members)[number]
@@ -11,11 +11,10 @@ type Member = (typeof family.members)[number]
 function Portrait({ member, size }: { member: Member; size: 'large' | 'thumb' }) {
   if (member.photo) {
     return (
-      <img
-        src={asset(member.photo)}
+      <Picture
+        src={member.photo}
         alt={size === 'large' ? member.photoAlt : ''}
-        loading="lazy"
-        decoding="async"
+        sizes={size === 'large' ? '(min-width: 1024px) 45vw, 100vw' : '64px'}
         className="size-full object-cover"
       />
     )

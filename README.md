@@ -17,6 +17,7 @@ Stop it with `Ctrl + C`.
 Other commands:
 
 ```bash
+npm run images   # after adding or replacing photos: makes small AVIF/WebP versions
 npm run build    # makes the final, optimised website in the dist/ folder
 npm run preview  # shows that final build at http://localhost:4173
 ```
@@ -38,6 +39,20 @@ npm run preview  # shows that final build at http://localhost:4173
 | Smooth scrolling + scroll animation setup | `src/lib/smoothScroll.ts` |
 | Photos | `public/images/` |
 | 3D model files (.glb) | `public/models/` |
+
+## Adding or replacing photos
+
+1. Put the photo (JPG or PNG) in `public/images/` (or a sub-folder like `public/images/family/`).
+2. Write its path in `src/content/site.ts` (for example `photo: 'images/family/edelito.jpg'`).
+3. Run `npm run images`. This makes AVIF and WebP copies in several sizes and records each photo's size,
+   so phones download small files and the page does not jump while pictures load.
+
+## Speed notes
+
+- On phones, the 3D farm starts on the first touch or scroll; until then visitors see the still picture of the same scene.
+  On computers it starts as soon as the page has loaded. (See the comment in `src/components/Hero.tsx`.)
+- Each 3D scene downloads only when it is needed and pauses when it is off screen.
+- Fonts are self-hosted from `public/fonts/` (Latin letters only).
 
 ## Adding a farm story
 

@@ -17,6 +17,8 @@ export default function Logo({ size = 52, withWordmark = true, tone = 'light' }:
     <span className="inline-flex items-center gap-3">
       <img
         src={asset('images/logo-256.webp')}
+        srcSet={`${asset('images/logo-96.webp')} 96w, ${asset('images/logo-144.webp')} 144w, ${asset('images/logo-256.webp')} 256w`}
+        sizes={`${size}px`}
         width={size}
         height={size}
         alt={withWordmark ? '' : `${farm.brand} logo`}

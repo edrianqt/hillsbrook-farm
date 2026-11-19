@@ -101,7 +101,7 @@ function ContactForm() {
     }
   }
 
-  const field = 'mt-1 block w-full rounded-xl border border-pasture/20 bg-white px-4 py-3 text-base text-soil placeholder:text-soil-muted/70 focus:border-lagoon-ink focus:outline-none focus-visible:outline-2 focus-visible:outline-lagoon-ink'
+  const field = 'mt-1 block w-full rounded-xl border border-pasture/20 bg-white px-4 py-3 text-base text-soil placeholder:text-soil-muted/70 focus:border-lagoon-ink focus:outline-3 focus:outline-offset-2 focus:outline-lagoon-ink'
 
   return (
     <form onSubmit={onSubmit} className="rounded-[2rem] bg-white p-6 shadow-[0_1px_2px_rgb(43_36_32/0.06),0_8px_24px_-12px_rgb(12_82_71/0.18)] sm:p-8" noValidate={false}>
@@ -174,11 +174,11 @@ export default function Visit() {
               </p>
               <p className={row}>
                 <PhoneIcon className={icon} />
-                {phoneMissing ? <span className="text-soil-muted italic">{farm.phone}</span> : <a href={`tel:${phoneDigits}`} className="underline-offset-4 hover:underline">{farm.phone}</a>}
+                {phoneMissing ? <span className="text-soil-muted italic">{farm.phone}</span> : <a href={`tel:${phoneDigits}`} className="-my-2.5 inline-flex min-h-11 items-center underline-offset-4 hover:underline">{farm.phone}</a>}
               </p>
               <p className={row}>
                 <MailIcon className={icon} />
-                <a href={`mailto:${farm.email}`} className="break-all underline-offset-4 hover:underline">
+                <a href={`mailto:${farm.email}`} className="-my-2.5 inline-flex min-h-11 items-center break-all underline-offset-4 hover:underline">
                   {farm.email}
                 </a>
               </p>

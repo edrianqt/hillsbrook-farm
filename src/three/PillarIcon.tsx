@@ -4,6 +4,7 @@ import { ExtrudeGeometry, Group, Shape, TubeGeometry, CatmullRomCurve3, Vector3 
 import type { PillarIcon as Kind } from '../content/site'
 import Cow from './hero/Cow'
 import { Bottle, useLabelTexture } from './journey/Bottles'
+import { DisposeOnUnmount } from './bake'
 
 function MilkBottle() {
   const label = useLabelTexture()
@@ -112,6 +113,7 @@ export default function PillarIcon({ kind, spinning }: { kind: Kind; spinning: b
       aria-hidden="true"
       style={{ pointerEvents: 'none' }}
     >
+      <DisposeOnUnmount />
       <hemisphereLight args={['#fff6e6', '#4f7a3a', 1.4]} />
       <directionalLight position={[3, 4, 5]} intensity={2.2} color="#ffe8c8" />
       <Turntable spinning={spinning} kind={kind} />

@@ -3,7 +3,7 @@ import Logo from './Logo'
 import Button from './ui/Button'
 import { FacebookIcon, MailIcon, MessengerIcon, PhoneIcon, PinIcon } from './ui/icons'
 
-const linkClass = 'underline-offset-4 hover:text-white hover:underline'
+const linkClass = 'inline-flex min-h-11 items-center underline-offset-4 hover:text-white hover:underline'
 
 /** Dark green footer: logo and tagline, quick links, contact details, social icons, copyright. */
 export default function Footer() {
@@ -30,7 +30,7 @@ export default function Footer() {
           <h2 id="footer-links-title" className="font-sans text-sm font-semibold text-cream">
             Quick links
           </h2>
-          <ul className="mt-4 space-y-3">
+          <ul className="mt-2">
             {footerLinks.map((link) => (
               <li key={link.target}>
                 <a href={`#${link.target}`} className={linkClass}>
@@ -44,8 +44,8 @@ export default function Footer() {
         {/* Contact */}
         <div>
           <h2 className="font-sans text-sm font-semibold text-cream">Find us</h2>
-          <address className="mt-4 space-y-4 not-italic">
-            <p className="flex gap-3">
+          <address className="mt-2 space-y-1 not-italic">
+            <p className="flex gap-3 py-2.5">
               <PinIcon className="mt-0.5 size-5 shrink-0 text-cream" />
               <span>
                 {farm.address.line1}
@@ -55,14 +55,18 @@ export default function Footer() {
                 {farm.address.country}
               </span>
             </p>
-            <p className="flex gap-3">
-              <PhoneIcon className="mt-0.5 size-5 shrink-0 text-cream" />
-              <a href={`tel:${phoneDigits}`} className={linkClass}>
-                {farm.phone}
-              </a>
+            <p className="flex items-center gap-3">
+              <PhoneIcon className="size-5 shrink-0 text-cream" />
+              {farm.phone.includes('PLACEHOLDER') ? (
+                <span className="italic">{farm.phone}</span>
+              ) : (
+                <a href={`tel:${phoneDigits}`} className={linkClass}>
+                  {farm.phone}
+                </a>
+              )}
             </p>
-            <p className="flex gap-3">
-              <MailIcon className="mt-0.5 size-5 shrink-0 text-cream" />
+            <p className="flex items-center gap-3">
+              <MailIcon className="size-5 shrink-0 text-cream" />
               <a href={`mailto:${farm.email}`} className={`${linkClass} break-all`}>
                 {farm.email}
               </a>

@@ -1,5 +1,3 @@
-import { marked } from 'marked'
-
 /**
  * Farm stories are Markdown files in src/content/stories/.
  * To add a story: copy one of the files, rename it (the file name becomes the web address),
@@ -15,7 +13,8 @@ export type Story = {
   image: string
   imageAlt: string
   featured: boolean
-  html: string
+  /** the story text (Markdown); turned into a web page by StoryPage */
+  body: string
 }
 
 const files = import.meta.glob('../content/stories/*.md', { query: '?raw', import: 'default', eager: true }) as Record<string, string>
@@ -32,10 +31,6 @@ function parse(path: string, raw: string): Story {
       if (i > 0) meta[line.slice(0, i).trim()] = line.slice(i + 1).trim()
     }
   }
-  // Show [photo: ...] and [details: ...] notes as highlighted boxes, so they are easy to find and replace
-  const withNotes = body.replace(/^\[(photo|details)(:[^\]]*)?\]\s*$/gm, (_, kind: string, rest = '') =>
-    `<p class="story-note"><strong>${kind === 'photo' ? 'Photo to add' : 'Details to add'}</strong>${rest.replace(/^:/, ':')}</p>`,
-  )
   return {
     slug,
     title: meta.title ?? slug,
@@ -45,7 +40,7 @@ function parse(path: string, raw: string): Story {
     image: meta.image ?? '',
     imageAlt: meta.imageAlt ?? '',
     featured: meta.featured === 'true',
-    html: marked.parse(withNotes, { async: false }) as string,
+    body,
   }
 }
 

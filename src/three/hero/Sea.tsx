@@ -1,5 +1,6 @@
-import { useMemo } from 'react'
-import { BufferAttribute, Color, CylinderGeometry, IcosahedronGeometry, MeshStandardMaterial, PlaneGeometry } from 'three'
+import { useMemo, useRef } from 'react'
+import { BufferAttribute, Color, CylinderGeometry, Group, IcosahedronGeometry, MeshStandardMaterial, PlaneGeometry } from 'three'
+import { useBakeStatic } from '../bake'
 import { windUniform } from './wind'
 import { rng, SEA_LEVEL, smoothstep } from './world'
 
@@ -81,8 +82,10 @@ function Islets() {
     return { rockGeo: rock, capGeo: cap }
   }, [])
 
+  const ref = useRef<Group>(null)
+  useBakeStatic(ref)
   return (
-    <group>
+    <group ref={ref}>
       {islets.map((s, i) => (
         <group key={i} position={[s.x, SEA_LEVEL - 0.2, s.z]} rotation={[0, s.rot, 0]} scale={[s.size, s.size * s.height, s.size * s.squash]}>
           <mesh geometry={rockGeo}>
@@ -107,8 +110,10 @@ function DistantLand() {
     [30, -160, 60, 7],
     [100, -150, 45, 5],
   ]
+  const ref = useRef<Group>(null)
+  useBakeStatic(ref)
   return (
-    <group>
+    <group ref={ref}>
       {hills.map(([x, z, w, h], i) => (
         <mesh key={i} geometry={geometry} position={[x, SEA_LEVEL - 0.5, z]} scale={[w, h, 10]}>
           <meshStandardMaterial color="#8fb0a6" flatShading roughness={1} />

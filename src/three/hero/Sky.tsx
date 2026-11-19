@@ -1,6 +1,7 @@
 import { useFrame } from '@react-three/fiber'
 import { useMemo, useRef } from 'react'
-import { BackSide, Color, Group, IcosahedronGeometry, ShaderMaterial, Vector3 } from 'three'
+import { BackSide, Color, Group, IcosahedronGeometry, MeshStandardMaterial, ShaderMaterial, Vector3 } from 'three'
+import { useBakeStatic } from '../bake'
 import { rng } from './world'
 
 /** Colours of the sky at one moment. The objects are changed in place for time-of-day animation. */
@@ -75,6 +76,21 @@ function Sun({ palette }: { palette: SkyPalette }) {
   )
 }
 
+const cloudMat = new MeshStandardMaterial({ color: '#fffaf2', emissive: '#f7d9b8', emissiveIntensity: 0.35, flatShading: true, roughness: 1 })
+
+/** One cloud: a few puffs merged into a single mesh. */
+function Cloud({ position, puffs, geometry }: { position: [number, number, number]; puffs: { x: number; y: number; z: number; s: number }[]; geometry: IcosahedronGeometry }) {
+  const ref = useRef<Group>(null)
+  useBakeStatic(ref)
+  return (
+    <group ref={ref} position={position}>
+      {puffs.map((p, j) => (
+        <mesh key={j} geometry={geometry} material={cloudMat} position={[p.x, p.y, p.z]} scale={[p.s * 1.3, p.s * 0.8, p.s]} />
+      ))}
+    </group>
+  )
+}
+
 /** Puffy low-poly clouds drifting slowly across the sky. */
 function Clouds({ count }: { count: number }) {
   const group = useRef<Group>(null)
@@ -106,13 +122,7 @@ function Clouds({ count }: { count: number }) {
   return (
     <group ref={group}>
       {clouds.map((c, i) => (
-        <group key={i} position={[c.x, c.y, c.z]}>
-          {c.puffs.map((p, j) => (
-            <mesh key={j} geometry={puff} position={[p.x, p.y, p.z]} scale={[p.s * 1.3, p.s * 0.8, p.s]}>
-              <meshStandardMaterial color="#fffaf2" emissive="#f7d9b8" emissiveIntensity={0.35} flatShading roughness={1} />
-            </mesh>
-          ))}
-        </group>
+        <Cloud key={i} position={[c.x, c.y, c.z]} puffs={c.puffs} geometry={puff} />
       ))}
     </group>
   )

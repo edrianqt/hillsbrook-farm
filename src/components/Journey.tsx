@@ -1,9 +1,9 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { journey } from '../content/site'
 import { gsap, scrollToY, ScrollTrigger } from '../lib/smoothScroll'
-import { hasWebGL, prefersReducedMotion } from '../lib/webgl'
+import { hasWebGL, prefersReducedMotion, reallyVisible } from '../lib/webgl'
 import type { JourneyState } from '../three/JourneyScene'
-import { asset } from './Logo'
+import Picture from './Picture'
 import Card from './ui/Card'
 import SectionHeading from './ui/SectionHeading'
 
@@ -37,7 +37,7 @@ function JourneyCards() {
         <ol className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {STATIONS.map((s, i) => (
             <Card as="li" key={s.label} className="overflow-hidden !p-0">
-              <img src={asset(s.image)} alt={s.imageAlt} loading="lazy" decoding="async" className="aspect-[16/10] w-full object-cover" />
+              <Picture src={s.image} alt={s.imageAlt} sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw" className="aspect-[16/10] w-full object-cover" />
               <div className="p-6">
                 <StepLabel index={i} />
                 <h3 className="mt-2 text-2xl font-semibold text-pasture">{s.title}</h3>
@@ -65,12 +65,12 @@ function JourneyScroll() {
   const [inView, setInView] = useState(false)
   const [ready, setReady] = useState(false)
 
-  // Start loading the 3D scene shortly before the section scrolls into view; pause it when away
+  // Load the 3D scene as the section starts to appear (its still picture shows meanwhile); pause it when out of view
   useEffect(() => {
     const el = section.current
     if (!el) return
-    const near = new IntersectionObserver(([e]) => e.isIntersecting && setMountScene(true), { rootMargin: '100% 0px' })
-    const visible = new IntersectionObserver(([e]) => setInView(e.isIntersecting))
+    const near = new IntersectionObserver(([e]) => reallyVisible(e) && setMountScene(true))
+    const visible = new IntersectionObserver(([e]) => setInView(reallyVisible(e)))
     near.observe(el)
     visible.observe(el)
     return () => {
@@ -118,13 +118,7 @@ function JourneyScroll() {
     >
       <div className="sticky top-0 h-svh overflow-hidden">
         {/* still picture of the first station until the 3D is ready */}
-        <img
-          src={asset(STATIONS[0].image)}
-          alt=""
-          loading="lazy"
-          decoding="async"
-          className="absolute inset-0 size-full object-cover"
-        />
+        <Picture src={STATIONS[0].image} alt="" sizes="100vw" className="absolute inset-0 size-full object-cover" />
         {mountScene && (
           <div className={`absolute inset-0 transition-opacity duration-700 ${ready ? 'opacity-100' : 'opacity-0'}`}>
             <Suspense fallback={null}>

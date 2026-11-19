@@ -30,6 +30,8 @@ export default function SectionHeading({
       )}
       <Heading
         id={id}
+        // lets the page move keyboard focus here when someone arrives at this section from another page
+        tabIndex={id ? -1 : undefined}
         className={`mt-2 font-semibold leading-[1.05] ${
           level === 'h1' ? 'text-5xl sm:text-6xl lg:text-7xl' : 'text-4xl sm:text-5xl'
         } ${dark ? 'text-milk' : 'text-pasture'}`}

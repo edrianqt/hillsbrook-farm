@@ -1,8 +1,9 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { heroContent, orderButton } from '../content/site'
 import { unlockAudio } from '../lib/moo'
-import { hasWebGL, prefersReducedMotion } from '../lib/webgl'
+import { hasWebGL, isTouchDevice, prefersReducedMotion, reallyVisible } from '../lib/webgl'
 import { asset } from './Logo'
+import { imageSize, srcSet } from './Picture'
 import Button from './ui/Button'
 import { MessengerIcon } from './ui/icons'
 import SectionHeading from './ui/SectionHeading'
@@ -23,14 +24,50 @@ export default function Hero() {
   const section = useRef<HTMLElement>(null)
   // Decide once: 3D scene, or the still picture only (reduced motion, or no 3D support)
   const [use3D] = useState(() => hasWebGL() && !prefersReducedMotion())
+  const [start3D, setStart3D] = useState(false)
   const [inView, setInView] = useState(true)
   const [ready, setReady] = useState(false)
   const [soundOn, setSoundOn] = useState(false)
 
+  // When to start the 3D scene. The still picture shows first, so nothing is lost while waiting.
+  // - Phones: on the first touch or scroll (saves mobile data and battery for visitors who just want prices).
+  // - Computers: once the page has loaded and the browser is idle, or as soon as the mouse moves.
+  useEffect(() => {
+    if (!use3D) return
+    let started = false
+    const events = ['pointerdown', 'touchstart', 'keydown', 'wheel', ...(isTouchDevice() ? [] : ['pointermove'])]
+    const go = () => {
+      if (started) return
+      started = true
+      setStart3D(true)
+      events.forEach((ev) => window.removeEventListener(ev, go))
+      window.removeEventListener('scroll', onScroll)
+    }
+    // browsers can send a "scroll" while the page loads; only a real scroll by the visitor counts
+    const onScroll = () => window.scrollY > 20 && go()
+    events.forEach((ev) => window.addEventListener(ev, go, { passive: true }))
+    window.addEventListener('scroll', onScroll, { passive: true })
+    let idleId = 0
+    const whenIdle = () => {
+      idleId = typeof window.requestIdleCallback === 'function' ? window.requestIdleCallback(go, { timeout: 3000 }) : setTimeout(go, 1500)
+    }
+    if (!isTouchDevice()) {
+      if (document.readyState === 'complete') whenIdle()
+      else window.addEventListener('load', whenIdle, { once: true })
+    }
+    return () => {
+      events.forEach((ev) => window.removeEventListener(ev, go))
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('load', whenIdle)
+      if (typeof window.cancelIdleCallback === 'function') window.cancelIdleCallback(idleId)
+      clearTimeout(idleId)
+    }
+  }, [use3D])
+
   // Pause the 3D scene while the hero is scrolled out of view
   useEffect(() => {
     if (!section.current) return
-    const io = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), { threshold: 0 })
+    const io = new IntersectionObserver(([entry]) => setInView(reallyVisible(entry)))
     io.observe(section.current)
     return () => io.disconnect()
   }, [])
@@ -43,18 +80,24 @@ export default function Hero() {
   return (
     <section ref={section} id="hero" aria-labelledby="hero-title" className="relative min-h-svh overflow-hidden bg-[#f6d3a8]">
       {/* Still picture: shown while the 3D loads, and instead of it when 3D is off */}
+      {/* tall screens get the portrait picture; AVIF/WebP in the right size for each screen */}
       <picture>
-        <source media="(max-aspect-ratio: 9/10)" srcSet={asset('images/hero-fallback-mobile.jpg')} />
+        <source media="(max-aspect-ratio: 9/10)" type="image/avif" srcSet={srcSet('images/hero-fallback-mobile.jpg', 'avif')} sizes="100vw" />
+        <source media="(max-aspect-ratio: 9/10)" type="image/webp" srcSet={srcSet('images/hero-fallback-mobile.jpg', 'webp')} sizes="100vw" />
+        <source type="image/avif" srcSet={srcSet('images/hero-fallback.jpg', 'avif')} sizes="100vw" />
+        <source type="image/webp" srcSet={srcSet('images/hero-fallback.jpg', 'webp')} sizes="100vw" />
         <img
           src={asset('images/hero-fallback.jpg')}
           alt={heroContent.imageAlt}
+          width={imageSize('images/hero-fallback.jpg')?.width}
+          height={imageSize('images/hero-fallback.jpg')?.height}
           className="absolute inset-0 size-full object-cover"
           fetchPriority="high"
           decoding="async"
         />
       </picture>
 
-      {use3D && (
+      {use3D && start3D && (
         <div className={`absolute inset-0 transition-opacity duration-700 ${ready ? 'opacity-100' : 'opacity-0'}`}>
           <Suspense fallback={null}>
             <HeroScene active={inView} soundOn={soundOn} onReady={() => setReady(true)} />
@@ -65,11 +108,11 @@ export default function Hero() {
       {/* Soft milk-white wash behind the text so it stays readable over the scene */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-[72%] bg-gradient-to-b from-milk/95 from-30% via-milk/80 via-60% to-transparent md:inset-y-0 md:right-auto md:h-auto md:w-[66%] md:bg-gradient-to-r md:from-milk/95 md:from-25% md:via-milk/75 md:via-55%"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[72%] bg-gradient-to-b from-milk/95 from-30% via-milk/80 via-60% to-transparent md:landscape:inset-y-0 md:landscape:right-auto md:landscape:h-auto md:landscape:w-[66%] md:landscape:bg-gradient-to-r md:landscape:from-milk/95 md:landscape:from-25% md:landscape:via-milk/75 md:landscape:via-55%"
       />
 
       {/* Text and buttons */}
-      <div className="pointer-events-none relative mx-auto flex min-h-svh w-full max-w-7xl items-start px-6 pt-28 pb-28 md:items-center md:pt-18">
+      <div className="pointer-events-none relative mx-auto flex min-h-svh w-full max-w-7xl items-start px-6 pt-28 pb-28 md:landscape:items-center md:landscape:pt-18">
         <div className="max-w-lg [&_a]:pointer-events-auto">
           <SectionHeading
             id="hero-title"
@@ -92,7 +135,7 @@ export default function Hero() {
       {/* Scroll hint */}
       <a
         href="#journey"
-        className="absolute bottom-6 left-6 inline-flex items-center gap-2 rounded-full bg-milk/85 px-4 py-2.5 text-sm font-medium text-pasture shadow-sm backdrop-blur hover:bg-milk md:left-1/2 md:-translate-x-1/2"
+        className="absolute bottom-6 left-6 inline-flex min-h-11 items-center gap-2 rounded-full bg-milk/85 px-4 text-sm font-medium text-pasture shadow-sm backdrop-blur hover:bg-milk md:left-1/2 md:-translate-x-1/2"
       >
         {heroContent.scrollHint}
         <svg viewBox="0 0 24 24" className="size-4 motion-safe:animate-bounce" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
