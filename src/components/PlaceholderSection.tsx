@@ -1,4 +1,6 @@
 import type { SectionInfo } from '../content/site'
+import Card from './ui/Card'
+import SectionHeading from './ui/SectionHeading'
 
 type Props = {
   section: SectionInfo
@@ -6,24 +8,24 @@ type Props = {
   shade: 'light' | 'dark'
 }
 
-/** An empty, labelled section. Each one is replaced by its real design in a later phase. */
+/** A labelled section waiting for its real design in a later phase. Shows the shared heading and card styles. */
 export default function PlaceholderSection({ section, shade }: Props) {
   const headingId = `${section.id}-title`
   return (
     <section
       id={section.id}
       aria-labelledby={headingId}
-      className={`flex min-h-[80svh] items-center ${shade === 'light' ? 'bg-stone-50' : 'bg-stone-100'}`}
+      className={`flex min-h-[70svh] items-center ${shade === 'light' ? 'bg-milk' : 'bg-cream-50'}`}
     >
-      <div className="mx-auto w-full max-w-6xl px-6 py-24">
-        <p className="text-sm font-semibold tracking-widest text-emerald-800 uppercase">{section.eyebrow}</p>
-        <h2 id={headingId} className="mt-3 text-3xl font-bold text-stone-900 sm:text-5xl">
-          {section.title}
-        </h2>
-        <p className="mt-4 max-w-xl text-stone-700">{section.placeholder}</p>
-        <p className="mt-6 inline-block rounded bg-amber-100 px-3 py-1 font-mono text-xs text-amber-900">
-          #{section.id}
-        </p>
+      <div className="mx-auto grid w-full max-w-7xl gap-10 px-6 py-24 lg:grid-cols-[1.4fr_1fr] lg:items-center">
+        <SectionHeading id={headingId} eyebrow={section.eyebrow} title={section.title} intro={section.intro} />
+        <Card tone={shade === 'light' ? 'cream' : 'milk'}>
+          <p className="text-sm font-semibold text-lagoon-ink">Coming soon</p>
+          <p className="mt-2 text-soil-muted">
+            This card shows the shared card style. The real content for this section arrives in a later phase.
+          </p>
+          <p className="mt-4 inline-block rounded-full bg-pasture-50 px-3 py-1 font-mono text-xs text-pasture">#{section.id}</p>
+        </Card>
       </div>
     </section>
   )

@@ -16,7 +16,7 @@ function Cube() {
   return (
     <mesh ref={ref} rotation={[0.4, 0.6, 0]}>
       <boxGeometry args={[1.6, 1.6, 1.6]} />
-      <meshStandardMaterial color="#2f7a5c" roughness={0.5} />
+      <meshStandardMaterial color="#0c5247" roughness={0.5} />
     </mesh>
   )
 }

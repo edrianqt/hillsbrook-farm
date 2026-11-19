@@ -1,37 +1,108 @@
 @import 'tailwindcss';
 @import 'lenis/dist/lenis.css';
+/* Self-hosted fonts (bundled with the site, no Google request) */
+@import '@fontsource-variable/fraunces/soft.css';
+@import '@fontsource-variable/inter';
 
-/* Base page styles. Brand colors and fonts are added in Phase 2. */
-html {
-  scroll-behavior: auto; /* Lenis handles smooth scrolling */
+/*
+ * HILLSBROOK BRAND TOKENS
+ * In Tailwind v4 the "config" lives here in CSS. Each --color-NAME becomes classes like
+ * bg-NAME, text-NAME and border-NAME.
+ *
+ * Contrast checked against WCAG AA (4.5:1 for normal text):
+ *   soil on milk 14.4 · soil on cream 12.5 · pasture on milk 8.6 · pasture on cream 7.4
+ *   lagoon-ink on milk 5.8 · white on barn 5.5 · milk on pasture-deep 11.9 · mist on pasture-deep 8.2
+ *   lagoon (logo blue) on milk is only 3.9, so use it for shapes and large accents, and
+ *   lagoon-ink for link text.
+ */
+@theme {
+  /* Deep forest green sampled from the Island Pure logo */
+  --color-pasture: #0c5247;
+  --color-pasture-deep: #083a32;
+  --color-pasture-50: #e3efe9;
+  /* Warm off-white page background */
+  --color-milk: #fbf8f1;
+  /* Soft butter yellow for cards and highlights */
+  --color-cream: #f7e8b5;
+  --color-cream-50: #fcf5df;
+  /* Sea blue sampled from the logo's wave, plus a darker version for readable link text */
+  --color-lagoon: #0887b0;
+  --color-lagoon-ink: #056a8b;
+  /* Muted terracotta for buttons and calls to action */
+  --color-barn: #b0492b;
+  --color-barn-dark: #963b21;
+  /* Dark brown-charcoal for body text, and a softer version for secondary text */
+  --color-soil: #2b2420;
+  --color-soil-muted: #5c524b;
+  /* Pale green-grey for text on the dark footer */
+  --color-mist: #b9d6cb;
+
+  --font-display: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 }
 
-body {
-  margin: 0;
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  color: #1c1917;
-  background: #fafaf9;
-  -webkit-font-smoothing: antialiased;
-}
+@layer base {
+  html {
+    scroll-behavior: auto; /* Lenis handles smooth scrolling */
+    scroll-padding-top: 5rem; /* keeps section titles clear of the sticky header */
+  }
 
-main:focus {
-  outline: none;
+  body {
+    margin: 0;
+    background: var(--color-milk);
+    color: var(--color-soil);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: var(--font-display);
+    /* Fraunces "soft" style: rounder, friendlier letter ends */
+    font-variation-settings: 'SOFT' 100;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-lagoon-ink);
+    outline-offset: 3px;
+  }
+
+  main:focus {
+    outline: none;
+  }
 }
 
 /* Skip links stay hidden until a keyboard user tabs to them */
 .skip-link {
-  position: absolute;
+  position: fixed;
   left: 1rem;
-  top: -4rem;
-  z-index: 50;
+  top: -5rem;
+  z-index: 100;
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
-  background: #1f5a45;
-  color: #fff;
+  background: var(--color-pasture);
+  color: var(--color-milk);
   font-weight: 600;
   text-decoration: none;
 }
 
 .skip-link:focus {
   top: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }

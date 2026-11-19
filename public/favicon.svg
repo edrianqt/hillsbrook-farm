@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <!-- Temporary favicon: green badge with a white milk drop. Replace with the Island Pure logo in Phase 2. -->
-  <circle cx="32" cy="32" r="30" fill="#1f5a45"/>
-  <path d="M32 14c-6 9-12 16-12 23a12 12 0 0 0 24 0c0-7-6-14-12-23z" fill="#fbf8f1"/>
-  <path d="M14 46c6-3 12-3 18 0s12 3 18 0" stroke="#3a8fb7" stroke-width="3" fill="none" stroke-linecap="round"/>
-</svg>
