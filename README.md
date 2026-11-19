@@ -30,6 +30,10 @@ npm run preview  # shows that final build at http://localhost:4173
 | 3D hero scene (put together here) | `src/three/HeroScene.tsx` |
 | 3D farm parts: hills, sea, sky, buildings, cows, plants, fence, camera | `src/three/hero/` |
 | Where cows, plots and buildings stand | `src/three/hero/world.ts` |
+| "Farm to You" scroll journey (cards, dots, scrolling) | `src/components/Journey.tsx` |
+| Journey 3D: camera route, sunrise→midday light | `src/three/JourneyScene.tsx` |
+| Journey props: bottles, bottling table, bangka, Siargao shore | `src/three/journey/` |
+| Journey station pictures (reduced-motion version) | `public/images/journey-1.jpg` … `journey-5.jpg` |
 | Still pictures shown while 3D loads (or instead of it) | `public/images/hero-fallback.jpg`, `hero-fallback-mobile.jpg` |
 | Smooth scrolling + scroll animation setup | `src/lib/smoothScroll.ts` |
 | Photos | `public/images/` |

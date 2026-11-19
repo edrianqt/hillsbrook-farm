@@ -36,7 +36,22 @@ const palmTrunkMat = new MeshStandardMaterial({ color: '#8b6a48', roughness: 0.9
 const palmLeafMat = new MeshStandardMaterial({ color: '#4d8b3b', roughness: 0.85, flatShading: true, side: 2 })
 const coconutMat = new MeshStandardMaterial({ color: '#6b5a2a', roughness: 0.8, flatShading: true })
 
-export function Palm({ x, z, height = 6, lean = 0.6, rotation = 0 }: { x: number; z: number; height?: number; lean?: number; rotation?: number }) {
+export function Palm({
+  x,
+  z,
+  y,
+  height = 6,
+  lean = 0.6,
+  rotation = 0,
+}: {
+  x: number
+  z: number
+  /** only needed when the palm stands somewhere other than the farm's hills */
+  y?: number
+  height?: number
+  lean?: number
+  rotation?: number
+}) {
   const { trunk, frond, nut, top } = useMemo(() => {
     const topPoint = new Vector3(lean * 1.4, height, 0)
     const curve = new QuadraticBezierCurve3(new Vector3(0, 0, 0), new Vector3(lean * 0.2, height * 0.6, 0), topPoint)
@@ -49,7 +64,7 @@ export function Palm({ x, z, height = 6, lean = 0.6, rotation = 0 }: { x: number
   }, [height, lean])
 
   return (
-    <group position={[x, heightAt(x, z), z]} rotation={[0, rotation, 0]}>
+    <group position={[x, y ?? heightAt(x, z), z]} rotation={[0, rotation, 0]}>
       <mesh geometry={trunk} material={palmTrunkMat} castShadow />
       <group position={top}>
         {Array.from({ length: 8 }, (_, i) => (
@@ -88,7 +103,7 @@ function useScatter(mesh: React.RefObject<InstancedMesh | null>, items: { x: num
 }
 
 // ---------- Napier grass: tall clumps used as cattle feed ----------
-export function NapierPlot() {
+export function NapierPlot({ lite = false }: { lite?: boolean }) {
   const mesh = useRef<InstancedMesh>(null)
   const { geometry, material, items } = useMemo(() => {
     // one clump = three tall blades leaning outwards
@@ -105,12 +120,13 @@ export function NapierPlot() {
     const list = []
     const base = new Color('#6fa83f')
     const tip = new Color('#a4c45a')
-    for (let gx = NAPIER_PLOT.minX; gx < NAPIER_PLOT.maxX; gx += 0.55) {
-      for (let gz = NAPIER_PLOT.minZ; gz < NAPIER_PLOT.maxZ; gz += 0.6) {
+    const step = lite ? 0.8 : 0.55
+    for (let gx = NAPIER_PLOT.minX; gx < NAPIER_PLOT.maxX; gx += step) {
+      for (let gz = NAPIER_PLOT.minZ; gz < NAPIER_PLOT.maxZ; gz += step + 0.05) {
         list.push({
           x: gx + (r() - 0.5) * 0.3,
           z: gz + (r() - 0.5) * 0.3,
-          s: 0.75 + r() * 0.45,
+          s: (0.75 + r() * 0.45) * (lite ? 1.15 : 1),
           ry: r() * Math.PI,
           tilt: (r() - 0.5) * 0.15,
           color: base.clone().lerp(tip, r()),
@@ -118,13 +134,13 @@ export function NapierPlot() {
       }
     }
     return { geometry: geo, material: mat, items: list }
-  }, [])
+  }, [lite])
   useScatter(mesh, items)
-  return <instancedMesh ref={mesh} args={[geometry, material, items.length]} castShadow />
+  return <instancedMesh key={items.length} ref={mesh} args={[geometry, material, items.length]} castShadow />
 }
 
 // ---------- young corn in neat rows ----------
-export function CornField() {
+export function CornField({ lite = false }: { lite?: boolean }) {
   const mesh = useRef<InstancedMesh>(null)
   const { geometry, material, items } = useMemo(() => {
     const stalk = new CylinderGeometry(0.025, 0.04, 0.8, 4)
@@ -149,15 +165,15 @@ export function CornField() {
     const list = []
     const a = new Color('#5f9c39')
     const b = new Color('#8dbb4a')
-    for (let gz = CORN_PLOT.minZ + 0.3; gz < CORN_PLOT.maxZ; gz += 0.8) {
-      for (let gx = CORN_PLOT.minX + 0.2; gx < CORN_PLOT.maxX; gx += 0.5) {
+    for (let gz = CORN_PLOT.minZ + 0.3; gz < CORN_PLOT.maxZ; gz += lite ? 1.05 : 0.8) {
+      for (let gx = CORN_PLOT.minX + 0.2; gx < CORN_PLOT.maxX; gx += lite ? 0.7 : 0.5) {
         list.push({ x: gx + (r() - 0.5) * 0.1, z: gz, s: 0.8 + r() * 0.5, ry: r() * Math.PI * 2, tilt: 0, color: a.clone().lerp(b, r()) })
       }
     }
     return { geometry: geo, material: mat, items: list }
-  }, [])
+  }, [lite])
   useScatter(mesh, items)
-  return <instancedMesh ref={mesh} args={[geometry, material, items.length]} castShadow />
+  return <instancedMesh key={items.length} ref={mesh} args={[geometry, material, items.length]} castShadow />
 }
 
 // ---------- scattered shrubs on the hills ----------

@@ -91,15 +91,57 @@ export const heroContent = {
     'Illustration of Hillsbrook Farm at golden hour: green hills with a cow shed, a milking parlor, coconut palms, Napier grass and a young cornfield, black-and-white cows and calves in a fenced pasture, and the turquoise sea with limestone islets of Bucas Grande behind.',
 }
 
+/** "Farm to You": the scroll journey, one entry per station, in order. */
+export const journey = {
+  eyebrow: 'Farm to You',
+  title: 'From our hills to your table',
+  intro: 'Scroll to follow a bottle of Island Pure milk, from sunrise on the farm to breakfast in Siargao.',
+  stations: [
+    {
+      label: 'Feed',
+      title: 'Grown on our own hills',
+      body: 'Our crossbred Holstein Friesian cows graze beside the Napier grass and corn we plant ourselves as feed, on the hills of Barangay Del Pilar.',
+      detail: '',
+      image: 'images/journey-1.jpg',
+      imageAlt: 'Cows grazing in the pasture at sunrise, beside rows of young corn and tall Napier grass.',
+    },
+    {
+      label: 'Milking',
+      title: 'Milked with care',
+      body: 'Each cow steps into her stall in our Milking Parlor, where she is milked gently, without rush.',
+      detail: '[PLACEHOLDER: your milking routine and times, e.g. "twice a day, at 5 AM and 4 PM"]',
+      image: 'images/journey-2.jpg',
+      imageAlt: 'Two black-and-white cows standing in their stalls inside the milking parlor.',
+    },
+    {
+      label: 'Chilling',
+      title: 'Cooled within minutes',
+      body: 'Fresh milk goes straight into our stainless steel tank to be chilled and kept cold.',
+      detail: '[PLACEHOLDER: your cooling process, e.g. "chilled to 4 °C within 30 minutes"]',
+      image: 'images/journey-3.jpg',
+      imageAlt: 'The stainless steel milk cooling tank beside the milking parlor, lit with a cool blue glow.',
+    },
+    {
+      label: 'Bottling',
+      title: 'Pasteurized or pure raw',
+      body: "We bottle Island Pure Cow's Milk at the farm: pasteurized milk in PET or HDPE bottles, and raw whole milk for those who prefer it.",
+      detail: '[PLACEHOLDER: how you pasteurize, e.g. "heated to 63 °C for 30 minutes, then cooled"]',
+      image: 'images/journey-4.jpg',
+      imageAlt: 'A steel bottling table with a bottle being filled, rows of Island Pure bottles and green delivery crates.',
+    },
+    {
+      label: 'To your table',
+      title: 'Across the water to Siargao',
+      body: 'Every Saturday a bangka carries the bottles across to Dapa Port and on to General Luna, to resort kitchens and family breakfast tables.',
+      detail: '',
+      image: 'images/journey-5.jpg',
+      imageAlt: 'A breakfast table on a resort deck in Siargao with pandesal, mango and a glass of milk, the bangka tied up at the pier.',
+    },
+  ],
+}
+
 /** The page sections below the hero, in the order they appear. Intros marked [PLACEHOLDER] get real content in Phases 3–5. */
 export const sections: SectionInfo[] = [
-  {
-    id: 'journey',
-    eyebrow: 'Our dairy journey',
-    title: 'Farm to You',
-    intro:
-      '[PLACEHOLDER] From the Napier grass on our hills to your breakfast table in Siargao: follow a bottle of Island Pure milk. (3D scroll tour comes in Phase 4.)',
-  },
   {
     id: 'family',
     eyebrow: 'The people of Hillsbrook',

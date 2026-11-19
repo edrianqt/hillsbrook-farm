@@ -47,3 +47,9 @@ export function lockScroll(locked: boolean) {
   }
   document.documentElement.style.overflow = locked ? 'hidden' : ''
 }
+
+/** Scroll the page to a position in pixels (smoothly, unless the visitor prefers reduced motion). */
+export function scrollToY(y: number) {
+  if (lenis) lenis.scrollTo(y, { duration: 1.2 })
+  else window.scrollTo({ top: y, behavior: 'auto' })
+}

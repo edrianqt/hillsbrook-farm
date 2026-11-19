@@ -1,40 +1,68 @@
 import { useFrame } from '@react-three/fiber'
 import { useMemo, useRef } from 'react'
-import { BackSide, BufferAttribute, Color, Group, IcosahedronGeometry, SphereGeometry } from 'three'
-import { rng, smoothstep } from './world'
+import { BackSide, Color, Group, IcosahedronGeometry, ShaderMaterial, Vector3 } from 'three'
+import { rng } from './world'
+
+/** Colours of the sky at one moment. The objects are changed in place for time-of-day animation. */
+export type SkyPalette = { horizon: Color; glow: Color; top: Color; sun: Vector3 }
 
 export const SKY_HORIZON = '#f6d3a8'
 
-const horizon = new Color(SKY_HORIZON)
-const glow = new Color('#fbe3c0')
-const top = new Color('#8ec3e3')
+/** Golden hour, used by the hero. */
+export const goldenHour = (): SkyPalette => ({
+  horizon: new Color(SKY_HORIZON),
+  glow: new Color('#fbe3c0'),
+  top: new Color('#8ec3e3'),
+  sun: new Vector3(95, 22, -200),
+})
 
-/** Golden-hour sky: warm peach at the horizon, fading to clear blue overhead. */
-function SkyDome() {
-  const geometry = useMemo(() => {
-    const geo = new SphereGeometry(260, 24, 14)
-    const pos = geo.attributes.position
-    const colors = new Float32Array(pos.count * 3)
-    const c = new Color()
-    for (let i = 0; i < pos.count; i++) {
-      const y = pos.getY(i) / 260
-      c.copy(horizon).lerp(glow, smoothstep(0, 0.06, y)).lerp(top, smoothstep(0.04, 0.32, y))
-      colors.set([c.r, c.g, c.b], i * 3)
-    }
-    geo.setAttribute('color', new BufferAttribute(colors, 3))
-    return geo
-  }, [])
+/** Gradient sky dome: horizon colour, a warm glow band, then the sky colour overhead. */
+function SkyDome({ palette }: { palette: SkyPalette }) {
+  const material = useMemo(
+    () =>
+      new ShaderMaterial({
+        side: BackSide,
+        depthWrite: false,
+        uniforms: {
+          uHorizon: { value: palette.horizon },
+          uGlow: { value: palette.glow },
+          uTop: { value: palette.top },
+        },
+        vertexShader: /* glsl */ `
+          varying float vHeight;
+          void main() {
+            vHeight = normalize(position).y;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }`,
+        fragmentShader: /* glsl */ `
+          uniform vec3 uHorizon; uniform vec3 uGlow; uniform vec3 uTop;
+          varying float vHeight;
+          void main() {
+            vec3 c = mix(uHorizon, uGlow, smoothstep(0.0, 0.06, vHeight));
+            c = mix(c, uTop, smoothstep(0.04, 0.32, vHeight));
+            gl_FragColor = vec4(c, 1.0);
+            #include <colorspace_fragment>
+          }`,
+      }),
+    [palette],
+  )
   return (
-    <mesh geometry={geometry}>
-      <meshBasicMaterial vertexColors side={BackSide} fog={false} depthWrite={false} toneMapped={false} />
+    <mesh material={material}>
+      <sphereGeometry args={[260, 24, 14]} />
     </mesh>
   )
 }
 
-/** A soft low sun over the sea. */
-function Sun() {
+/** A soft sun that follows `palette.sun`. */
+function Sun({ palette }: { palette: SkyPalette }) {
+  const ref = useRef<Group>(null)
+  useFrame(({ camera }) => {
+    if (!ref.current) return
+    ref.current.position.copy(palette.sun)
+    ref.current.lookAt(camera.position)
+  })
   return (
-    <group position={[95, 22, -200]}>
+    <group ref={ref}>
       <mesh>
         <circleGeometry args={[9, 24]} />
         <meshBasicMaterial color="#fff4d6" fog={false} toneMapped={false} />
@@ -48,13 +76,13 @@ function Sun() {
 }
 
 /** Puffy low-poly clouds drifting slowly across the sky. */
-function Clouds() {
+function Clouds({ count }: { count: number }) {
   const group = useRef<Group>(null)
   const puff = useMemo(() => new IcosahedronGeometry(1, 1), [])
   const clouds = useMemo(() => {
     const rand = rng(7)
-    return Array.from({ length: 6 }, (_, i) => ({
-      x: -70 + i * 26 + rand() * 10,
+    return Array.from({ length: count }, (_, i) => ({
+      x: -70 + i * (156 / count) + rand() * 10,
       y: 15 + rand() * 7,
       z: -45 - rand() * 35,
       speed: 0.6 + rand() * 0.5,
@@ -65,7 +93,7 @@ function Clouds() {
         s: 1.6 + rand() * 1.6,
       })),
     }))
-  }, [])
+  }, [count])
 
   useFrame((_, delta) => {
     if (!group.current) return
@@ -90,12 +118,12 @@ function Clouds() {
   )
 }
 
-export default function Sky() {
+export default function Sky({ palette, clouds = 6 }: { palette: SkyPalette; clouds?: number }) {
   return (
     <group>
-      <SkyDome />
-      <Sun />
-      <Clouds />
+      <SkyDome palette={palette} />
+      <Sun palette={palette} />
+      <Clouds count={clouds} />
     </group>
   )
 }

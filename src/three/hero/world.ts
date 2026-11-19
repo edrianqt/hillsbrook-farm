@@ -101,8 +101,23 @@ export function heightAt(x: number, z: number) {
   return h
 }
 
+// ---------- buildings ----------
+export const SHED = { x: 5.2, z: -3.2, rot: -0.18 }
+export const PARLOR = { x: 9.8, z: -0.4, rot: -0.5 }
+
+/** Turns a spot measured inside the milking parlor (lx = across, lz = towards its open front) into world x/z. */
+export function parlorToWorld(lx: number, lz: number) {
+  const c = Math.cos(PARLOR.rot)
+  const s = Math.sin(PARLOR.rot)
+  return { x: PARLOR.x + lx * c + lz * s, z: PARLOR.z - lx * s + lz * c }
+}
+
+/** Height of the milking parlor's concrete floor. */
+export const parlorFloor = () => heightAt(PARLOR.x, PARLOR.z) + 0.11
+
 // ---------- where the herd stands (our real herd: 5 cows, 4 calves) ----------
-export type CowSpot = { x: number; z: number; yaw: number; calf: boolean; seed: number }
+/** `y` is only given when the animal stands on a floor rather than the ground */
+export type CowSpot = { x: number; z: number; yaw: number; calf: boolean; seed: number; y?: number }
 export const herd: CowSpot[] = [
   { x: -2.6, z: 3.1, yaw: 0.5, calf: false, seed: 1 },
   { x: 0.4, z: 2.2, yaw: 2.6, calf: false, seed: 2 },
@@ -114,3 +129,17 @@ export const herd: CowSpot[] = [
   { x: -0.2, z: 6.8, yaw: -1.0, calf: true, seed: 8 },
   { x: -2.9, z: 4.9, yaw: 2.9, calf: true, seed: 9 },
 ]
+
+/**
+ * The same herd during the "Farm to You" journey: two cows wait in the milking stalls,
+ * the other three and the calves stay out on the pasture.
+ */
+export function journeyHerd(): CowSpot[] {
+  // cows stand in their stalls facing the open front, so visitors see their faces
+  const facingFront = -Math.PI / 2 + PARLOR.rot
+  const stall = (lx: number, seed: number): CowSpot => {
+    const p = parlorToWorld(lx, -0.35)
+    return { x: p.x, z: p.z, yaw: facingFront, calf: false, seed, y: parlorFloor() }
+  }
+  return [stall(-1.15, 1), stall(0, 2), ...herd.filter((c) => c.seed > 2)]
+}
