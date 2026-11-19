@@ -80,7 +80,7 @@ export const heroContent = {
   cowTip: 'Tip: hover over or tap a cow',
   /** Describes the farm picture for visitors who use screen readers */
   imageAlt:
-    'Illustration of Hillsbrook Farm at golden hour: green hills with a cow shed, a milking parlor, coconut palms, Napier grass and a young cornfield, black-and-white cows and calves in a fenced pasture, and the turquoise sea with limestone islets of Bucas Grande behind.',
+    'Illustration of Hillsbrook Farm at golden hour: green hills with a cow shed, a milking parlor, coconut palms, a wide Napier grass field and a separate cornfield on the hillside, the grown cows in one fenced pen and the calves in their own pen with a shade roof, and the turquoise sea with limestone islets of Bucas Grande behind.',
 }
 
 /** "Farm to You": the scroll journey, one entry per station, in order. */
@@ -92,7 +92,7 @@ export const journey = {
     {
       label: 'Feed',
       title: 'Grown on our own hills',
-      body: 'Our crossbred Holstein Friesian cows graze beside the Napier grass and corn we plant ourselves as feed, on the hills of Barangay Del Pilar.',
+      body: 'We grow our own feed on the hills of Barangay Del Pilar: a big field of Napier grass and a separate cornfield, right beside the pen of our crossbred Holstein Friesian cows.',
       detail: '',
       image: 'images/farm/planting-napier.jpg',
       imageAlt: 'Two farmers planting rows of Napier grass cuttings in red soil, with the cow shed behind them.',

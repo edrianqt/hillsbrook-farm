@@ -50,9 +50,14 @@ export function rng(seed: number) {
 // ---------- key places on the farm ----------
 export const SEA_LEVEL = -0.35
 export const FARMYARD = { x: 5, z: -1.5, radius: 6 } // flat ground for the buildings
+/** The pen for the grown cows */
 export const PASTURE = { minX: -4.5, maxX: 2.2, minZ: 1.2, maxZ: 7.5 }
-export const NAPIER_PLOT = { minX: -13, maxX: -7.5, minZ: -6, maxZ: -1.5 }
-export const CORN_PLOT = { minX: -12.5, maxX: -6.5, minZ: 1, maxZ: 6.5 }
+/** The calves have their own smaller pen across the path, with a shade roof */
+export const CALF_PEN = { minX: 5.9, maxX: 9.1, minZ: 6.3, maxZ: 9.3 }
+/** Two big, separate feed fields on the hillside: Napier grass at the back, corn in front, a farm lane between them */
+export const NAPIER_PLOT = { minX: -30, maxX: -8.5, minZ: -8, maxZ: -1.4 }
+export const CORN_PLOT = { minX: -29, maxX: -7.5, minZ: 2.6, maxZ: 13.5 }
+export const FIELD_LANE_Z = 0.6
 
 /** The winding dirt path from the front of the scene up to the farmyard. */
 export const pathCurve = new CatmullRomCurve3(
@@ -82,7 +87,7 @@ export function distanceToPath(x: number, z: number) {
 const inRect = (r: { minX: number; maxX: number; minZ: number; maxZ: number }, x: number, z: number, pad = 0) =>
   x > r.minX - pad && x < r.maxX + pad && z > r.minZ - pad && z < r.maxZ + pad
 
-export const isInPlot = (x: number, z: number) => inRect(NAPIER_PLOT, x, z, 0.4) || inRect(CORN_PLOT, x, z, 0.4)
+export const isInPlot = (x: number, z: number) => inRect(NAPIER_PLOT, x, z, 1) || inRect(CORN_PLOT, x, z, 1)
 
 /** Ground height at (x, z). */
 export function heightAt(x: number, z: number) {
@@ -94,8 +99,6 @@ export function heightAt(x: number, z: number) {
   // flat farmyard for the buildings
   const dYard = Math.hypot(x - FARMYARD.x, z - FARMYARD.z)
   h = lerp(0.7, h, smoothstep(FARMYARD.radius, FARMYARD.radius + 5, dYard))
-  // planted plots are a little flatter
-  if (isInPlot(x, z)) h = lerp(h, 0.9 + (h - 0.9) * 0.4, 0.8)
   // the land drops to a beach and into the sea at the back
   h = lerp(h, -1.6, smoothstep(-10, -17, z))
   return h
@@ -119,20 +122,22 @@ export const parlorFloor = () => heightAt(PARLOR.x, PARLOR.z) + 0.11
 /** `y` is only given when the animal stands on a floor rather than the ground */
 export type CowSpot = { x: number; z: number; yaw: number; calf: boolean; seed: number; y?: number }
 export const herd: CowSpot[] = [
-  { x: -2.6, z: 3.1, yaw: 0.5, calf: false, seed: 1 },
-  { x: 0.4, z: 2.2, yaw: 2.6, calf: false, seed: 2 },
-  { x: -1.0, z: 5.6, yaw: -0.4, calf: false, seed: 3 },
-  { x: 1.6, z: 5.4, yaw: 3.6, calf: false, seed: 4 },
-  { x: -3.7, z: 6.4, yaw: 1.2, calf: false, seed: 5 },
-  { x: -1.6, z: 2.0, yaw: 0.9, calf: true, seed: 6 },
-  { x: 1.4, z: 3.4, yaw: 2.1, calf: true, seed: 7 },
-  { x: -0.2, z: 6.8, yaw: -1.0, calf: true, seed: 8 },
-  { x: -2.9, z: 4.9, yaw: 2.9, calf: true, seed: 9 },
+  // the five grown cows in their pen
+  { x: -2.6, z: 3.0, yaw: 0.5, calf: false, seed: 1 },
+  { x: 0.5, z: 2.6, yaw: 2.6, calf: false, seed: 2 },
+  { x: -1.0, z: 5.7, yaw: -0.4, calf: false, seed: 3 },
+  { x: 1.4, z: 5.4, yaw: 3.6, calf: false, seed: 4 },
+  { x: -3.4, z: 6.4, yaw: 1.2, calf: false, seed: 5 },
+  // the four calves in the calf pen
+  { x: 6.5, z: 7.1, yaw: 0.4, calf: true, seed: 6 },
+  { x: 8.4, z: 8.8, yaw: 2.6, calf: true, seed: 7 },
+  { x: 6.8, z: 8.8, yaw: -0.7, calf: true, seed: 8 },
+  { x: 8.2, z: 7.2, yaw: 3.3, calf: true, seed: 9 },
 ]
 
 /**
  * The same herd during the "Farm to You" journey: two cows wait in the milking stalls,
- * the other three and the calves stay out on the pasture.
+ * the other three stay in their pen and the calves in theirs.
  */
 export function journeyHerd(): CowSpot[] {
   // cows stand in their stalls facing the open front, so visitors see their faces

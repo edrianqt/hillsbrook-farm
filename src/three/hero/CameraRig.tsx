@@ -4,7 +4,7 @@ import { PerspectiveCamera, Vector3 } from 'three'
 
 /** Where the camera sits and looks, for wide screens and for tall phone screens. */
 const VIEWS = {
-  wide: { pos: new Vector3(2.5, 8.6, 25), target: new Vector3(-3.2, 1.9, -2), fov: 38 },
+  wide: { pos: new Vector3(2.5, 10.4, 25), target: new Vector3(-3.4, 1.5, -2), fov: 38 },
   tall: { pos: new Vector3(6, 14, 32), target: new Vector3(3.6, 7.2, -2), fov: 50 },
 }
 

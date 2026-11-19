@@ -16,7 +16,7 @@ import {
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js'
 import { useBakeStatic } from '../bake'
 import { addWind } from './wind'
-import { CORN_PLOT, heightAt, NAPIER_PLOT, rng } from './world'
+import { CORN_PLOT, heightAt, isInPlot, NAPIER_PLOT, rng } from './world'
 
 // ---------- coconut palm ----------
 function makeFrond() {
@@ -124,7 +124,7 @@ export function NapierPlot({ lite = false }: { lite?: boolean }) {
     const list = []
     const base = new Color('#6fa83f')
     const tip = new Color('#a4c45a')
-    const step = lite ? 0.8 : 0.55
+    const step = lite ? 0.85 : 0.6
     for (let gx = NAPIER_PLOT.minX; gx < NAPIER_PLOT.maxX; gx += step) {
       for (let gz = NAPIER_PLOT.minZ; gz < NAPIER_PLOT.maxZ; gz += step + 0.05) {
         list.push({
@@ -169,9 +169,9 @@ export function CornField({ lite = false }: { lite?: boolean }) {
     const list = []
     const a = new Color('#5f9c39')
     const b = new Color('#8dbb4a')
-    for (let gz = CORN_PLOT.minZ + 0.3; gz < CORN_PLOT.maxZ; gz += lite ? 1.05 : 0.8) {
-      for (let gx = CORN_PLOT.minX + 0.2; gx < CORN_PLOT.maxX; gx += lite ? 0.7 : 0.5) {
-        list.push({ x: gx + (r() - 0.5) * 0.1, z: gz, s: 0.8 + r() * 0.5, ry: r() * Math.PI * 2, tilt: 0, color: a.clone().lerp(b, r()) })
+    for (let gz = CORN_PLOT.minZ + 0.3; gz < CORN_PLOT.maxZ; gz += lite ? 1.1 : 0.85) {
+      for (let gx = CORN_PLOT.minX + 0.2; gx < CORN_PLOT.maxX; gx += lite ? 0.75 : 0.55) {
+        list.push({ x: gx + (r() - 0.5) * 0.1, z: gz, s: 1.25 + r() * 0.5, ry: r() * Math.PI * 2, tilt: 0, color: a.clone().lerp(b, r()) })
       }
     }
     return { geometry: geo, material: mat, items: list }
@@ -195,7 +195,7 @@ export function Shrubs() {
       const x = -40 + r() * 80
       const z = -12 + r() * 21
       const nearFarm = x > -14 && x < 14 && z > -9 && z < 10
-      if (nearFarm || z > 9 || heightAt(x, z) < 0.3) continue
+      if (nearFarm || z > 9 || heightAt(x, z) < 0.3 || isInPlot(x, z)) continue
       list.push({ x, z, s: 0.6 + r() * 0.8, ry: r() * 6, tilt: 0, color: a.clone().lerp(b, r()) })
     }
     return { geometry: geo, material: mat, items: list }

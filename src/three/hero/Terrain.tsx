@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { BufferAttribute, Color, PlaneGeometry } from 'three'
-import { CORN_PLOT, distanceToPath, fbm, heightAt, NAPIER_PLOT, SEA_LEVEL, smoothstep } from './world'
+import { CORN_PLOT, distanceToPath, fbm, FIELD_LANE_Z, heightAt, NAPIER_PLOT, SEA_LEVEL, smoothstep } from './world'
 
 const grassLight = new Color('#8fbf55')
 const grassDark = new Color('#4f8a3a')
@@ -37,6 +37,8 @@ export default function Terrain() {
 
       if (inside(CORN_PLOT, x, z) || inside(NAPIER_PLOT, x, z)) c.lerp(soil, 0.75)
       if (pathDist < 1.4) c.lerp(dirt, smoothstep(1.4, 0.6, pathDist) * 0.45)
+      // the farm lane between the two fields
+      if (x > CORN_PLOT.minX && x < CORN_PLOT.maxX + 1.5) c.lerp(dirt, smoothstep(1.3, 0.4, Math.abs(z - FIELD_LANE_Z)) * 0.5)
       // beach and shallows
       c.lerp(sand, smoothstep(0.35, -0.15, h))
       if (h < SEA_LEVEL) c.copy(wetSand)

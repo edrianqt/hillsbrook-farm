@@ -36,7 +36,7 @@ function buildRoute() {
   const ground = heightAt(table.x, table.z)
   // one camera spot and one look-at spot per point; the extra point follows the boat across the water
   const cam = [
-    v(-1.5, 6.2, 18.5), // 1 feed: corn, Napier grass and the pasture at sunrise
+    v(1.5, 9.5, 21.5), // 1 feed: the corn field, the Napier field and the cow pen at sunrise
     at(parlorToWorld(0.2, 4.6), floor + 1.25), // 2 milking parlor, cows in their stalls
     at(parlorToWorld(5.4, 3.2), floor + 2.0), // 3 the steel milk tank
     at(parlorToWorld(2.2, 4.5), ground + 1.7), // 4 bottling table
@@ -44,7 +44,7 @@ function buildRoute() {
     v(-28.2, DECK_Y + 1.45, -55.2), // 5 breakfast table in Siargao, looking back across the water
   ]
   const look = [
-    v(-6.5, 0.9, 2.5),
+    v(-8.5, 1.4, 1.5),
     at(parlorToWorld(-0.3, 0), floor + 0.85),
     at(parlorToWorld(2.55, 0.4), floor + 0.75),
     at(parlorToWorld(2.6, 2.6), ground + 0.95),
