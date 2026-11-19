@@ -78,15 +78,21 @@ export type SectionInfo = {
   intro: string
 }
 
-/** The page sections, in the order they appear. Intros marked [PLACEHOLDER] get real content in Phases 3–5. */
+/** The big opening section with the 3D farm. */
+export const heroContent = {
+  eyebrow: 'Family-run dairy · Socorro, Surigao del Norte',
+  title: "Fresh as Bucas Grande's sea breeze.",
+  subline: "Island Pure Cow's Milk from our family farm on the hills of Barangay Del Pilar, Socorro.",
+  journeyButton: 'See the farm journey',
+  scrollHint: 'Scroll to explore',
+  cowTip: 'Tip: hover over or tap a cow',
+  /** Describes the farm picture for visitors who use screen readers */
+  imageAlt:
+    'Illustration of Hillsbrook Farm at golden hour: green hills with a cow shed, a milking parlor, coconut palms, Napier grass and a young cornfield, black-and-white cows and calves in a fenced pasture, and the turquoise sea with limestone islets of Bucas Grande behind.',
+}
+
+/** The page sections below the hero, in the order they appear. Intros marked [PLACEHOLDER] get real content in Phases 3–5. */
 export const sections: SectionInfo[] = [
-  {
-    id: 'hero',
-    eyebrow: 'Family-run dairy · Socorro, Surigao del Norte',
-    title: "Fresh as Bucas Grande's sea breeze.",
-    intro:
-      "Island Pure Cow's Milk from our family farm on the hills of Barangay Del Pilar, Socorro. Maayong pag-abot! Welcome to Hillsbrook.",
-  },
   {
     id: 'journey',
     eyebrow: 'Our dairy journey',

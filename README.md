@@ -27,7 +27,10 @@ npm run preview  # shows that final build at http://localhost:4173
 | --- | --- |
 | All farm text (names, prices, addresses) | `src/content/site.ts` |
 | Page sections (header, products, etc.) | `src/components/` |
-| 3D scenes | `src/three/` |
+| 3D hero scene (put together here) | `src/three/HeroScene.tsx` |
+| 3D farm parts: hills, sea, sky, buildings, cows, plants, fence, camera | `src/three/hero/` |
+| Where cows, plots and buildings stand | `src/three/hero/world.ts` |
+| Still pictures shown while 3D loads (or instead of it) | `public/images/hero-fallback.jpg`, `hero-fallback-mobile.jpg` |
 | Smooth scrolling + scroll animation setup | `src/lib/smoothScroll.ts` |
 | Photos | `public/images/` |
 | 3D model files (.glb) | `public/models/` |
