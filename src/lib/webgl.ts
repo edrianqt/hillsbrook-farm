@@ -23,3 +23,10 @@ export function isTouchDevice(): boolean {
  * (The browser also reports elements that only touch the edge of the screen as "intersecting".)
  */
 export const reallyVisible = (e: IntersectionObserverEntry) => e.isIntersecting && e.intersectionRect.height > 0
+
+/**
+ * Observer options to use with reallyVisible. With the default threshold (0), an element that starts
+ * edge-to-edge with the screen (like the journey right under a full-height hero) never fires again
+ * as it scrolls in, so it would never count as visible. The tiny extra thresholds make it fire.
+ */
+export const VISIBLE_OPTIONS: IntersectionObserverInit = { threshold: [0, 0.0001, 0.001, 0.01] }

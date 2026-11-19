@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { journey } from '../content/site'
 import { gsap, scrollToY, ScrollTrigger } from '../lib/smoothScroll'
-import { hasWebGL, prefersReducedMotion, reallyVisible } from '../lib/webgl'
+import { VISIBLE_OPTIONS, hasWebGL, prefersReducedMotion, reallyVisible } from '../lib/webgl'
 import type { JourneyState } from '../three/JourneyScene'
 import Picture from './Picture'
 import Card from './ui/Card'
@@ -69,8 +69,8 @@ function JourneyScroll() {
   useEffect(() => {
     const el = section.current
     if (!el) return
-    const near = new IntersectionObserver(([e]) => reallyVisible(e) && setMountScene(true))
-    const visible = new IntersectionObserver(([e]) => setInView(reallyVisible(e)))
+    const near = new IntersectionObserver(([e]) => reallyVisible(e) && setMountScene(true), VISIBLE_OPTIONS)
+    const visible = new IntersectionObserver(([e]) => setInView(reallyVisible(e)), VISIBLE_OPTIONS)
     near.observe(el)
     visible.observe(el)
     return () => {
@@ -118,7 +118,8 @@ function JourneyScroll() {
     >
       <div className="sticky top-0 h-svh overflow-hidden">
         {/* still picture of the first station until the 3D is ready */}
-        <Picture src={STATIONS[0].image} alt="" sizes="100vw" className="absolute inset-0 size-full object-cover" />
+        {/* a still of the 3D scene itself, so the switch to 3D is seamless */}
+        <Picture src="images/journey-1.jpg" alt="" sizes="100vw" className="absolute inset-0 size-full object-cover" />
         {mountScene && (
           <div className={`absolute inset-0 transition-opacity duration-700 ${ready ? 'opacity-100' : 'opacity-0'}`}>
             <Suspense fallback={null}>

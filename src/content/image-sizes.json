@@ -1,4 +1,85 @@
 {
+  "images/farm/ati-visit-shed.jpg": {
+    "width": 798,
+    "height": 597,
+    "base": "images/optimized/farm__ati-visit-shed",
+    "widths": [
+      480,
+      798
+    ]
+  },
+  "images/farm/ati-visit.jpg": {
+    "width": 798,
+    "height": 597,
+    "base": "images/optimized/farm__ati-visit",
+    "widths": [
+      480,
+      798
+    ]
+  },
+  "images/farm/edelito.jpg": {
+    "width": 798,
+    "height": 797,
+    "base": "images/optimized/farm__edelito",
+    "widths": [
+      480,
+      798
+    ]
+  },
+  "images/farm/gate.jpg": {
+    "width": 798,
+    "height": 598,
+    "base": "images/optimized/farm__gate",
+    "widths": [
+      480,
+      798
+    ]
+  },
+  "images/farm/herd-in-cow-shed.jpg": {
+    "width": 798,
+    "height": 597,
+    "base": "images/optimized/farm__herd-in-cow-shed",
+    "widths": [
+      480,
+      798
+    ]
+  },
+  "images/farm/napier-grass.jpg": {
+    "width": 798,
+    "height": 597,
+    "base": "images/optimized/farm__napier-grass",
+    "widths": [
+      480,
+      798
+    ]
+  },
+  "images/farm/new-cow-shed.jpg": {
+    "width": 798,
+    "height": 669,
+    "base": "images/optimized/farm__new-cow-shed",
+    "widths": [
+      480,
+      798
+    ]
+  },
+  "images/farm/planting-napier.jpg": {
+    "width": 798,
+    "height": 492,
+    "base": "images/optimized/farm__planting-napier",
+    "widths": [
+      480,
+      798
+    ]
+  },
+  "images/farm/tree-planting.jpg": {
+    "width": 798,
+    "height": 597,
+    "base": "images/optimized/farm__tree-planting",
+    "widths": [
+      480,
+      798
+    ]
+  },
   "images/hero-fallback-mobile.jpg": {
     "width": 780,
     "height": 1688,

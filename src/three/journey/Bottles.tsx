@@ -13,17 +13,23 @@ function useLabelTexture() {
       c.width = 256
       c.height = 96
       const g = c.getContext('2d')!
-      g.fillStyle = '#fbf8f1'
+      // Island Pure's real label: warm yellow-orange with the green round badge colours
+      const grad = g.createLinearGradient(0, 0, 0, 96)
+      grad.addColorStop(0, '#f8c63a')
+      grad.addColorStop(1, '#f19a1f')
+      g.fillStyle = grad
       g.fillRect(0, 0, 256, 96)
-      g.fillStyle = '#0c5247'
-      g.fillRect(0, 0, 256, 18)
-      g.fillRect(0, 78, 256, 18)
+      g.strokeStyle = '#0c5247'
+      g.lineWidth = 4
+      g.beginPath()
+      g.arc(128, 48, 40, 0, Math.PI * 2)
+      g.stroke()
       g.fillStyle = '#0887b0'
       g.beginPath()
-      g.ellipse(128, 70, 70, 5, 0, 0, Math.PI * 2)
+      g.ellipse(128, 70, 30, 4, 0, 0, Math.PI * 2)
       g.fill()
       g.fillStyle = '#0c5247'
-      g.font = '700 30px "Fraunces Variable", Georgia, serif'
+      g.font = '700 22px "Fraunces Variable", Georgia, serif'
       g.textAlign = 'center'
       g.textBaseline = 'middle'
       g.fillText('Island Pure', 128, 46)
@@ -40,14 +46,15 @@ function useLabelTexture() {
 }
 
 const milk = new MeshStandardMaterial({ color: '#fbfaf5', roughness: 0.35 })
-const capGreen = new MeshStandardMaterial({ color: '#0c5247', roughness: 0.5 })
-const capBlue = new MeshStandardMaterial({ color: '#0887b0', roughness: 0.5 })
+// real Island Pure bottles have yellow caps
+const capGreen = new MeshStandardMaterial({ color: '#f5c518', roughness: 0.45 })
+const capBlue = new MeshStandardMaterial({ color: '#f5c518', roughness: 0.45 })
 const steel = new MeshStandardMaterial({ color: '#d7dde0', metalness: 0.35, roughness: 0.3 })
 const clearPlastic = new MeshStandardMaterial({ color: '#ffffff', transparent: true, opacity: 0.28, roughness: 0.1, depthWrite: false })
 
 type BottleProps = { kind: 'pet' | 'hdpe'; position: [number, number, number]; label: CanvasTexture | null }
 
-/** One 1-litre bottle of Island Pure milk. PET: clear bottle, green cap. HDPE: opaque white jug, blue cap. */
+/** One 1-litre bottle of Island Pure milk with its yellow cap and yellow-orange label. */
 export function Bottle({ kind, position, label }: BottleProps) {
   const r = kind === 'pet' ? 0.042 : 0.048
   const h = kind === 'pet' ? 0.2 : 0.19

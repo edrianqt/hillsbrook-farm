@@ -3,8 +3,8 @@ title: How Hillsbrook began
 category: Our story
 date: 2015-05-27
 excerpt: On 27 May 2015, Edelito Caindoy Sangco started a small farm on the hills of Barangay Del Pilar, where a brook runs through the pasture.
-image: images/hero-fallback.jpg
-imageAlt: Illustration of Hillsbrook Farm on the hills of Bucas Grande Island
+image: images/farm/gate.jpg
+imageAlt: The Hillsbrook Farm gate with its “Welcome to the Hillsbrook Farm” banner
 featured: true
 ---
 

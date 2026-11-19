@@ -94,16 +94,16 @@ export const journey = {
       title: 'Grown on our own hills',
       body: 'Our crossbred Holstein Friesian cows graze beside the Napier grass and corn we plant ourselves as feed, on the hills of Barangay Del Pilar.',
       detail: '',
-      image: 'images/journey-1.jpg',
-      imageAlt: 'Cows grazing in the pasture at sunrise, beside rows of young corn and tall Napier grass.',
+      image: 'images/farm/planting-napier.jpg',
+      imageAlt: 'Two farmers planting rows of Napier grass cuttings in red soil, with the cow shed behind them.',
     },
     {
       label: 'Milking',
       title: 'Milked with care',
       body: 'Each cow steps into her stall in our Milking Parlor, where she is milked gently, without rush.',
       detail: '[PLACEHOLDER: your milking routine and times, e.g. "twice a day, at 5 AM and 4 PM"]',
-      image: 'images/journey-2.jpg',
-      imageAlt: 'Two black-and-white cows standing in their stalls inside the milking parlor.',
+      image: 'images/farm/herd-in-cow-shed.jpg',
+      imageAlt: 'Black-and-white Holstein Friesian cows at the feeding trough in the Hillsbrook cow shed, with two farmers in front.',
     },
     {
       label: 'Chilling',
@@ -150,8 +150,8 @@ export const family = {
       role: 'Founder, proprietor and farm manager',
       quote: "[PLACEHOLDER: Edelito's quote, in his own words: why he started Hillsbrook, or what he loves about the farm]",
       bio: 'Edelito studied Animal Husbandry & Dairying at SNSU–Mainit and started Hillsbrook Farm on 27 May 2015. He also chairs AgriCOOPh Federation and Socorro Empowered Peoples Cooperative.',
-      photo: '',
-      photoAlt: 'Edelito Caindoy Sangco at Hillsbrook Farm',
+      photo: 'images/farm/edelito.jpg',
+      photoAlt: 'Portrait of Edelito Caindoy Sangco wearing a barong',
       initials: 'ES',
     },
     {
@@ -193,20 +193,20 @@ export const pillars = {
     {
       icon: 'cow' as PillarIcon,
       title: 'Animal Care',
-      text: 'Our five cows and four calves graze on our own hills and eat Napier grass and corn we grow for them. A small herd means every animal gets attention.',
-      link: { label: 'Read more', href: '#story-grandkids-visit-the-calves' },
+      text: 'Our herd lives in a modern cow shed with automatic water troughs, anti-slip floors and roof louvers for fresh air, plus an open loafing area to rest and move freely. They eat Napier grass and corn we grow for them.',
+      link: { label: 'Read more', href: '#story-new-cow-shed-ready' },
     },
     {
       icon: 'house' as PillarIcon,
       title: 'Learning & Community',
-      text: 'Hillsbrook is an ATI-accredited Learning Site on Diversified Farming and a TESDA-accredited Farm School. Our gate is open to visitors, students and fellow farmers.',
+      text: 'Hillsbrook is an ATI-accredited Learning Site on Diversified Farming and a TESDA-accredited Farm School. In 2026 we hosted a hygienic milk production training for 53 Socorro farmers, and our gate is open to visitors.',
       link: { label: 'Read more', href: '#visit' },
     },
     {
       icon: 'leaf' as PillarIcon,
       title: 'Island Stewardship',
-      text: 'We farm with the island, not against it: growing our own feed and finding new ways to cope with dry El Niño months.',
-      link: { label: 'Read more', href: '#story-coping-with-el-nino' },
+      text: 'We aim for climate-smart, nature-positive dairy: growing our own feed, planting trees with our guests, and finding new ways to cope with dry El Niño months.',
+      link: { label: 'Read more', href: '#story-first-farm-tourists' },
     },
   ],
 }
@@ -229,10 +229,12 @@ export type Product = {
   description: string
   /** pet = clear bottle, hdpe = opaque bottle, jug = 10-litre container (for the drawing) */
   art: 'pet' | 'hdpe' | 'jug'
+  /** label colour in the drawing (default: Island Pure yellow) */
+  flavour?: 'plain' | 'raw' | 'chocolate' | 'ube'
   /** Optional real photo, e.g. 'images/products/pasteurized-pet.jpg'. Leave '' to use the drawing. */
   photo: string
   featured?: boolean
-  /** Prices in pesos PER LITRE. Leave a price out (or 0) if it is not sold that way. */
+  /** Prices in pesos PER LITRE. Leave a price out (or 0) if it is not sold that way; leave both out to show "Ask for price". */
   prices: Record<DeliveryPointId, { retail?: number; wholesale?: number }>
   wholesaleNote?: string
 }
@@ -277,6 +279,7 @@ export const products = {
       size: '1 litre',
       description: 'Unpasteurized whole cow’s milk, straight from our herd. Keep refrigerated.',
       art: 'pet',
+      flavour: 'raw',
       photo: '',
       prices: { dapa: { retail: 275 }, gl: { retail: 300 } },
     },
@@ -288,9 +291,46 @@ export const products = {
       description: 'Unpasteurized whole milk in bulk, for resort kitchens, cafés and bakers.',
       art: 'jug',
       photo: '',
+      flavour: 'raw',
       prices: { dapa: { wholesale: 250 }, gl: { wholesale: 275 } },
     },
+    {
+      id: 'chocolate',
+      name: 'Chocolate milk',
+      container: 'Bottle',
+      size: '[PLACEHOLDER: size]',
+      description: 'Our fresh cow’s milk with chocolate. We shared it with runners at the Bucas Grande Half Marathon.',
+      art: 'pet',
+      flavour: 'chocolate',
+      photo: '',
+      prices: { dapa: {}, gl: {} },
+    },
+    {
+      id: 'ube',
+      name: 'Ube milk',
+      container: 'Bottle',
+      size: '[PLACEHOLDER: size]',
+      description: 'Fresh cow’s milk with ube, the purple yam loved all over the Philippines.',
+      art: 'pet',
+      flavour: 'ube',
+      photo: '',
+      prices: { dapa: {}, gl: {} },
+    },
   ] satisfies Product[],
+  /** Shops that sell Island Pure (from our announcement of 6 July 2026) */
+  stockists: [
+    {
+      name: "Sante's Meat Shop",
+      address: 'Borromeo St. corner Diez St., Barangay Taft, Surigao City (beside the original public market site)',
+      products: 'Pure pasteurized whole milk and choco milk',
+    },
+  ],
+  /** A real review from a customer (posted on Facebook, 10 September 2026) */
+  review: {
+    quote: 'Island fresh milk from Hillsbrook Farm so good!',
+    name: 'Caye Simpoo',
+    place: 'General Luna, Siargao',
+  },
   comingSoon: {
     title: 'Coming soon: yogurt and more',
     text: 'We are working on value-added products made from our own milk. Tell us what you would love to see.',

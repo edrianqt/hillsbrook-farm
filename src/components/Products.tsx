@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useRef, useState, type KeyboardEvent } from 'react'
 import { deliveryPoints, type DeliveryPointId, farm, links, type Product, products } from '../content/site'
-import { hasWebGL, prefersReducedMotion, reallyVisible } from '../lib/webgl'
+import { hasWebGL, prefersReducedMotion, reallyVisible, VISIBLE_OPTIONS } from '../lib/webgl'
 import Picture from './Picture'
 import ProductArt from './ProductArt'
 import Button from './ui/Button'
@@ -31,11 +31,14 @@ function ProductPicture({ product }: { product: Product }) {
       />
     )
   }
-  return <ProductArt kind={product.art} raw={product.id.startsWith('raw')} />
+  return <ProductArt kind={product.art} flavour={product.flavour} />
 }
 
 function Prices({ product, point }: { product: Product; point: DeliveryPointId }) {
   const p = product.prices[point]
+  if (!p.retail && !p.wholesale) {
+    return <p className="mt-4 font-semibold text-pasture">Ask us for the price on Messenger</p>
+  }
   return (
     <dl className="mt-4 grid gap-2">
       {p.retail ? (
@@ -110,7 +113,7 @@ function FeaturedProduct({ product, point, place }: { product: Product; point: D
   useEffect(() => {
     if (!box.current) return
     const a = new IntersectionObserver(([e]) => e.isIntersecting && setNear(true), { rootMargin: '50% 0px' })
-    const b = new IntersectionObserver(([e]) => setVisible(reallyVisible(e)))
+    const b = new IntersectionObserver(([e]) => setVisible(reallyVisible(e)), VISIBLE_OPTIONS)
     a.observe(box.current)
     b.observe(box.current)
     return () => {
@@ -198,6 +201,31 @@ export default function Products() {
               {products.comingSoon.cta}
             </Button>
           </Card>
+        </div>
+
+        <div className="mt-10 grid gap-6 lg:grid-cols-2">
+          {/* a real review from a customer */}
+          <figure className="rounded-3xl bg-pasture p-8 text-milk">
+            <blockquote className="font-display text-2xl leading-snug font-medium sm:text-3xl">“{products.review.quote}”</blockquote>
+            <figcaption className="mt-4 text-mist">
+              {products.review.name}, {products.review.place} (on Facebook)
+            </figcaption>
+          </figure>
+          {/* shops that sell Island Pure */}
+          <div className="rounded-3xl border border-pasture/10 bg-white p-8">
+            <h3 className="text-2xl font-semibold text-pasture">Also in Surigao City</h3>
+            <ul className="mt-3 space-y-3">
+              {products.stockists.map((shop) => (
+                <li key={shop.name} className="leading-relaxed text-soil-muted">
+                  <span className="font-semibold text-soil">{shop.name}</span>
+                  <br />
+                  {shop.address}
+                  <br />
+                  <span className="text-sm">{shop.products}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
         <p className="mt-8 text-sm text-soil-muted">

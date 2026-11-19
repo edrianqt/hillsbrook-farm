@@ -5,7 +5,7 @@ date: 2026-08-12
 excerpt: Our audio-visual presentation was featured at the National Dairy Authority–Northern Mindanao Dairy Farmers' Forum in Cagayan de Oro.
 image: images/journey-2.jpg
 imageAlt: Illustration of cows in the Hillsbrook milking parlor
-featured: true
+featured: false
 ---
 
 It was a proud moment for Hillsbrook Farm. Our audio-visual presentation was featured and warmly applauded during the **2-Day Dairy Farmers' Forum** organized by the National Dairy Authority–Northern Mindanao, on **11–12 August 2026** at Chali Beach Resort and Conference Center in Cagayan de Oro City.

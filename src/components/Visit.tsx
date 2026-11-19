@@ -1,32 +1,22 @@
 import { useState, type FormEvent } from 'react'
 import { contactForm, farm, links, visit } from '../content/site'
 import Button from './ui/Button'
+import Picture from './Picture'
 import { FacebookIcon, MailIcon, MessengerIcon, PhoneIcon, PinIcon } from './ui/icons'
 import SectionHeading from './ui/SectionHeading'
 
 const phoneDigits = farm.phone.replace(/[^\d+]/g, '')
 const phoneMissing = farm.phone.includes('PLACEHOLDER')
 
-/** A drawn map shown until the visitor taps to load Google Maps (saves data and keeps Google off the page until asked). */
+/** The farm gate, shown until the visitor taps to load Google Maps (saves data and keeps Google off the page until asked). */
 function MapPreview() {
   return (
-    <svg viewBox="0 0 400 300" className="absolute inset-0 size-full" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
-      <rect width="400" height="300" fill="#bfe3ee" />
-      <path d="M70 60c40-30 120-40 170-20s110 30 120 80-20 110-70 130-120 20-160-10S20 180 30 130s0-40 40-70z" fill="#cde3b0" />
-      <path d="M120 90c30-20 90-20 120 0s60 50 40 90-80 60-120 40-80-40-70-80 0-30 30-50z" fill="#9cc77a" />
-      <path d="M150 170q40-30 90-10" stroke="#a98a62" strokeWidth="4" fill="none" strokeDasharray="6 6" />
-      {[
-        [300, 70, 10],
-        [330, 230, 14],
-        [60, 240, 9],
-      ].map(([x, y, r], i) => (
-        <circle key={i} cx={x} cy={y} r={r} fill="#3d7a37" />
-      ))}
-      <g transform="translate(200 128)">
-        <path d="M0 0c-14-18-20-26-20-36a20 20 0 0 1 40 0c0 10-6 18-20 36z" fill="#b0492b" />
-        <circle cx="0" cy="-36" r="7" fill="#fbf8f1" />
-      </g>
-    </svg>
+    <Picture
+      src="images/farm/gate.jpg"
+      alt="The Hillsbrook Farm gate with its welcome banner"
+      sizes="(min-width: 1024px) 50vw, 100vw"
+      className="absolute inset-0 size-full object-cover"
+    />
   )
 }
 

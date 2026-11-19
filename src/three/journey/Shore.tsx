@@ -12,7 +12,7 @@ const bamboo = new MeshStandardMaterial({ color: '#c8a85e', roughness: 0.8, flat
 const hullWhite = new MeshStandardMaterial({ color: '#f4f2ec', roughness: 0.6, flatShading: true })
 const hullBlue = new MeshStandardMaterial({ color: '#0887b0', roughness: 0.6, flatShading: true })
 const crateGreen = new MeshStandardMaterial({ color: '#2f7d4f', roughness: 0.7 })
-const capGreen = new MeshStandardMaterial({ color: '#0c5247', roughness: 0.5 })
+const capGreen = new MeshStandardMaterial({ color: '#f5c518', roughness: 0.45 })
 
 // ---------- places across the water (a small Siargao shore) ----------
 export const DECK_Y = SEA_LEVEL + 0.95
