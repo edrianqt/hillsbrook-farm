@@ -14,7 +14,7 @@ This November we prepared and laid out new **Napier grass** cuttings. Napier is 
 
 We also planted **corn** as feed, using a modern way of sowing that spares the farmer's back: *walay sakit sa hawak*. [details: what tool or method we used]
 
-<img src="images/optimized/farm__napier-grass-798.webp" alt="Edelito and a farm hand standing in Napier grass taller than they are" width="798" height="597" loading="lazy">
+<img src="images/optimized/farm__napier-grass-1200.webp" alt="Edelito and a farm hand standing in Napier grass taller than they are" width="1200" height="900" loading="lazy">
 
 Planting on an island means watching the sky. When the rain finally came to Socorro, the newly sprouted corn got the drink it needed, and we were grateful. A few weeks later the young corn was growing strongly.
 

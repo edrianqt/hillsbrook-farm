@@ -3,8 +3,8 @@ title: Fresh milk for the Bucas Grande Half Marathon runners
 category: Community
 date: 2026-06-21
 excerpt: We ran a food station at Socorro Town Plaza and shared samples of Island Pure, chocolate and ube milk with the runners.
-image: images/journey-4.jpg
-imageAlt: Illustration of Island Pure milk bottles on the bottling table
+image: images/farm/half-marathon-station.jpg
+imageAlt: Runners with their finisher medals and the Hillsbrook team at the Island Pure food station, under the Bucas Grande International Half Marathon banner
 featured: false
 ---
 

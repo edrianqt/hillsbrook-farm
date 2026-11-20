@@ -12,6 +12,6 @@ On **31 March 2026**, a team from the **Agricultural Training Institute (ATI)** 
 
 We showed them around the new cow shed, the herd and the feed we grow ourselves.
 
-<img src="images/optimized/farm__ati-visit-shed-798.webp" alt="The ATI team inside the Hillsbrook cow shed" width="798" height="597" loading="lazy">
+<img src="images/optimized/farm__ati-visit-shed-1200.webp" alt="The ATI team inside the Hillsbrook cow shed" width="1200" height="900" loading="lazy">
 
 [details: what the ATI visit was for, and what came out of it]

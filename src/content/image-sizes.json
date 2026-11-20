@@ -1,38 +1,46 @@
 {
   "images/farm/ati-visit-shed.jpg": {
-    "width": 798,
-    "height": 597,
+    "width": 1600,
+    "height": 1200,
     "base": "images/optimized/farm__ati-visit-shed",
     "widths": [
       480,
-      798
+      800,
+      1200,
+      1600
     ]
   },
   "images/farm/ati-visit.jpg": {
-    "width": 798,
-    "height": 597,
+    "width": 1600,
+    "height": 1200,
     "base": "images/optimized/farm__ati-visit",
     "widths": [
       480,
-      798
+      800,
+      1200,
+      1600
     ]
   },
   "images/farm/edelito.jpg": {
-    "width": 798,
-    "height": 797,
+    "width": 1600,
+    "height": 1600,
     "base": "images/optimized/farm__edelito",
     "widths": [
       480,
-      798
+      800,
+      1200,
+      1600
     ]
   },
   "images/farm/family.jpg": {
-    "width": 800,
-    "height": 522,
+    "width": 1471,
+    "height": 958,
     "base": "images/optimized/farm__family",
     "widths": [
       480,
-      800
+      800,
+      1200,
+      1471
     ]
   },
   "images/farm/gate.jpg": {
@@ -44,31 +52,70 @@
       798
     ]
   },
+  "images/farm/grandkids-cow-shed.jpg": {
+    "width": 1600,
+    "height": 1200,
+    "base": "images/optimized/farm__grandkids-cow-shed",
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ]
+  },
+  "images/farm/grandkids-with-lola.jpg": {
+    "width": 1600,
+    "height": 1200,
+    "base": "images/optimized/farm__grandkids-with-lola",
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ]
+  },
+  "images/farm/half-marathon-station.jpg": {
+    "width": 1600,
+    "height": 1200,
+    "base": "images/optimized/farm__half-marathon-station",
+    "widths": [
+      480,
+      800,
+      1200,
+      1600
+    ]
+  },
   "images/farm/herd-in-cow-shed.jpg": {
-    "width": 798,
-    "height": 597,
+    "width": 1600,
+    "height": 1200,
     "base": "images/optimized/farm__herd-in-cow-shed",
     "widths": [
       480,
-      798
+      800,
+      1200,
+      1600
     ]
   },
   "images/farm/napier-grass.jpg": {
-    "width": 798,
-    "height": 597,
+    "width": 1600,
+    "height": 1200,
     "base": "images/optimized/farm__napier-grass",
     "widths": [
       480,
-      798
+      800,
+      1200,
+      1600
     ]
   },
   "images/farm/new-cow-shed.jpg": {
-    "width": 798,
-    "height": 669,
+    "width": 1600,
+    "height": 1341,
     "base": "images/optimized/farm__new-cow-shed",
     "widths": [
       480,
-      798
+      800,
+      1200,
+      1600
     ]
   },
   "images/farm/planting-napier.jpg": {
