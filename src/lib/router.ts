@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react'
  */
 export type Route = { page: 'home'; section?: string } | { page: 'story'; slug: string } | { page: 'stories' }
 
-const HOME_SECTIONS = ['hero', 'journey', 'family', 'pillars', 'products', 'stories', 'visit']
+const HOME_SECTIONS = ['hero', 'journey', 'family', 'pillars', 'products', 'stories', 'faq', 'visit']
 
 export function parseHash(hash: string, current?: Route): Route {
   const h = hash.replace(/^#/, '')

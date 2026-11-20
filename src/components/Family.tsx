@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react'
-import { family } from '../content/site'
+import { family, ui } from '../content/site'
 import { gsap } from '../lib/smoothScroll'
 import { prefersReducedMotion } from '../lib/webgl'
 import Picture from './Picture'
@@ -38,7 +38,7 @@ function Portrait({ member, size }: { member: Member; size: 'large' | 'thumb' })
       </span>
       {size === 'large' && (
         <span className="absolute bottom-[12%] left-4 rounded-full bg-milk/90 px-3 py-1 text-xs font-medium text-soil-muted">
-          Photo coming soon
+          {ui.photoComingSoon}
         </span>
       )}
     </div>
@@ -137,7 +137,7 @@ export default function Family() {
             </div>
 
             {/* round portrait thumbnails: the tab list */}
-            <div role="tablist" aria-label="Family members" className="mt-10 flex flex-wrap gap-4" onKeyDown={onKey}>
+            <div role="tablist" aria-label={ui.familyMembers} className="mt-10 flex flex-wrap gap-4" onKeyDown={onKey}>
               {family.members.map((m, i) => (
                 <button
                   key={i}
@@ -162,9 +162,9 @@ export default function Family() {
                   </span>
                   <span className="hidden max-w-36 text-sm leading-tight sm:block">
                     <span className={`block font-semibold ${i === active ? 'text-pasture' : 'text-soil-muted'}`}>
-                      {m.name.startsWith('[') ? 'Family member' : m.name.split(' ')[0]}
+                      {m.name.startsWith('[') ? ui.familyMember : m.name.split(' ')[0]}
                     </span>
-                    <span className="block text-xs text-soil-muted">{m.role.startsWith('[') ? 'Role to add' : m.role.split(',')[0]}</span>
+                    <span className="block text-xs text-soil-muted">{m.role.startsWith('[') ? ui.roleToAdd : m.role.split(',')[0]}</span>
                   </span>
                   <span className="sr-only sm:hidden">{m.name}</span>
                 </button>

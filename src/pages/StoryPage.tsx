@@ -1,6 +1,6 @@
 import { marked } from 'marked'
 import { useEffect, useMemo } from 'react'
-import { farm, orderButton, storiesSection } from '../content/site'
+import { farm, orderButton, storiesSection, ui } from '../content/site'
 import Picture from '../components/Picture'
 import { StoryCard } from '../components/Stories'
 import Button from '../components/ui/Button'
@@ -21,14 +21,14 @@ export default function StoryPage({ slug }: { slug: string }) {
   const html = useMemo(() => (story ? toHtml(story.body) : ''), [story])
 
   useEffect(() => {
-    document.title = story ? `${story.title} | ${farm.name}` : `Story not found | ${farm.name}`
+    document.title = story ? `${story.title} | ${farm.name}` : `${ui.storyNotFound} | ${farm.name}`
   }, [story])
 
   if (!story) {
     return (
       <main id="main" tabIndex={-1} className="mx-auto max-w-3xl px-6 pt-36 pb-24">
-        <h1 className="text-4xl font-semibold text-pasture">Story not found</h1>
-        <p className="mt-4 text-soil-muted">This story may have moved. Have a look at all our stories instead.</p>
+        <h1 className="text-4xl font-semibold text-pasture">{ui.storyNotFound}</h1>
+        <p className="mt-4 text-soil-muted">{ui.storyMoved}</p>
         <Button href="#all-stories" className="mt-8">
           {storiesSection.viewAll}
         </Button>
@@ -67,7 +67,7 @@ export default function StoryPage({ slug }: { slug: string }) {
         <div className="story-body mt-10" dangerouslySetInnerHTML={{ __html: html }} />
 
         <div className="mt-14 flex flex-col gap-3 rounded-3xl bg-pasture-50 p-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="font-display text-xl font-semibold text-pasture">Taste the milk from this farm.</p>
+          <p className="font-display text-xl font-semibold text-pasture">{ui.tasteTheMilk}</p>
           <Button href={orderButton.href} icon={<MessengerIcon className="size-4" />}>
             {orderButton.label}
           </Button>
@@ -77,7 +77,7 @@ export default function StoryPage({ slug }: { slug: string }) {
       <section aria-labelledby="more-stories" className="bg-cream-50">
         <div className="mx-auto max-w-7xl px-6 py-16">
           <h2 id="more-stories" className="text-3xl font-semibold text-pasture">
-            More from the farm
+            {ui.moreFromFarm}
           </h2>
           <ul className="mt-8 grid gap-6 md:grid-cols-3">
             {more.map((s) => (

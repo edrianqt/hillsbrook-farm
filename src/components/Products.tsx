@@ -1,7 +1,8 @@
 import { lazy, Suspense, useEffect, useRef, useState, type KeyboardEvent } from 'react'
-import { deliveryPoints, type DeliveryPointId, farm, links, type Product, products } from '../content/site'
+import { deliveryPoints, type DeliveryPointId, farm, links, type Product, products, ui } from '../content/site'
 import { hasWebGL, prefersReducedMotion, reallyVisible, VISIBLE_OPTIONS } from '../lib/webgl'
 import Picture from './Picture'
+import OrderForm from './OrderForm'
 import ProductArt from './ProductArt'
 import Button from './ui/Button'
 import Card from './ui/Card'
@@ -37,28 +38,28 @@ function ProductPicture({ product }: { product: Product }) {
 function Prices({ product, point }: { product: Product; point: DeliveryPointId }) {
   const p = product.prices[point]
   if (!p.retail && !p.wholesale) {
-    return <p className="mt-4 font-semibold text-pasture">Ask us for the price on Messenger</p>
+    return <p className="mt-4 font-semibold text-pasture">{ui.askPrice}</p>
   }
   return (
     <dl className="mt-4 grid gap-2">
       {p.retail ? (
         <div className="flex items-baseline justify-between gap-3">
-          <dt className="text-soil-muted">Retail</dt>
+          <dt className="text-soil-muted">{ui.retail}</dt>
           <dd className="text-right whitespace-nowrap">
             <span className="font-display text-2xl font-semibold text-pasture">{peso(p.retail)}</span>
-            <span className="text-sm text-soil-muted"> / litre</span>
+            <span className="text-sm text-soil-muted">{ui.perLitre}</span>
           </dd>
         </div>
       ) : null}
       {p.wholesale ? (
         <div className="flex items-baseline justify-between gap-3">
           <dt className="text-soil-muted">
-            Wholesale
+            {ui.wholesale}
             {product.wholesaleNote && <span className="block text-xs">{product.wholesaleNote}</span>}
           </dt>
           <dd className="text-right whitespace-nowrap">
             <span className="font-display text-2xl font-semibold text-pasture">{peso(p.wholesale)}</span>
-            <span className="text-sm text-soil-muted"> / litre</span>
+            <span className="text-sm text-soil-muted">{ui.perLitre}</span>
           </dd>
         </div>
       ) : null}
@@ -79,7 +80,7 @@ function PlaceToggle({ value, onChange }: { value: DeliveryPointId; onChange: (v
   return (
     <div>
       <p id="place-label" className="text-sm font-semibold text-soil">
-        Delivery to
+        {ui.deliveryTo}
       </p>
       <div role="radiogroup" aria-labelledby="place-label" onKeyDown={onKey} className="mt-2 inline-flex rounded-full bg-white p-1 shadow-sm ring-1 ring-pasture/15">
         {deliveryPoints.map((d) => (
@@ -134,7 +135,7 @@ function FeaturedProduct({ product, point, place }: { product: Product; point: D
         )}
       </div>
       <div>
-        <p className="inline-block rounded-full bg-cream px-3 py-1 text-xs font-semibold text-pasture">Our favourite</p>
+        <p className="inline-block rounded-full bg-cream px-3 py-1 text-xs font-semibold text-pasture">{ui.favourite}</p>
         <h3 className="mt-3 text-3xl font-semibold text-pasture">{product.name}</h3>
         <p className="text-soil-muted">
           {product.container} · {product.size}
@@ -164,7 +165,7 @@ export default function Products() {
           <PlaceToggle value={point} onChange={setPoint} />
         </div>
         <p className="sr-only" aria-live="polite">
-          Showing prices for delivery to {place}.
+          {ui.showingPricesFor} {place}.
         </p>
 
         <div className="mt-12 grid gap-6 lg:grid-cols-3">
@@ -189,7 +190,7 @@ export default function Products() {
 
           {/* value-added products on the way */}
           <Card as="article" tone="cream" className="flex flex-col border-dashed">
-            <p className="inline-block self-start rounded-full bg-white px-3 py-1 text-xs font-semibold text-barn-dark">Coming soon</p>
+            <p className="inline-block self-start rounded-full bg-white px-3 py-1 text-xs font-semibold text-barn-dark">{ui.comingSoon}</p>
             <h3 className="mt-4 text-2xl font-semibold text-pasture">{products.comingSoon.title}</h3>
             <p className="mt-3 flex-1 leading-relaxed text-soil-muted">{products.comingSoon.text}</p>
             <Button
@@ -203,17 +204,19 @@ export default function Products() {
           </Card>
         </div>
 
+        <OrderForm point={point} onPointChange={setPoint} />
+
         <div className="mt-10 grid gap-6 lg:grid-cols-2">
           {/* a real review from a customer */}
           <figure className="rounded-3xl bg-pasture p-8 text-milk">
             <blockquote className="font-display text-2xl leading-snug font-medium sm:text-3xl">“{products.review.quote}”</blockquote>
             <figcaption className="mt-4 text-mist">
-              {products.review.name}, {products.review.place} (on Facebook)
+              {products.review.name}, {products.review.place} {ui.onFacebook}
             </figcaption>
           </figure>
           {/* shops that sell Island Pure */}
           <div className="rounded-3xl border border-pasture/10 bg-white p-8">
-            <h3 className="text-2xl font-semibold text-pasture">Also in Surigao City</h3>
+            <h3 className="text-2xl font-semibold text-pasture">{ui.alsoInSurigao}</h3>
             <ul className="mt-3 space-y-3">
               {products.stockists.map((shop) => (
                 <li key={shop.name} className="leading-relaxed text-soil-muted">
@@ -229,7 +232,7 @@ export default function Products() {
         </div>
 
         <p className="mt-8 text-sm text-soil-muted">
-          Prices per litre, updated {products.pricesUpdated}. {farm.deliveryNote}.
+          {ui.pricesUpdated} {products.pricesUpdated}. {farm.deliveryNote}.
         </p>
       </div>
     </section>

@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useRef } from 'react'
+import Faq from './components/Faq'
 import Family from './components/Family'
 import Footer from './components/Footer'
 import Header from './components/Header'
@@ -6,8 +7,10 @@ import Hero from './components/Hero'
 import Journey from './components/Journey'
 import Pillars from './components/Pillars'
 import Products from './components/Products'
+import Recognition from './components/Recognition'
 import Stories from './components/Stories'
 import Visit from './components/Visit'
+import { useLanguage } from './content/i18n'
 import { farm } from './content/site'
 import { useRoute } from './lib/router'
 import { jumpTo, scrollToSection, startSmoothScroll } from './lib/smoothScroll'
@@ -26,14 +29,18 @@ function Home() {
       <Journey />
       <Family />
       <Pillars />
+      <Recognition />
       <Products />
       <Stories />
+      <Faq />
       <Visit />
     </main>
   )
 }
 
 export default function App() {
+  // re-render the whole page in the new words when the language changes
+  useLanguage()
   const route = useRoute()
   const previousPage = useRef(route.page)
 

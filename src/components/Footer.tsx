@@ -1,4 +1,4 @@
-import { farm, footerLinks, links, orderButton } from '../content/site'
+import { farm, footerLinks, links, orderButton, ui } from '../content/site'
 import Logo from './Logo'
 import Button from './ui/Button'
 import { FacebookIcon, MailIcon, MessengerIcon, PhoneIcon, PinIcon } from './ui/icons'
@@ -28,7 +28,7 @@ export default function Footer() {
         {/* Quick links */}
         <nav aria-labelledby="footer-links-title">
           <h2 id="footer-links-title" className="font-sans text-sm font-semibold text-cream">
-            Quick links
+            {ui.quickLinks}
           </h2>
           <ul className="mt-2">
             {footerLinks.map((link) => (
@@ -43,7 +43,7 @@ export default function Footer() {
 
         {/* Contact */}
         <div>
-          <h2 className="font-sans text-sm font-semibold text-cream">Find us</h2>
+          <h2 className="font-sans text-sm font-semibold text-cream">{ui.findUs}</h2>
           <address className="mt-2 space-y-1 not-italic">
             <p className="flex gap-3 py-2.5">
               <PinIcon className="mt-0.5 size-5 shrink-0 text-cream" />
@@ -74,13 +74,13 @@ export default function Footer() {
           </address>
           <p className="mt-5 text-sm">{farm.deliveryNote}.</p>
 
-          <ul className="mt-6 flex gap-3" aria-label="Social media">
+          <ul className="mt-6 flex gap-3" aria-label={ui.socialMedia}>
             <li>
               <a
                 href={links.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Hillsbrook Farm on Facebook (opens in a new tab)"
+                aria-label={`${farm.name}: ${ui.facebook} ${ui.newTab}`}
                 className="inline-flex size-11 items-center justify-center rounded-full bg-white/10 text-milk transition-colors hover:bg-white/20"
               >
                 <FacebookIcon />
@@ -91,7 +91,7 @@ export default function Footer() {
                 href={links.messenger}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Message Hillsbrook Farm on Messenger (opens in a new tab)"
+                aria-label={`${ui.messageUs}: Messenger ${ui.newTab}`}
                 className="inline-flex size-11 items-center justify-center rounded-full bg-white/10 text-milk transition-colors hover:bg-white/20"
               >
                 <MessengerIcon />

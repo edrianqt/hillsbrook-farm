@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import { contactForm, farm, links, visit } from '../content/site'
+import { contactForm, farm, links, visit, ui } from '../content/site'
 import Button from './ui/Button'
 import Picture from './Picture'
 import { FacebookIcon, MailIcon, MessengerIcon, PhoneIcon, PinIcon } from './ui/icons'
@@ -13,7 +13,7 @@ function MapPreview() {
   return (
     <Picture
       src="images/farm/gate.jpg"
-      alt="The Hillsbrook Farm gate with its welcome banner"
+      alt={ui.gateAlt}
       sizes="(min-width: 1024px) 50vw, 100vw"
       className="absolute inset-0 size-full object-cover"
     />
@@ -39,9 +39,9 @@ function MapBox() {
           <MapPreview />
           <div className="absolute inset-0 flex flex-col items-center justify-end gap-3 bg-gradient-to-t from-pasture-deep/50 to-transparent p-6">
             <Button onClick={() => setLoaded(true)} variant="light" size="lg" icon={<PinIcon />}>
-              Show the map
+              {ui.showMap}
             </Button>
-            <p className="text-center text-sm text-milk">Loads Google Maps</p>
+            <p className="text-center text-sm text-milk">{ui.loadsMaps}</p>
           </div>
         </>
       )}
@@ -95,18 +95,18 @@ function ContactForm() {
 
   return (
     <form onSubmit={onSubmit} className="rounded-[2rem] bg-white p-6 shadow-[0_1px_2px_rgb(43_36_32/0.06),0_8px_24px_-12px_rgb(12_82_71/0.18)] sm:p-8" noValidate={false}>
-      <h3 className="text-2xl font-semibold text-pasture">Send us a message</h3>
+      <h3 className="text-2xl font-semibold text-pasture">{ui.formTitle}</h3>
       <div className="mt-6 grid gap-5 sm:grid-cols-2">
         <label className="block">
-          <span className="text-sm font-semibold text-soil">Your name</span>
+          <span className="text-sm font-semibold text-soil">{ui.formName}</span>
           <input name="name" required autoComplete="name" className={field} />
         </label>
         <label className="block">
-          <span className="text-sm font-semibold text-soil">Email or mobile number</span>
+          <span className="text-sm font-semibold text-soil">{ui.formContact}</span>
           <input name="contact" required autoComplete="email" className={field} />
         </label>
         <label className="block sm:col-span-2">
-          <span className="text-sm font-semibold text-soil">What is it about?</span>
+          <span className="text-sm font-semibold text-soil">{ui.formTopic}</span>
           <select name="topic" className={field} defaultValue={contactForm.topics[0]}>
             {contactForm.topics.map((t) => (
               <option key={t}>{t}</option>
@@ -114,7 +114,7 @@ function ContactForm() {
           </select>
         </label>
         <label className="block sm:col-span-2">
-          <span className="text-sm font-semibold text-soil">Message</span>
+          <span className="text-sm font-semibold text-soil">{ui.formMessage}</span>
           <textarea name="message" required rows={4} className={field} />
         </label>
         {/* hidden from people; catches spam robots */}
@@ -129,12 +129,12 @@ function ContactForm() {
           disabled={status === 'sending'}
           className="inline-flex min-h-13 items-center justify-center rounded-full bg-barn px-7 font-semibold text-white shadow-sm transition-colors hover:bg-barn-dark disabled:opacity-60"
         >
-          {status === 'sending' ? 'Sending…' : 'Send message'}
+          {status === 'sending' ? ui.formSending : ui.formSend}
         </button>
         <p role="status" className="text-sm text-soil-muted">
-          {status === 'sent' && 'Thank you! Your message has been sent.'}
-          {status === 'error' && 'Sorry, that did not send. Please message us on Messenger instead.'}
-          {status === 'opened-email' && 'Your email app should open with the message ready. Just press send.'}
+          {status === 'sent' && ui.formSent}
+          {status === 'error' && ui.formError}
+          {status === 'opened-email' && ui.formOpenedEmail}
         </p>
       </div>
     </form>
@@ -176,7 +176,7 @@ export default function Visit() {
 
             <div className="mt-8 grid gap-6 sm:grid-cols-2">
               <div>
-                <h3 className="font-sans text-sm font-semibold text-lagoon-ink">Delivery</h3>
+                <h3 className="font-sans text-sm font-semibold text-lagoon-ink">{ui.delivery}</h3>
                 <p className="mt-1 font-semibold text-soil">{visit.deliveryDay}</p>
                 <ul className="mt-1 space-y-1 text-soil-muted">
                   {visit.deliveryPoints.map((d) => (
@@ -185,29 +185,29 @@ export default function Visit() {
                 </ul>
               </div>
               <div>
-                <h3 className="font-sans text-sm font-semibold text-lagoon-ink">Farm visits</h3>
+                <h3 className="font-sans text-sm font-semibold text-lagoon-ink">{ui.farmVisits}</h3>
                 <p className="mt-1 font-semibold text-soil">{visit.visits}</p>
-                <p className="mt-1 text-soil-muted">Hours: {farm.visitingHours}</p>
+                <p className="mt-1 text-soil-muted">{ui.hours}: {farm.visitingHours}</p>
               </div>
             </div>
             <p className="mt-6 rounded-2xl bg-cream-50 p-4 leading-relaxed text-soil-muted">{visit.groups}</p>
 
             <div className="mt-8 flex flex-wrap gap-3">
               <Button href={links.messenger} icon={<MessengerIcon className="size-4" />}>
-                Message us
+                {ui.messageUs}
               </Button>
               {!phoneMissing && (
                 <Button href={`tel:${phoneDigits}`} variant="secondary" icon={<PhoneIcon className="size-4" />}>
-                  Call us
+                  {ui.callUs}
                 </Button>
               )}
               <Button href={links.facebook} variant="secondary" icon={<FacebookIcon className="size-4" />}>
-                Facebook
+                {ui.facebook}
               </Button>
             </div>
 
             <div className="mt-10">
-              <h3 className="text-2xl font-semibold text-pasture">How to get here</h3>
+              <h3 className="text-2xl font-semibold text-pasture">{ui.howToGetHere}</h3>
               <ul className="mt-3 space-y-2 text-soil-muted">
                 {visit.howToGetHere.map((step) => (
                   <li key={step} className="flex gap-2">
@@ -219,8 +219,8 @@ export default function Visit() {
                 ))}
               </ul>
               <a href={visit.map.link} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-11 items-center gap-1 font-semibold text-lagoon-ink hover:underline">
-                Open in Google Maps <span aria-hidden="true">↗</span>
-                <span className="sr-only">(opens in a new tab)</span>
+                {ui.openInMaps} <span aria-hidden="true">↗</span>
+                <span className="sr-only">{ui.newTab}</span>
               </a>
             </div>
           </div>

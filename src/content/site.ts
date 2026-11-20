@@ -48,6 +48,7 @@ export type SectionId =
   | 'pillars'
   | 'products'
   | 'stories'
+  | 'faq'
   | 'visit'
   | 'footer'
 
@@ -67,6 +68,7 @@ export const footerLinks: { label: string; target: SectionId }[] = [
   { label: 'What We Stand For', target: 'pillars' },
   { label: 'Products & Prices', target: 'products' },
   { label: 'Farm Stories', target: 'stories' },
+  { label: 'Questions', target: 'faq' },
   { label: 'Visit & Contact', target: 'visit' },
 ]
 
@@ -235,6 +237,8 @@ export type Product = {
   art: 'pet' | 'hdpe' | 'jug'
   /** label colour in the drawing (default: Island Pure yellow) */
   flavour?: 'plain' | 'raw' | 'chocolate' | 'ube'
+  /** Litres in one bottle or container (used to work out the order total). Leave out if not known yet. */
+  litres?: number
   /** Optional real photo, e.g. 'images/products/pasteurized-pet.jpg'. Leave '' to use the drawing. */
   photo: string
   featured?: boolean
@@ -259,6 +263,7 @@ export const products = {
       container: 'PET bottle',
       size: '1 litre',
       description: 'Fresh cow’s milk, pasteurized on the farm, in a clear PET bottle.',
+      litres: 1,
       art: 'pet',
       photo: '',
       featured: true,
@@ -271,8 +276,9 @@ export const products = {
       container: 'HDPE bottle',
       size: '1 litre',
       description: 'The same fresh pasteurized milk in a sturdy, opaque HDPE bottle.',
+      litres: 1,
       art: 'hdpe',
-      photo: '',
+      photo: 'images/products/pasteurized-bottles.jpg',
       prices: { dapa: { retail: 200, wholesale: 175 }, gl: { retail: 225, wholesale: 200 } },
       wholesaleNote: 'min. 10 bottles',
     },
@@ -282,6 +288,7 @@ export const products = {
       container: 'PET bottle',
       size: '1 litre',
       description: 'Unpasteurized whole cow’s milk, straight from our herd. Keep refrigerated.',
+      litres: 1,
       art: 'pet',
       flavour: 'raw',
       photo: '',
@@ -293,6 +300,7 @@ export const products = {
       container: 'PET container',
       size: '10 litres',
       description: 'Unpasteurized whole milk in bulk, for resort kitchens, cafés and bakers.',
+      litres: 10,
       art: 'jug',
       photo: '',
       flavour: 'raw',
@@ -306,7 +314,7 @@ export const products = {
       description: 'Our fresh cow’s milk with chocolate. We shared it with runners at the Bucas Grande Half Marathon.',
       art: 'pet',
       flavour: 'chocolate',
-      photo: '',
+      photo: 'images/products/chocolate.jpg',
       prices: { dapa: {}, gl: {} },
     },
     {
@@ -317,7 +325,7 @@ export const products = {
       description: 'Fresh cow’s milk with ube, the purple yam loved all over the Philippines.',
       art: 'pet',
       flavour: 'ube',
-      photo: '',
+      photo: 'images/products/ube.jpg',
       prices: { dapa: {}, gl: {} },
     },
   ] satisfies Product[],
@@ -388,4 +396,171 @@ export const contactForm = {
   endpoint: '',
   to: farm.email,
   topics: ['Order milk', 'Farm visit', 'Group or school visit', 'Something else'],
+}
+
+/* ------------------------------------------------------------------ */
+/* RECOGNISED BY (shown under "What we stand for")                      */
+/* ------------------------------------------------------------------ */
+/** Names only: add official logos here later only with each agency's permission. */
+export const recognition = {
+  title: 'Recognised and supported by',
+  items: [
+    { short: 'ATI', text: 'Accredited Learning Site on Diversified Farming', org: 'Agricultural Training Institute' },
+    { short: 'TESDA', text: 'Accredited Farm School', org: 'Technical Education and Skills Development Authority' },
+    { short: 'NDA', text: 'Partner farm, Dairy Herd Build-Up Program', org: 'National Dairy Authority' },
+    { short: 'PCA', text: 'Cow shed funded through the CFIDP', org: 'Philippine Coconut Authority' },
+    { short: 'DOST', text: 'Food safety training for dairy farmers', org: 'Department of Science and Technology' },
+  ],
+}
+
+/* ------------------------------------------------------------------ */
+/* FREQUENTLY ASKED QUESTIONS                                           */
+/* ------------------------------------------------------------------ */
+export const faq = {
+  eyebrow: 'Good to know',
+  title: 'Questions about our milk',
+  intro: 'The things people ask us most. Anything else? Send us a message.',
+  items: [
+    {
+      q: 'What is the difference between raw and pasteurized milk?',
+      a: 'Pasteurized milk is heated in our 100-litre pasteurizer to kill harmful germs, then cooled quickly. Raw milk comes straight from our cows, filtered and chilled, with nothing taken out. Raw milk can carry germs, so we recommend boiling it before drinking, and choosing pasteurized milk for children, pregnant women, older people and anyone who is often sick.',
+    },
+    {
+      q: 'How should I keep the milk, and how long does it last?',
+      a: 'Keep it in the fridge at 4 °C or colder and close the cap after pouring. Pasteurized milk keeps for [PLACEHOLDER: number of days] days and raw milk for [PLACEHOLDER: number of days] days once it reaches you. On raw milk the cream rises to the top: just shake the bottle.',
+    },
+    {
+      q: 'When and where do you deliver?',
+      a: 'Every Saturday, at Dapa Port near the public market and at any drop-off point in General Luna, Siargao. In Surigao City you can buy our pasteurized whole milk and choco milk at Sante’s Meat Shop.',
+    },
+    {
+      q: 'How do I pay?',
+      a: '[PLACEHOLDER: payment methods, e.g. "Cash on delivery or GCash to 0908 884 2056"]',
+    },
+    {
+      q: 'Do you take back empty bottles?',
+      a: '[PLACEHOLDER: bottle return policy, e.g. "Yes. Rinse them and hand them back on delivery day."]',
+    },
+    {
+      q: 'Do you sell wholesale to resorts and cafés?',
+      a: 'Yes. Wholesale prices start at 10 bottles, and our 10-litre raw milk container is made for resort kitchens, cafés and bakers. See the prices above, or message us for a regular weekly order.',
+    },
+    {
+      q: 'Can we visit the farm?',
+      a: 'Yes, farm visits are welcome. Groups and schools can also visit our ATI-accredited Learning Site and TESDA-accredited Farm School. Message us first to arrange a date. Entrance fee: [PLACEHOLDER: fee, or "free"].',
+    },
+  ],
+}
+
+/* ------------------------------------------------------------------ */
+/* ORDER FORM ("Order for Saturday", in the Products section)          */
+/* ------------------------------------------------------------------ */
+export const orderForm = {
+  title: 'Order for Saturday',
+  intro: 'Pick your milk and quantities. We put your order into one message for you to send on Messenger, by text or by email.',
+  /** [PLACEHOLDER] Last day to order for Saturday, e.g. 'Thursday, 6 PM'. Leave '' to hide. */
+  cutoff: '',
+  deliveryFor: 'Delivery on',
+  orderBy: 'Order by',
+  quantity: 'Quantity',
+  less: 'One less',
+  more: 'One more',
+  name: 'Your name',
+  phone: 'Mobile number',
+  spot: 'Drop-off spot (optional)',
+  spotHint: 'e.g. the resort or landmark in General Luna',
+  notes: 'Notes (optional)',
+  summary: 'Your order',
+  empty: 'Add at least one item to see your order.',
+  total: 'Estimated total',
+  toConfirm: 'price to confirm',
+  wholesaleApplied: 'wholesale price',
+  totalNote: 'We confirm the final total when we reply.',
+  sendMessenger: 'Copy and open Messenger',
+  copied: 'Copied! Paste it in the chat with us.',
+  sendText: 'Send by text',
+  sendEmail: 'Send by email',
+  /** {date} is replaced with the delivery Saturday */
+  greeting: 'Hi Hillsbrook Farm! Here is my order for {date}:',
+  dropOff: 'Drop-off',
+  nameLabel: 'Name',
+  phoneLabel: 'Mobile',
+  notesLabel: 'Notes',
+  thanks: 'Thank you!',
+}
+
+/* ------------------------------------------------------------------ */
+/* CLICKABLE PLACES IN THE 3D FARM (top of the page)                    */
+/* ------------------------------------------------------------------ */
+export type HotspotId = 'shed' | 'parlor' | 'gate' | 'house' | 'fields' | 'calves'
+export const hotspots: { hint: string; items: Record<HotspotId, { name: string; action: string; href: string }> } = {
+  hint: 'Click a building to learn more',
+  items: {
+    shed: { name: 'Cow Shed', action: 'Read about our new cow shed', href: '#story-new-cow-shed-ready' },
+    parlor: { name: 'Milking Parlor', action: 'See how our milk gets to you', href: '#journey' },
+    gate: { name: 'Farm gate', action: 'Plan your visit', href: '#visit' },
+    house: { name: 'Our farmhouse', action: 'Meet the family', href: '#family' },
+    fields: { name: 'Napier grass and corn', action: 'Read how we grow our own feed', href: '#story-planting-napier-and-corn' },
+    calves: { name: 'Calf pen', action: 'Read about the grandkids’ visit', href: '#story-grandkids-visit-the-calves' },
+  },
+}
+
+/* ------------------------------------------------------------------ */
+/* SMALL WORDS USED AROUND THE PAGE (buttons, labels)                   */
+/* ------------------------------------------------------------------ */
+export const ui = {
+  language: 'Language',
+  backToTop: ' (back to top)',
+  mainMenu: 'Main',
+  openMenu: 'Open menu',
+  closeMenu: 'Close menu',
+  followFacebook: 'Follow us on Facebook',
+  newTab: '(opens in a new tab)',
+  soundOn: 'Sound on',
+  soundOff: 'Sound off',
+  journeySteps: 'Farm to You steps',
+  familyMembers: 'Family members',
+  familyMember: 'Family member',
+  roleToAdd: 'Role to add',
+  photoComingSoon: 'Photo coming soon',
+  askPrice: 'Ask us for the price on Messenger',
+  retail: 'Retail',
+  wholesale: 'Wholesale',
+  perLitre: ' / litre',
+  deliveryTo: 'Delivery to',
+  showingPricesFor: 'Showing prices for delivery to',
+  favourite: 'Our favourite',
+  comingSoon: 'Coming soon',
+  onFacebook: '(on Facebook)',
+  alsoInSurigao: 'Also in Surigao City',
+  pricesUpdated: 'Prices per litre, updated',
+  gateAlt: 'The Hillsbrook Farm gate with its welcome banner',
+  showMap: 'Show the map',
+  loadsMaps: 'Loads Google Maps',
+  delivery: 'Delivery',
+  farmVisits: 'Farm visits',
+  hours: 'Hours',
+  messageUs: 'Message us',
+  callUs: 'Call us',
+  facebook: 'Facebook',
+  howToGetHere: 'How to get here',
+  openInMaps: 'Open in Google Maps',
+  formTitle: 'Send us a message',
+  formName: 'Your name',
+  formContact: 'Email or mobile number',
+  formTopic: 'What is it about?',
+  formMessage: 'Message',
+  formSend: 'Send message',
+  formSending: 'Sending…',
+  formSent: 'Thank you! Your message has been sent.',
+  formError: 'Sorry, that did not send. Please message us on Messenger instead.',
+  formOpenedEmail: 'Your email app should open with the message ready. Just press send.',
+  quickLinks: 'Quick links',
+  findUs: 'Find us',
+  socialMedia: 'Social media',
+  storyNotFound: 'Story not found',
+  storyMoved: 'This story may have moved. Have a look at all our stories instead.',
+  tasteTheMilk: 'Taste the milk from this farm.',
+  moreFromFarm: 'More from the farm',
+  storiesInEnglish: '',
 }

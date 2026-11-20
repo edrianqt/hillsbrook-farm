@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
-import { farm, links, navLinks, orderButton } from '../content/site'
+import { farm, links, navLinks, orderButton, ui } from '../content/site'
 import { lockScroll } from '../lib/smoothScroll'
 import Logo from './Logo'
+import LanguagePicker from './LanguagePicker'
 import Button from './ui/Button'
 import { FacebookIcon, MenuIcon, MessengerIcon } from './ui/icons'
 
@@ -59,11 +60,11 @@ export default function Header() {
       <div className="mx-auto flex h-18 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
         <a href="#hero" className="rounded-full" onClick={() => setOpen(false)}>
           <Logo size={48} />
-          <span className="sr-only"> (back to top)</span>
+          <span className="sr-only">{ui.backToTop}</span>
         </a>
 
         {/* Desktop links */}
-        <nav aria-label="Main" className="hidden xl:block">
+        <nav aria-label={ui.mainMenu} className="hidden xl:block">
           <ul className="flex items-center gap-1">
             {navLinks.map((link) => (
               <li key={link.target}>
@@ -79,6 +80,7 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <LanguagePicker className="max-sm:hidden" />
           {/* Order button sits in the bar on tablets and up; on phones it lives in the menu */}
           <span className="hidden sm:block">
             <Button href={orderButton.href} icon={<MessengerIcon className="size-4" />}>
@@ -93,7 +95,7 @@ export default function Header() {
             className="inline-flex size-11 items-center justify-center rounded-full text-pasture hover:bg-pasture-50 xl:hidden"
             aria-expanded={open}
             aria-controls="mobile-menu"
-            aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-label={open ? ui.closeMenu : ui.openMenu}
             onClick={() => setOpen((o) => !o)}
           >
             <MenuIcon open={open} />
@@ -107,7 +109,7 @@ export default function Header() {
         hidden={!open}
         className="h-[calc(100svh-4.5rem)] overflow-y-auto border-t border-pasture/10 bg-milk xl:hidden"
       >
-        <nav aria-label="Main" className="px-6 py-8">
+        <nav aria-label={ui.mainMenu} className="px-6 py-8">
           <ul className="space-y-1">
             {navLinks.map((link, i) => (
               <li key={link.target}>
@@ -127,9 +129,10 @@ export default function Header() {
               {orderButton.label}
             </Button>
             <Button href={links.facebook} variant="secondary" size="lg" icon={<FacebookIcon />}>
-              Follow us on Facebook
+              {ui.followFacebook}
             </Button>
           </div>
+          <LanguagePicker className="mt-8 sm:hidden" />
           <p className="mt-8 text-sm text-soil-muted">{farm.deliveryNote}.</p>
         </nav>
       </div>

@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { farm, storiesSection } from '../content/site'
+import { farm, storiesSection, ui } from '../content/site'
 import { StoryCard } from '../components/Stories'
 import SectionHeading from '../components/ui/SectionHeading'
 import { stories } from '../lib/stories'
@@ -17,7 +17,7 @@ export default function AllStories() {
           <span aria-hidden="true">←</span> Back to the home page
         </a>
         <div className="mt-6">
-          <SectionHeading level="h1" eyebrow={storiesSection.eyebrow} title={storiesSection.title} intro={storiesSection.intro} />
+          <SectionHeading level="h1" eyebrow={storiesSection.eyebrow} title={storiesSection.title} intro={[storiesSection.intro, ui.storiesInEnglish].filter(Boolean).join(' ')} />
         </div>
         <ul className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {stories.map((s) => (

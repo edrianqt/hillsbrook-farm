@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
-import { journey } from '../content/site'
+import { journey, ui } from '../content/site'
 import { gsap, scrollToY, ScrollTrigger } from '../lib/smoothScroll'
 import { VISIBLE_OPTIONS, hasWebGL, prefersReducedMotion, reallyVisible } from '../lib/webgl'
 import type { JourneyState } from '../three/JourneyScene'
@@ -153,7 +153,7 @@ function JourneyScroll() {
 
         {/* progress: five dots on a line; click one to jump to that station */}
         <nav
-          aria-label="Farm to You steps"
+          aria-label={ui.journeySteps}
           className="absolute bottom-6 left-1/2 -translate-x-1/2 sm:top-1/2 sm:right-6 sm:bottom-auto sm:left-auto sm:translate-x-0 sm:-translate-y-1/2"
         >
           <div className="relative flex items-center gap-1 rounded-full bg-milk/85 px-2 py-1 shadow-sm backdrop-blur sm:flex-col sm:px-1 sm:py-2">

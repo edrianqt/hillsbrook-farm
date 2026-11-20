@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
-import { heroContent, orderButton } from '../content/site'
+import { heroContent, type HotspotId, hotspots, orderButton, ui } from '../content/site'
 import { unlockAudio } from '../lib/moo'
+import { scrollToSection } from '../lib/smoothScroll'
 import { hasWebGL, isTouchDevice, prefersReducedMotion, reallyVisible } from '../lib/webgl'
 import { asset } from './Logo'
 import { imageSize, srcSet } from './Picture'
@@ -72,6 +73,15 @@ export default function Hero() {
     return () => io.disconnect()
   }, [])
 
+  const [hovered, setHovered] = useState<HotspotId | null>(null)
+  const openHotspot = (id: HotspotId) => {
+    setHovered(null)
+    document.body.style.cursor = ''
+    const href = hotspots.items[id].href
+    if (href.startsWith('#story-')) window.location.hash = href
+    else scrollToSection(href.slice(1))
+  }
+
   const toggleSound = () => {
     if (!soundOn) unlockAudio()
     setSoundOn((s) => !s)
@@ -100,9 +110,19 @@ export default function Hero() {
       {use3D && start3D && (
         <div className={`absolute inset-0 transition-opacity duration-700 ${ready ? 'opacity-100' : 'opacity-0'}`}>
           <Suspense fallback={null}>
-            <HeroScene active={inView} soundOn={soundOn} onReady={() => setReady(true)} />
+            <HeroScene active={inView} soundOn={soundOn} onReady={() => setReady(true)} onPick={openHotspot} onHover={setHovered} />
           </Suspense>
         </div>
+      )}
+
+      {/* name of the building under the mouse (the same places are linked in the menu for keyboard users) */}
+      {use3D && ready && (
+        <p
+          aria-hidden="true"
+          className={`pointer-events-none absolute bottom-20 left-1/2 z-10 -translate-x-1/2 rounded-full bg-pasture/90 px-4 py-2 text-center text-sm font-semibold whitespace-nowrap text-milk shadow transition-opacity duration-200 ${hovered ? 'opacity-100' : 'opacity-0'}`}
+        >
+          {hovered ? `${hotspots.items[hovered].name} · ${hotspots.items[hovered].action} →` : hotspots.hint}
+        </p>
       )}
 
       {/* Soft milk-white wash behind the text so it stays readable over the scene */}
@@ -137,7 +157,8 @@ export default function Hero() {
         href="#journey"
         className="absolute bottom-6 left-6 inline-flex min-h-11 items-center gap-2 rounded-full bg-milk/85 px-4 text-sm font-medium text-pasture shadow-sm backdrop-blur hover:bg-milk md:left-1/2 md:-translate-x-1/2"
       >
-        {heroContent.scrollHint}
+        {/* phones: just the arrow, so it never runs into the sound button */}
+        <span className="max-sm:sr-only">{heroContent.scrollHint}</span>
         <svg viewBox="0 0 24 24" className="size-4 motion-safe:animate-bounce" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
           <path d="m6 9 6 6 6-6" />
         </svg>
@@ -156,7 +177,7 @@ export default function Hero() {
             className="inline-flex min-h-11 items-center gap-2 rounded-full bg-milk/85 px-4 text-sm font-medium text-pasture shadow-sm backdrop-blur hover:bg-milk"
           >
             <SoundIcon on={soundOn} />
-            {soundOn ? 'Sound on' : 'Sound off'}
+            {soundOn ? ui.soundOn : ui.soundOff}
           </button>
         </div>
       )}

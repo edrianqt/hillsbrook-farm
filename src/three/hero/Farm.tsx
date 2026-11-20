@@ -1,5 +1,7 @@
 import { useFrame } from '@react-three/fiber'
-import { useCallback, useRef } from 'react'
+import type { ThreeEvent } from '@react-three/fiber'
+import { useCallback, useRef, type ReactNode } from 'react'
+import type { HotspotId } from '../../content/site'
 import { moo } from '../../lib/moo'
 import { CowShed, MilkingParlor } from './Buildings'
 import Cow from './Cow'
@@ -32,15 +34,43 @@ export function FirstFrame({ onReady }: { onReady?: () => void }) {
   return null
 }
 
+/** Makes everything inside clickable (hero only): hover shows its name, click opens its page. */
+function Hotspot({ id, onPick, onHover, children }: { id: HotspotId; onPick?: (id: HotspotId) => void; onHover?: (id: HotspotId | null) => void; children: ReactNode }) {
+  if (!onPick) return <>{children}</>
+  return (
+    <group
+      onClick={(e: ThreeEvent<MouseEvent>) => {
+        e.stopPropagation()
+        onPick(id)
+      }}
+      onPointerOver={(e: ThreeEvent<PointerEvent>) => {
+        e.stopPropagation()
+        onHover?.(id)
+        document.body.style.cursor = 'pointer'
+      }}
+      onPointerOut={() => {
+        onHover?.(null)
+        document.body.style.cursor = ''
+      }}
+    >
+      {children}
+    </group>
+  )
+}
+
 type Props = {
   herd: CowSpot[]
+  /** hero only: clicking a building opens its story or section */
+  onPick?: (id: HotspotId) => void
+  onHover?: (id: HotspotId | null) => void
   soundOn?: boolean
   /** phones: fewer plants and no shrubs */
   lite?: boolean
 }
 
 /** The whole farm on Bucas Grande Island. Shared by the hero and the "Farm to You" journey. */
-export default function Farm({ herd, soundOn = false, lite = false }: Props) {
+export default function Farm({ herd, soundOn = false, lite = false, onPick, onHover }: Props) {
+  const hs = { onPick, onHover }
   const greet = useCallback(
     (calf: boolean) => {
       if (soundOn) moo(calf)
@@ -53,14 +83,26 @@ export default function Farm({ herd, soundOn = false, lite = false }: Props) {
       <Terrain />
       <Sea />
       <Fence />
-      <CalfShelter />
-      <FarmGate />
-      <Farmhouse x={0.4} z={-7.4} rotation={0.12} />
+      <Hotspot id="calves" {...hs}>
+        <CalfShelter />
+      </Hotspot>
+      <Hotspot id="gate" {...hs}>
+        <FarmGate />
+      </Hotspot>
+      <Hotspot id="house" {...hs}>
+        <Farmhouse x={0.4} z={-7.4} rotation={0.12} />
+      </Hotspot>
       <DirtPath />
-      <CowShed x={SHED.x} z={SHED.z} rotation={SHED.rot} />
-      <MilkingParlor x={PARLOR.x} z={PARLOR.z} rotation={PARLOR.rot} />
-      <NapierPlot lite={lite} />
-      <CornField lite={lite} />
+      <Hotspot id="shed" {...hs}>
+        <CowShed x={SHED.x} z={SHED.z} rotation={SHED.rot} />
+      </Hotspot>
+      <Hotspot id="parlor" {...hs}>
+        <MilkingParlor x={PARLOR.x} z={PARLOR.z} rotation={PARLOR.rot} />
+      </Hotspot>
+      <Hotspot id="fields" {...hs}>
+        <NapierPlot lite={lite} />
+        <CornField lite={lite} />
+      </Hotspot>
       {!lite && <Shrubs />}
 
       {/* coconut palms around the yard and along the shore */}

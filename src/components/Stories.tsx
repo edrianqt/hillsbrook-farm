@@ -1,4 +1,4 @@
-import { storiesSection } from '../content/site'
+import { storiesSection, ui } from '../content/site'
 import { formatDate, homeStories, type Story } from '../lib/stories'
 import Picture from './Picture'
 import Button from './ui/Button'
@@ -47,7 +47,7 @@ export default function Stories() {
     <section id="stories" aria-labelledby="stories-title" className="bg-cream-50">
       <div className="mx-auto max-w-7xl px-6 py-24">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-          <SectionHeading id="stories-title" eyebrow={storiesSection.eyebrow} title={storiesSection.title} intro={storiesSection.intro} />
+          <SectionHeading id="stories-title" eyebrow={storiesSection.eyebrow} title={storiesSection.title} intro={[storiesSection.intro, ui.storiesInEnglish].filter(Boolean).join(' ')} />
           <Button href="#all-stories" variant="secondary" className="self-start sm:self-auto">
             {storiesSection.viewAll}
           </Button>

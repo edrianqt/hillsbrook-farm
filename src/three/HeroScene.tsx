@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber'
 import { useMemo, useState } from 'react'
 import { Fog } from 'three'
 import { isTouchDevice } from '../lib/webgl'
+import type { HotspotId } from '../content/site'
 import CameraRig from './hero/CameraRig'
 import Farm, { FirstFrame, WindClock } from './hero/Farm'
 import Sky, { goldenHour } from './hero/Sky'
@@ -15,6 +16,8 @@ type Props = {
   /** false when the hero is scrolled out of view: rendering pauses to save battery */
   active: boolean
   soundOn: boolean
+  onPick?: (id: HotspotId) => void
+  onHover?: (id: HotspotId | null) => void
   /** called once the first frame has been drawn */
   onReady?: () => void
 }
@@ -47,7 +50,7 @@ function Lights({ quality, touch }: { quality: Quality; touch: boolean }) {
 }
 
 /** The full 3D hero: Hillsbrook Farm on Bucas Grande Island at golden hour. */
-export default function HeroScene({ active, soundOn, onReady }: Props) {
+export default function HeroScene({ active, soundOn, onReady, onPick, onHover }: Props) {
   const touch = useMemo(isTouchDevice, [])
   const maxDpr = touch ? 1.5 : 2
   const [quality, setQuality] = useState<Quality>('high')
@@ -88,7 +91,7 @@ export default function HeroScene({ active, soundOn, onReady }: Props) {
       <CameraRig moving={active} />
       <Lights quality={quality} touch={touch} />
       <Sky palette={palette} />
-      <Farm herd={herd} soundOn={soundOn} />
+      <Farm herd={herd} soundOn={soundOn} onPick={onPick} onHover={onHover} />
     </Canvas>
   )
 }

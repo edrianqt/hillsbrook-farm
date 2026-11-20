@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { ui } from '../../content/site'
 
 type Variant = 'primary' | 'secondary' | 'ghost' | 'light'
 type Size = 'md' | 'lg'
@@ -12,6 +13,8 @@ type Props = {
   onClick?: () => void
   className?: string
   icon?: ReactNode
+  /** Greyed out and not clickable (links become plain buttons) */
+  disabled?: boolean
 }
 
 const variants: Record<Variant, string> = {
@@ -31,10 +34,10 @@ const sizes: Record<Size, string> = {
 }
 
 /** The site's one button style, in four variants. Always at least 44px tall for easy tapping. */
-export default function Button({ children, variant = 'primary', size = 'md', href, onClick, className = '', icon }: Props) {
-  const classes = `inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-colors duration-200 ${variants[variant]} ${sizes[size]} ${className}`
+export default function Button({ children, variant = 'primary', size = 'md', href, onClick, className = '', icon, disabled = false }: Props) {
+  const classes = `inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-45 ${variants[variant]} ${sizes[size]} ${className}`
 
-  if (href) {
+  if (href && !disabled) {
     const external = /^https?:\/\//.test(href)
     return (
       <a
@@ -45,13 +48,13 @@ export default function Button({ children, variant = 'primary', size = 'md', hre
       >
         {icon}
         {children}
-        {external && <span className="sr-only"> (opens in a new tab)</span>}
+        {external && <span className="sr-only"> {ui.newTab}</span>}
       </a>
     )
   }
 
   return (
-    <button type="button" className={classes} onClick={onClick}>
+    <button type="button" className={classes} onClick={onClick} disabled={disabled}>
       {icon}
       {children}
     </button>

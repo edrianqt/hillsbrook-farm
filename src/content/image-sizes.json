@@ -205,5 +205,39 @@
       800,
       1200
     ]
+  },
+  "images/products/chocolate.jpg": {
+    "width": 480,
+    "height": 480,
+    "base": "images/optimized/products__chocolate",
+    "widths": [
+      480
+    ]
+  },
+  "images/products/pasteurized-bottles.jpg": {
+    "width": 480,
+    "height": 480,
+    "base": "images/optimized/products__pasteurized-bottles",
+    "widths": [
+      480
+    ]
+  },
+  "images/products/ube.jpg": {
+    "width": 480,
+    "height": 480,
+    "base": "images/optimized/products__ube",
+    "widths": [
+      480
+    ]
+  },
+  "images/share.jpg": {
+    "width": 1200,
+    "height": 630,
+    "base": "images/optimized/share",
+    "widths": [
+      480,
+      800,
+      1200
+    ]
   }
 }
