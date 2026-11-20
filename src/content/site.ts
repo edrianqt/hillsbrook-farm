@@ -20,8 +20,8 @@ export const farm = {
     country: 'Philippines',
   },
   email: 'hillsbrookfarms@gmail.com',
-  /** [PLACEHOLDER] Shown as text and used for the "Call us" link. Write it like +63 9XX XXX XXXX */
-  phone: '[PLACEHOLDER: +63 9XX XXX XXXX]',
+  /** Shown as text and used for the "Call us" link (from the farm's Facebook post, May 2026) */
+  phone: '+63 908 884 2056',
   /** [PLACEHOLDER] e.g. 'Monday to Saturday, 8 AM to 4 PM' */
   visitingHours: '[PLACEHOLDER: visiting hours]',
   deliveryNote: 'Delivery every Saturday to Dapa Port and General Luna, Siargao',
@@ -144,6 +144,10 @@ export const family = {
   eyebrow: 'The people of Hillsbrook',
   title: 'Meet the Family',
   intro: 'Hillsbrook is a family farm. These are the people who look after the herd, the fields and every bottle.',
+  /** A photo of the whole family, shown under the profiles */
+  groupPhoto: 'images/farm/family.jpg',
+  groupPhotoAlt: 'The Sangco family together outdoors: Edelito in the centre with his children, their spouses and his grandchildren, all dressed in beige.',
+  groupCaption: 'Three generations of the Sangco family. The grandchildren grow up around the herd, learning where milk comes from.',
   members: [
     {
       name: 'Edelito Caindoy Sangco',

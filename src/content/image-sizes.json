@@ -26,6 +26,15 @@
       798
     ]
   },
+  "images/farm/family.jpg": {
+    "width": 800,
+    "height": 522,
+    "base": "images/optimized/farm__family",
+    "widths": [
+      480,
+      800
+    ]
+  },
   "images/farm/gate.jpg": {
     "width": 798,
     "height": 598,

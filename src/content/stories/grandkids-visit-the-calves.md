@@ -3,8 +3,8 @@ title: The grandkids visit the baby cows
 category: Family
 date:
 excerpt: Two very happy grandchildren came to see their favourite calves at Hillsbrook.
-image: images/hero-fallback-mobile.jpg
-imageAlt: Illustration of cows and calves in the Hillsbrook pasture
+image: images/farm/family.jpg
+imageAlt: The Sangco family with Edelito in the centre and his grandchildren in front
 featured: false
 ---
 

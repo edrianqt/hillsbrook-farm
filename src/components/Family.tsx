@@ -172,6 +172,17 @@ export default function Family() {
             </div>
           </div>
         </div>
+
+        {/* the whole family, three generations */}
+        <figure className="mx-auto mt-16 max-w-4xl">
+          <Picture
+            src={family.groupPhoto}
+            alt={family.groupPhotoAlt}
+            sizes="(min-width: 960px) 896px, 100vw"
+            className="w-full rounded-[2rem] object-cover shadow-[0_20px_50px_-24px_rgb(8_58_50/0.45)]"
+          />
+          <figcaption className="mt-4 text-center text-soil-muted">{family.groupCaption}</figcaption>
+        </figure>
       </div>
     </section>
   )
