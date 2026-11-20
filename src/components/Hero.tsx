@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { heroContent, type HotspotId, hotspots, orderButton, ui } from '../content/site'
 import { unlockAudio } from '../lib/moo'
-import { scrollToSection } from '../lib/smoothScroll'
+import { scrollToSection, whenScrollStops } from '../lib/smoothScroll'
 import { hasWebGL, isTouchDevice, prefersReducedMotion, reallyVisible } from '../lib/webgl'
 import { asset } from './Logo'
 import { imageSize, srcSet } from './Picture'
@@ -25,6 +25,7 @@ export default function Hero() {
   const section = useRef<HTMLElement>(null)
   // Decide once: 3D scene, or the still picture only (reduced motion, or no 3D support)
   const [use3D] = useState(() => hasWebGL() && !prefersReducedMotion())
+  const [want3D, setWant3D] = useState(false)
   const [start3D, setStart3D] = useState(false)
   const [inView, setInView] = useState(true)
   const [ready, setReady] = useState(false)
@@ -40,7 +41,7 @@ export default function Hero() {
     const go = () => {
       if (started) return
       started = true
-      setStart3D(true)
+      setWant3D(true)
       events.forEach((ev) => window.removeEventListener(ev, go))
       window.removeEventListener('scroll', onScroll)
     }
@@ -65,6 +66,12 @@ export default function Hero() {
     }
   }, [use3D])
 
+  // Start it only while the hero is on screen and the page is still, so setting it up never freezes a scroll
+  useEffect(() => {
+    if (!want3D || start3D || !inView) return
+    return whenScrollStops(() => setStart3D(true))
+  }, [want3D, start3D, inView])
+
   // Pause the 3D scene while the hero is scrolled out of view
   useEffect(() => {
     if (!section.current) return
@@ -81,6 +88,27 @@ export default function Hero() {
     if (href.startsWith('#story-')) window.location.hash = href
     else scrollToSection(href.slice(1))
   }
+
+  // Phones: a tap on a building only shows its name and a button; the button opens it.
+  // (A quick tap is also how people stop a fast scroll, so opening straight away made the page jump.)
+  const [touch] = useState(isTouchDevice)
+  const [picked, setPicked] = useState<HotspotId | null>(null)
+  const pick = (id: HotspotId) => {
+    if (!touch) return openHotspot(id)
+    setPicked(id)
+  }
+  // hide the button again when the visitor scrolls on, or after a while
+  useEffect(() => {
+    if (!picked) return
+    const startY = window.scrollY
+    const onScroll = () => Math.abs(window.scrollY - startY) > 40 && setPicked(null)
+    const timer = setTimeout(() => setPicked(null), 6000)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      clearTimeout(timer)
+      window.removeEventListener('scroll', onScroll)
+    }
+  }, [picked])
 
   const toggleSound = () => {
     if (!soundOn) unlockAudio()
@@ -110,13 +138,27 @@ export default function Hero() {
       {use3D && start3D && (
         <div className={`absolute inset-0 transition-opacity duration-700 ${ready ? 'opacity-100' : 'opacity-0'}`}>
           <Suspense fallback={null}>
-            <HeroScene active={inView} soundOn={soundOn} onReady={() => setReady(true)} onPick={openHotspot} onHover={setHovered} />
+            <HeroScene active={inView} soundOn={soundOn} onReady={() => setReady(true)} onPick={pick} onHover={touch ? undefined : setHovered} />
           </Suspense>
         </div>
       )}
 
       {/* name of the building under the mouse (the same places are linked in the menu for keyboard users) */}
-      {use3D && ready && (
+      {/* phones: the building that was tapped, with a button to open it */}
+      {use3D && ready && touch && picked && (
+        <button
+          type="button"
+          onClick={() => {
+            setPicked(null)
+            openHotspot(picked)
+          }}
+          className="absolute inset-x-6 bottom-6 z-20 flex min-h-11 items-center justify-center rounded-full bg-pasture px-4 py-2 text-center text-sm font-semibold text-milk shadow-lg"
+        >
+          {hotspots.items[picked].name} · {hotspots.items[picked].action} →
+        </button>
+      )}
+
+      {use3D && ready && !touch && (
         <p
           aria-hidden="true"
           className={`pointer-events-none absolute bottom-20 left-1/2 z-10 -translate-x-1/2 rounded-full bg-pasture/90 px-4 py-2 text-center text-sm font-semibold whitespace-nowrap text-milk shadow transition-opacity duration-200 ${hovered ? 'opacity-100' : 'opacity-0'}`}

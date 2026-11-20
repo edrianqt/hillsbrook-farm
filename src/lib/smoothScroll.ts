@@ -71,3 +71,25 @@ export function scrollToSection(id: string) {
     lenis.scrollTo(el, { immediate: true, force: true })
   } else el.scrollIntoView()
 }
+
+/**
+ * Runs `run` once the page has been still for `quietMs` (soon after the call if it is not moving).
+ * Heavy work, like starting a 3D scene, waits for this: on phones the page keeps gliding while the
+ * browser is busy, and then visibly snaps to catch up. Returns a function that cancels it.
+ */
+export function whenScrollStops(run: () => void, quietMs = 400): () => void {
+  let timer = window.setTimeout(done, quietMs)
+  function done() {
+    window.removeEventListener('scroll', onScroll)
+    run()
+  }
+  function onScroll() {
+    clearTimeout(timer)
+    timer = window.setTimeout(done, quietMs)
+  }
+  window.addEventListener('scroll', onScroll, { passive: true })
+  return () => {
+    clearTimeout(timer)
+    window.removeEventListener('scroll', onScroll)
+  }
+}

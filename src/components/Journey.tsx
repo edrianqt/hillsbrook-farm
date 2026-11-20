@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { journey, ui } from '../content/site'
-import { gsap, scrollToY, ScrollTrigger } from '../lib/smoothScroll'
+import { gsap, scrollToY, ScrollTrigger, whenScrollStops } from '../lib/smoothScroll'
 import { VISIBLE_OPTIONS, hasWebGL, prefersReducedMotion, reallyVisible } from '../lib/webgl'
 import type { JourneyState } from '../three/JourneyScene'
 import Picture from './Picture'
@@ -61,15 +61,16 @@ function JourneyScroll() {
   const fill = useRef<HTMLDivElement>(null)
   const state = useMemo<JourneyState>(() => ({ scroll: 0 }), [])
   const [active, setActive] = useState(0)
+  const [near, setNear] = useState(false)
   const [mountScene, setMountScene] = useState(false)
   const [inView, setInView] = useState(false)
   const [ready, setReady] = useState(false)
 
-  // Load the 3D scene as the section starts to appear (its still picture shows meanwhile); pause it when out of view
+  // Load the 3D scene a little before the section arrives (its still picture shows meanwhile); pause it when out of view
   useEffect(() => {
     const el = section.current
     if (!el) return
-    const near = new IntersectionObserver(([e]) => reallyVisible(e) && setMountScene(true), VISIBLE_OPTIONS)
+    const near = new IntersectionObserver(([e]) => reallyVisible(e) && setNear(true), { ...VISIBLE_OPTIONS, rootMargin: '0px 0px 75% 0px' })
     const visible = new IntersectionObserver(([e]) => setInView(reallyVisible(e)), VISIBLE_OPTIONS)
     near.observe(el)
     visible.observe(el)
@@ -78,6 +79,12 @@ function JourneyScroll() {
       visible.disconnect()
     }
   }, [])
+
+  // ...but only once the page is still, so setting it up never freezes a scroll on phones
+  useEffect(() => {
+    if (!near || mountScene) return
+    return whenScrollStops(() => setMountScene(true))
+  }, [near, mountScene])
 
   // Scrub: the tween's progress follows the scroll position exactly
   useEffect(() => {
@@ -116,7 +123,9 @@ function JourneyScroll() {
       className="relative -scroll-mt-20 bg-[#cfe5f1]"
       style={{ height: `${(STATIONS.length + 1) * 100}svh` }}
     >
-      <div className="sticky top-0 h-svh overflow-hidden">
+      {/* lvh: fills the screen even when Safari hides its address bar; the text and dots stay in the
+          part that is always visible (svh) */}
+      <div className="sticky top-0 h-svh overflow-hidden supports-[height:100lvh]:h-lvh">
         {/* still picture of the first station until the 3D is ready */}
         {/* a still of the 3D scene itself, so the switch to 3D is seamless */}
         <Picture src="images/journey-1.jpg" alt="" sizes="100vw" className="absolute inset-0 size-full object-cover" />
@@ -128,7 +137,8 @@ function JourneyScroll() {
           </div>
         )}
 
-        {/* station cards: all five are in the page for screen readers; only the current one is shown */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-svh">
+          {/* station cards: all five are in the page for screen readers; only the current one is shown */}
         <div className="pointer-events-none absolute inset-x-4 bottom-24 sm:inset-x-auto sm:bottom-auto sm:left-6 sm:top-1/2 sm:w-[min(28rem,calc(100%-8rem))] sm:-translate-y-1/2 lg:left-[max(1.5rem,calc((100vw-80rem)/2+1.5rem))]">
           <h2 id="journey-title" className="sr-only">
             {journey.eyebrow}: {journey.title}
@@ -154,7 +164,7 @@ function JourneyScroll() {
         {/* progress: five dots on a line; click one to jump to that station */}
         <nav
           aria-label={ui.journeySteps}
-          className="absolute bottom-6 left-1/2 -translate-x-1/2 sm:top-1/2 sm:right-6 sm:bottom-auto sm:left-auto sm:translate-x-0 sm:-translate-y-1/2"
+          className="pointer-events-auto absolute bottom-6 left-1/2 -translate-x-1/2 sm:top-1/2 sm:right-6 sm:bottom-auto sm:left-auto sm:translate-x-0 sm:-translate-y-1/2"
         >
           <div className="relative flex items-center gap-1 rounded-full bg-milk/85 px-2 py-1 shadow-sm backdrop-blur sm:flex-col sm:px-1 sm:py-2">
             {/* the line and how far along it we are (tall screens only) */}
@@ -182,6 +192,7 @@ function JourneyScroll() {
             ))}
           </div>
         </nav>
+        </div>
       </div>
     </section>
   )

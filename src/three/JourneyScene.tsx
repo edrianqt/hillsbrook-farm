@@ -220,7 +220,8 @@ export default function JourneyScene({ state, active, onReady }: Props) {
     <Canvas
       shadows={lite ? false : "percentage"}
       dpr={dpr}
-      frameloop={active ? 'always' : 'never'}
+      // 'demand' draws one frame when it is set up ahead of time (shaders compile then), then waits
+      frameloop={active ? 'always' : 'demand'}
       camera={{ fov: 45, near: 0.1, far: 600 }}
       gl={{ antialias: !lite, powerPreference: 'high-performance' }}
       style={{ touchAction: 'pan-y' }}
