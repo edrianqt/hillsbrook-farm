@@ -401,15 +401,22 @@ export const contactForm = {
 /* ------------------------------------------------------------------ */
 /* RECOGNISED BY (shown under "What we stand for")                      */
 /* ------------------------------------------------------------------ */
-/** Names only: add official logos here later only with each agency's permission. */
-export const recognition = {
+/**
+ * Agencies that accredit and support the farm. To show an official logo, put the file in
+ * public/images/partners/ (PNG or SVG, square works best) and write its path in `logo`,
+ * e.g. logo: 'images/partners/ati.png'. With no logo, a green badge with the short name shows.
+ */
+export const recognition: {
+  title: string
+  items: { short: string; text: string; org: string; logo?: string }[]
+} = {
   title: 'Recognised and supported by',
   items: [
-    { short: 'ATI', text: 'Accredited Learning Site on Diversified Farming', org: 'Agricultural Training Institute' },
-    { short: 'TESDA', text: 'Accredited Farm School', org: 'Technical Education and Skills Development Authority' },
-    { short: 'NDA', text: 'Partner farm, Dairy Herd Build-Up Program', org: 'National Dairy Authority' },
-    { short: 'PCA', text: 'Cow shed funded through the CFIDP', org: 'Philippine Coconut Authority' },
-    { short: 'DOST', text: 'Food safety training for dairy farmers', org: 'Department of Science and Technology' },
+    { short: 'ATI', text: 'Accredited Learning Site on Diversified Farming', org: 'Agricultural Training Institute', logo: '' },
+    { short: 'TESDA', text: 'Accredited Farm School', org: 'Technical Education and Skills Development Authority', logo: '' },
+    { short: 'NDA', text: 'Partner farm, Dairy Herd Build-Up Program', org: 'National Dairy Authority', logo: '' },
+    { short: 'PCA', text: 'Cow shed funded through the CFIDP', org: 'Philippine Coconut Authority', logo: '' },
+    { short: 'DOST', text: 'Food safety training for dairy farmers', org: 'Department of Science and Technology', logo: '' },
   ],
 }
 
