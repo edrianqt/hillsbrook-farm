@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { CanvasTexture, DoubleSide, Group, PlaneGeometry, SRGBColorSpace } from 'three'
 import { useBakeStatic } from '../bake'
+import ProcessingLine from './ProcessingLine'
 import { heightAt } from './world'
 
 // ---------- shared materials ----------
@@ -173,7 +174,7 @@ export function CowShed({ x, z, rotation = 0 }: { x: number; z: number; rotation
   )
 }
 
-/** Small milking parlor: painted walls on three sides, open front, a steel milk tank beside it. */
+/** Small milking parlor: painted walls on three sides, open front, and the milk processing line beside it. */
 export function MilkingParlor({ x, z, rotation = 0 }: { x: number; z: number; rotation?: number }) {
   const w = 3.6
   const d = 2.8
@@ -218,19 +219,8 @@ export function MilkingParlor({ x, z, rotation = 0 }: { x: number; z: number; ro
         <meshStandardMaterial {...wood} />
       </mesh>
       <Roof width={w} depth={d} height={wallH + 0.05} pitch={0.36} />
-      {/* stainless steel milk cooling tank */}
-      <group position={[w / 2 + 0.75, 0, 0.3]}>
-        <mesh position={[0, 0.75, 0]} rotation={[Math.PI / 2, 0, 0]} castShadow>
-          <cylinderGeometry args={[0.5, 0.5, 1.4, 14]} />
-          <meshStandardMaterial color="#e3e8ea" metalness={0.3} roughness={0.3} />
-        </mesh>
-        {[-0.45, 0.45].map((lz) => (
-          <mesh key={lz} position={[0, 0.15, lz]}>
-            <boxGeometry args={[0.6, 0.3, 0.08]} />
-            <meshStandardMaterial color="#9aa3a8" metalness={0.3} roughness={0.45} />
-          </mesh>
-        ))}
-      </group>
+      {/* our real 100 L pasteurizer, homogenizer and cooling tank, beside the parlor */}
+      <ProcessingLine position={[w / 2 + 0.65, 0, -0.1]} />
       <group position={[0, wallH - 0.32, d / 2 + 0.1]}>
         <Sign text="Milking Parlor" width={2.1} height={0.45} />
       </group>

@@ -63,7 +63,7 @@ export default function Farm({ herd, soundOn = false, lite = false }: Props) {
       {/* coconut palms around the yard and along the shore */}
       <Palm x={1.2} z={-4.2} height={4.8} lean={0.7} rotation={0.4} />
       <Palm x={8.4} z={-6.8} height={5.6} lean={0.9} rotation={2.2} />
-      <Palm x={13.6} z={2.8} height={4.6} lean={0.6} rotation={3.6} />
+      <Palm x={15.6} z={4.6} height={4.6} lean={0.6} rotation={3.6} />
       <Palm x={-5.2} z={-8.6} height={5.2} lean={1} rotation={1.2} />
       <Palm x={-15.5} z={-9.6} height={5.8} lean={0.8} rotation={0.2} />
       <Palm x={16.5} z={-7.5} height={5.2} lean={1.1} rotation={2.8} />

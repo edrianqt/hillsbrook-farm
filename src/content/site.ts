@@ -106,12 +106,12 @@ export const journey = {
       imageAlt: 'Black-and-white Holstein Friesian cows at the feeding trough in the Hillsbrook cow shed, with two farmers in front.',
     },
     {
-      label: 'Chilling',
-      title: 'Cooled within minutes',
-      body: 'Fresh milk goes straight into our stainless steel tank to be chilled and kept cold.',
+      label: 'Processing',
+      title: 'Pasteurized and cooled',
+      body: 'Milk for our pasteurized products goes into our 100-litre line: the pasteurizer heats it, the homogenizer keeps the cream evenly mixed, and the cooling tank chills it fast.',
       detail: '[PLACEHOLDER: your cooling process, e.g. "chilled to 4 °C within 30 minutes"]',
       image: 'images/journey-3.jpg',
-      imageAlt: 'The stainless steel milk cooling tank beside the milking parlor, lit with a cool blue glow.',
+      imageAlt: 'Our 100-litre milk processing line beside the milking parlor: a pasteurization machine, a homogenizer and a cooling tank on one stainless steel frame.',
     },
     {
       label: 'Bottling',

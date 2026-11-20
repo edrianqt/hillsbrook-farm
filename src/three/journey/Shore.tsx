@@ -175,6 +175,125 @@ function BreakfastTable() {
   )
 }
 
+// ---------- the island's shape: sandy and green mounds (centre, half-size) ----------
+type Mound = { c: [number, number, number]; s: [number, number, number]; color: string }
+const MOUNDS: Mound[] = [
+  { c: [ISLAND.x, SEA_LEVEL - 0.55, ISLAND.z], s: [9, 1.4, 6.5], color: '#ecd9a6' },
+  { c: [ISLAND.x - 2.5, SEA_LEVEL - 0.2, ISLAND.z - 3.5], s: [8, 2.2, 4.5], color: '#4f8a3a' },
+  // the coast carries on to the east and west, with a village along the beach
+  { c: [-17.5, SEA_LEVEL - 0.6, -53.2], s: [9, 1.3, 4.4], color: '#ecd9a6' },
+  { c: [-16.5, SEA_LEVEL - 0.35, -57.2], s: [8.5, 2.6, 3.8], color: '#5a9440' },
+  { c: [-45.5, SEA_LEVEL - 0.6, -54.5], s: [7, 1.3, 4.6], color: '#ecd9a6' },
+  { c: [-46, SEA_LEVEL - 0.3, -58.5], s: [7, 2.4, 3.6], color: '#4f8a3a' },
+  // a small village island across the channel, in view from the breakfast table
+  { c: [-47, SEA_LEVEL - 0.6, -33], s: [6.2, 1.25, 4.2], color: '#ecd9a6' },
+  { c: [-48.8, SEA_LEVEL - 0.3, -30.8], s: [5, 2.3, 3], color: '#5a9440' },
+]
+
+/** Ground height on the island at (x, z): the highest mound surface there, or the sea. */
+function islandY(x: number, z: number) {
+  let y = SEA_LEVEL - 0.4
+  for (const { c, s } of MOUNDS) {
+    const k = 1 - ((x - c[0]) / s[0]) ** 2 - ((z - c[2]) / s[2]) ** 2
+    if (k > 0) y = Math.max(y, c[1] + s[1] * Math.sqrt(k))
+  }
+  return y
+}
+
+const WALLS = ['#f6efe0', '#a8dccf', '#f3c9a0', '#f2a99b', '#ffffff', '#f4d77a', '#b9d4ef', '#d8c3e8']
+const ROOFS = ['#b5523b', '#3d6f8f', '#9da3a6', '#2f7d4f', '#b5523b', '#c46b2d']
+const windowDark = new MeshStandardMaterial({ color: '#3a3a3a', roughness: 0.8 })
+const concreteBase = new MeshStandardMaterial({ color: '#cfc8b8', roughness: 0.95, flatShading: true })
+
+type HouseSpec = { x: number; z: number; rot?: number; w?: number; d?: number; h?: number; stilts?: boolean; storeys?: 1 | 2 }
+
+/** A small island house: painted walls, a tin or tile gable roof, a door and two windows facing the sea. */
+function House({ x, z, rot = 0, w = 2.2, d = 1.9, h = 1.5, stilts = false, storeys = 1, i }: HouseSpec & { i: number }) {
+  const ground = stilts ? SEA_LEVEL + 0.9 : islandY(x, z)
+  const wall = WALLS[i % WALLS.length]
+  const roof = ROOFS[(i * 3) % ROOFS.length]
+  const H = h * storeys
+  const rise = Math.min(w, d) * 0.38
+  return (
+    <group position={[x, ground, z]} rotation={[0, rot, 0]}>
+      {stilts ? (
+        [-1, 1].flatMap((sx) =>
+          [-1, 1].map((sz) => (
+            <mesh key={`${sx}${sz}`} material={wood} position={[(sx * w) / 2.3, -(ground - SEA_LEVEL + 0.5) / 2, (sz * d) / 2.3]}>
+              <boxGeometry args={[0.12, ground - SEA_LEVEL + 0.5, 0.12]} />
+            </mesh>
+          )),
+        )
+      ) : (
+        <mesh material={concreteBase} position={[0, -0.25, 0]}>
+          <boxGeometry args={[w + 0.15, 0.7, d + 0.15]} />
+        </mesh>
+      )}
+      <mesh position={[0, H / 2 + 0.05, 0]} castShadow receiveShadow>
+        <boxGeometry args={[w, H, d]} />
+        <meshStandardMaterial color={wall} roughness={0.9} flatShading />
+      </mesh>
+      {/* gable roof: a four-sided cone stretched to the house's shape */}
+      <mesh position={[0, H + 0.05 + rise / 2, 0]} rotation={[0, Math.PI / 4, 0]} scale={[(w + 0.5) / 1.414, 1, (d + 0.5) / 1.414]} castShadow>
+        <coneGeometry args={[1, rise, 4]} />
+        <meshStandardMaterial color={roof} roughness={0.7} flatShading />
+      </mesh>
+      {/* door and windows on the front (+z) */}
+      <mesh material={wood} position={[w * 0.18, 0.5, d / 2 + 0.01]}>
+        <boxGeometry args={[0.42, 0.9, 0.02]} />
+      </mesh>
+      {[-w * 0.24, w * 0.42].map((wx, k) =>
+        Math.abs(wx) < w / 2 - 0.2 ? (
+          <mesh key={k} material={windowDark} position={[wx, H - h * 0.45 + 0.05, d / 2 + 0.01]}>
+            <boxGeometry args={[0.38, 0.32, 0.02]} />
+          </mesh>
+        ) : null,
+      )}
+      {storeys === 2 && (
+        <mesh material={windowDark} position={[w * 0.18, h * 1.5, d / 2 + 0.01]}>
+          <boxGeometry args={[0.5, 0.34, 0.02]} />
+        </mesh>
+      )}
+    </group>
+  )
+}
+
+/** A village along the beach: houses facing the water, a few on stilts, more up the green hills. */
+const VILLAGE: HouseSpec[] = [
+  // east beach, first row
+  { x: -24.6, z: -51.4, rot: 0.15 },
+  { x: -21.8, z: -50.6, rot: -0.1, w: 2.6, storeys: 2 },
+  { x: -18.8, z: -50.9, rot: 0.08 },
+  { x: -15.9, z: -50.3, rot: -0.2, w: 2.4 },
+  { x: -12.8, z: -51.1, rot: 0.1, w: 2.0 },
+  { x: -10.6, z: -52.3, rot: 0.35 },
+  // houses on stilts over the water
+  { x: -25.0, z: -47.8, rot: 0.2, w: 2.0, d: 1.7, stilts: true },
+  { x: -20.3, z: -48.3, rot: -0.05, w: 2.2, d: 1.8, stilts: true },
+  // second row, up the hill
+  { x: -22.8, z: -54.6, rot: 0.1, w: 2.4 },
+  { x: -19.2, z: -55.4, rot: -0.15, storeys: 2 },
+  { x: -15.4, z: -54.3, rot: 0.05, w: 2.6 },
+  { x: -11.9, z: -55.6, rot: 0.25 },
+  // around the resort and the west beach
+  { x: -37.6, z: -55.6, rot: 0.3, w: 2.0 },
+  { x: -36.2, z: -59.6, rot: 0.1, w: 2.4 },
+  { x: -29.8, z: -60.6, rot: -0.1, storeys: 2 },
+  { x: -41.4, z: -52.6, rot: -0.25 },
+  { x: -44.4, z: -51.8, rot: 0.1, w: 2.5, storeys: 2 },
+  { x: -47.6, z: -53.2, rot: -0.15 },
+  { x: -45.2, z: -56.8, rot: 0.05, w: 2.0 },
+  { x: -39.4, z: -49.6, rot: -0.3, w: 1.9, d: 1.7, stilts: true },
+  // the village island across the channel, facing the resort
+  { x: -44.4, z: -35.4, rot: 2.43 },
+  { x: -46.9, z: -36.0, rot: 2.3, w: 2.5 },
+  { x: -49.4, z: -34.9, rot: 2.6 },
+  { x: -45.8, z: -32.4, rot: 2.43, storeys: 2 },
+  { x: -48.4, z: -32.0, rot: 2.5, w: 2.0 },
+  { x: -51.0, z: -32.8, rot: 2.2, w: 2.3 },
+  { x: -42.2, z: -36.6, rot: 2.43, w: 1.9, d: 1.7, stilts: true },
+]
+
 /** Nipa hut with a thatched roof, behind the deck. */
 function NipaHut({ position }: { position: [number, number, number] }) {
   return (
@@ -212,13 +331,29 @@ export function SiargaoShore() {
 
   return (
     <group ref={ref}>
-      {/* sandy island with a green back */}
-      <mesh geometry={mound} position={[ISLAND.x, SEA_LEVEL - 0.55, ISLAND.z]} scale={[9, 1.4, 6.5]} receiveShadow>
-        <meshStandardMaterial color="#ecd9a6" flatShading roughness={1} />
-      </mesh>
-      <mesh geometry={mound} position={[ISLAND.x - 2.5, SEA_LEVEL - 0.2, ISLAND.z - 3.5]} scale={[8, 2.2, 4.5]} receiveShadow>
-        <meshStandardMaterial color="#4f8a3a" flatShading roughness={1} />
-      </mesh>
+      {/* sandy beaches with green hills behind, along a stretch of Siargao coast */}
+      {MOUNDS.map((m, i) => (
+        <mesh key={i} geometry={mound} position={m.c} scale={m.s} receiveShadow>
+          <meshStandardMaterial color={m.color} flatShading roughness={1} />
+        </mesh>
+      ))}
+      {VILLAGE.map((h, i) => (
+        <House key={i} i={i} {...h} />
+      ))}
+      {/* more palms along the village beach */}
+      {[
+        [-23.2, -50.2, 4.6, 1.2],
+        [-17.4, -49.6, 5.2, 2.6],
+        [-13.9, -49.8, 4.4, 0.4],
+        [-42.8, -50.6, 4.8, 3.4],
+        [-46.4, -55.2, 5.4, 5.1],
+        [-20.6, -56.8, 5.0, 1.9],
+        [-43.0, -33.6, 4.8, 0.9],
+        [-50.2, -36.2, 5.2, 3.0],
+        [-47.4, -29.6, 5.6, 4.6],
+      ].map(([x, z, height, r]) => (
+        <Palm key={`${x}${z}`} x={x} z={z} y={islandY(x, z)} height={height} lean={0.8} rotation={r} />
+      ))}
       <Palm x={-35.5} z={-57.5} y={SEA_LEVEL + 0.8} height={5.4} lean={0.9} rotation={0.6} />
       <Palm x={-27.2} z={-57.8} y={SEA_LEVEL + 0.7} height={4.8} lean={1.1} rotation={2.4} />
       <Palm x={-34.4} z={-54.4} y={SEA_LEVEL + 0.6} height={4.2} lean={0.7} rotation={4.4} />
