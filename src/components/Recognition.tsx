@@ -9,17 +9,16 @@ export default function Recognition() {
         <h2 id="recognition-title" className="text-center text-sm font-semibold text-lagoon-ink">
           {recognition.title}
         </h2>
-        <ul className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        <ul className="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-5">
           {recognition.items.map((item) => (
-            <li key={item.short} className="flex items-start gap-3 rounded-2xl border border-pasture/10 bg-white p-4">
+            <li key={item.short} className="flex flex-col items-center gap-3 rounded-2xl border border-pasture/10 bg-white p-4 text-center last:col-span-2 sm:p-5 lg:last:col-span-1">
               {item.logo ? (
                 <img
                   src={asset(item.logo)}
                   alt={`${item.org} logo`}
-                  width={56}
-                  height={56}
+                  height={72}
                   loading="lazy"
-                  className="size-14 shrink-0 rounded-full bg-white object-contain"
+                  className="h-14 w-auto max-w-full shrink-0 object-contain sm:h-18"
                 />
               ) : (
                 <span

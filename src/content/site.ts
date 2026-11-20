@@ -412,11 +412,11 @@ export const recognition: {
 } = {
   title: 'Recognised and supported by',
   items: [
-    { short: 'ATI', text: 'Accredited Learning Site on Diversified Farming', org: 'Agricultural Training Institute', logo: '' },
-    { short: 'TESDA', text: 'Accredited Farm School', org: 'Technical Education and Skills Development Authority', logo: '' },
-    { short: 'NDA', text: 'Partner farm, Dairy Herd Build-Up Program', org: 'National Dairy Authority', logo: '' },
-    { short: 'PCA', text: 'Cow shed funded through the CFIDP', org: 'Philippine Coconut Authority', logo: '' },
-    { short: 'DOST', text: 'Food safety training for dairy farmers', org: 'Department of Science and Technology', logo: '' },
+    { short: 'ATI', text: 'Accredited Learning Site on Diversified Farming', org: 'Agricultural Training Institute', logo: 'images/partners/ati.png' },
+    { short: 'TESDA', text: 'Accredited Farm School', org: 'Technical Education and Skills Development Authority', logo: 'images/partners/tesda.png' },
+    { short: 'NDA', text: 'Partner farm, Dairy Herd Build-Up Program', org: 'National Dairy Authority', logo: 'images/partners/nda.png' },
+    { short: 'PCA', text: 'Cow shed funded through the CFIDP', org: 'Philippine Coconut Authority', logo: 'images/partners/pca.png' },
+    { short: 'DOST', text: 'Food safety training for dairy farmers', org: 'Department of Science and Technology', logo: 'images/partners/dost.png' },
   ],
 }
 
