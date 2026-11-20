@@ -5,6 +5,7 @@ import { CowShed, MilkingParlor } from './Buildings'
 import Cow from './Cow'
 import DirtPath from './DirtPath'
 import Fence, { CalfShelter } from './Fence'
+import { FarmGate, Farmhouse } from './FarmExtras'
 import { CornField, NapierPlot, Palm, Shrubs } from './Plants'
 import Sea from './Sea'
 import Terrain from './Terrain'
@@ -53,6 +54,8 @@ export default function Farm({ herd, soundOn = false, lite = false }: Props) {
       <Sea />
       <Fence />
       <CalfShelter />
+      <FarmGate />
+      <Farmhouse x={0.4} z={-7.4} rotation={0.12} />
       <DirtPath />
       <CowShed x={SHED.x} z={SHED.z} rotation={SHED.rot} />
       <MilkingParlor x={PARLOR.x} z={PARLOR.z} rotation={PARLOR.rot} />

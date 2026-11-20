@@ -1,9 +1,11 @@
 import { useLayoutEffect, useMemo, useRef } from 'react'
-import { BoxGeometry, Group, InstancedMesh, MeshStandardMaterial, Object3D, Vector3 } from 'three'
+import { BoxGeometry, CylinderGeometry, Group, InstancedMesh, MeshStandardMaterial, Object3D, Vector3 } from 'three'
 import { useBakeStatic } from '../bake'
 import { CALF_PEN, heightAt, PASTURE } from './world'
 
-const woodMat = new MeshStandardMaterial({ color: '#8a6342', roughness: 0.9, flatShading: true })
+const woodMat = new MeshStandardMaterial({ color: '#6e5238', roughness: 0.95, flatShading: true })
+// bamboo poles for the rails, as on the farm
+const bambooMat = new MeshStandardMaterial({ color: '#cbb26d', roughness: 0.75, flatShading: true })
 const roofMat = new MeshStandardMaterial({ color: '#b8b2a5', roughness: 0.6, metalness: 0.2, flatShading: true })
 
 type Rect = { minX: number; maxX: number; minZ: number; maxZ: number }
@@ -39,7 +41,7 @@ function addPen(
       // leave a gate opening on the side that faces the path
       const gate = side === gateSide && i === Math.floor(steps / 2)
       if (!gate) {
-        railList.push({ a: p0, b: p1, y: 0.4 }, { a: p0, b: p1, y: 0.75 })
+        railList.push({ a: p0, b: p1, y: 0.3 }, { a: p0, b: p1, y: 0.58 }, { a: p0, b: p1, y: 0.86 })
       }
     }
   }
@@ -58,6 +60,8 @@ export default function Fence() {
   }, [])
 
   const geometry = useMemo(() => new BoxGeometry(1, 1, 1), [])
+  // round bamboo poles: a cylinder lying along x
+  const railGeometry = useMemo(() => new CylinderGeometry(0.5, 0.5, 1, 7).rotateZ(Math.PI / 2), [])
 
   useLayoutEffect(() => {
     const d = new Object3D()
@@ -73,7 +77,7 @@ export default function Fence() {
       const len = r.a.distanceTo(r.b)
       d.position.set(mid.x, mid.y + r.y, mid.z)
       d.rotation.set(0, -Math.atan2(r.b.z - r.a.z, r.b.x - r.a.x), Math.atan2(r.b.y - r.a.y, Math.hypot(r.b.x - r.a.x, r.b.z - r.a.z)))
-      d.scale.set(len, 0.07, 0.05)
+      d.scale.set(len + 0.1, 0.075, 0.075)
       d.updateMatrix()
       railsRef.current?.setMatrixAt(i, d.matrix)
     })
@@ -84,7 +88,7 @@ export default function Fence() {
   return (
     <group>
       <instancedMesh ref={postsRef} args={[geometry, woodMat, posts.length]} castShadow />
-      <instancedMesh ref={railsRef} args={[geometry, woodMat, rails.length]} castShadow />
+      <instancedMesh ref={railsRef} args={[railGeometry, bambooMat, rails.length]} castShadow />
     </group>
   )
 }

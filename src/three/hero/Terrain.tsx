@@ -5,8 +5,8 @@ import { CORN_PLOT, distanceToPath, fbm, FIELD_LANE_Z, heightAt, NAPIER_PLOT, SE
 const grassLight = new Color('#8fbf55')
 const grassDark = new Color('#4f8a3a')
 const grassWarm = new Color('#a9b955')
-const dirt = new Color('#a98c5f')
-const soil = new Color('#7a5638')
+const dirt = new Color('#b36a43')
+const soil = new Color('#94492b')
 const sand = new Color('#ecd9a6')
 const wetSand = new Color('#c9b07c')
 

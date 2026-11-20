@@ -36,7 +36,7 @@ export default function DirtPath() {
 
   return (
     <mesh geometry={geometry} receiveShadow>
-      <meshStandardMaterial color="#a98a62" roughness={1} flatShading polygonOffset polygonOffsetFactor={-2} />
+      <meshStandardMaterial color="#b0663f" roughness={1} flatShading polygonOffset polygonOffsetFactor={-2} />
     </mesh>
   )
 }

@@ -24,7 +24,19 @@ function useCorrugatedSheet(width: number, depth: number) {
 }
 
 /** Gable roof made of two corrugated sheets meeting at a ridge. */
-function Roof({ width, depth, height, pitch = 0.32 }: { width: number; depth: number; height: number; pitch?: number }) {
+function Roof({
+  width,
+  depth,
+  height,
+  pitch = 0.32,
+  color = '#c3ccd0',
+}: {
+  width: number
+  depth: number
+  height: number
+  pitch?: number
+  color?: string
+}) {
   const half = depth / 2 + 0.35 // overhang at the eaves
   const slope = half / Math.cos(pitch)
   const sheet = useCorrugatedSheet(width + 0.6, slope)
@@ -40,7 +52,7 @@ function Roof({ width, depth, height, pitch = 0.32 }: { width: number; depth: nu
           castShadow
           receiveShadow
         >
-          <meshStandardMaterial color="#c3ccd0" metalness={0.35} roughness={0.42} side={DoubleSide} flatShading />
+          <meshStandardMaterial color={color} metalness={0.3} roughness={0.5} side={DoubleSide} flatShading />
         </mesh>
       ))}
       {/* ridge cap */}
@@ -119,58 +131,130 @@ function Post({ x, z, height, size = 0.16 }: { x: number; z: number; height: num
   )
 }
 
-/** Open-sided cow shed with a low concrete wall at the back, a feed trough and blue water drums. */
+// galvanised pipe railings and stands, as on the real cow shed
+const pipeMetal = { color: '#c9d1d4', metalness: 0.35, roughness: 0.35 }
+
+/** Gable end filled with horizontal wooden slats (louvers), like the real cow shed's tall gables. */
+function SlattedGable({ width, rise, z }: { width: number; rise: number; z: number }) {
+  const rows = 6
+  return (
+    <group position={[0, 0, z]}>
+      {Array.from({ length: rows }, (_, i) => {
+        const t = (i + 0.5) / rows
+        return (
+          <mesh key={i} position={[0, t * rise, 0]}>
+            <boxGeometry args={[width * (1 - t) * 0.98, rise / rows - 0.05, 0.04]} />
+            <meshStandardMaterial {...wood} />
+          </mesh>
+        )
+      })}
+    </group>
+  )
+}
+
+/**
+ * Our cow shed, as in the farm's photos: a tall, steep, weathered tin roof on dark wooden posts,
+ * slatted wooden gables, galvanised pipe railings, a paver floor, a concrete feed trough and
+ * blue water drums on a steel stand.
+ */
 export function CowShed({ x, z, rotation = 0 }: { x: number; z: number; rotation?: number }) {
-  const w = 5.6
-  const d = 3.8
-  const postH = 2.3
+  const w = 5.8
+  const d = 4.0
+  const postH = 2.2
+  const pitch = 0.62
+  const rise = Math.tan(pitch) * (d / 2 + 0.35)
   const y = heightAt(x, z)
   const ref = useRef<Group>(null)
   useBakeStatic(ref)
   return (
     <group ref={ref} position={[x, y, z]} rotation={[0, rotation, 0]}>
-      {/* floor slab */}
+      {/* terracotta paver floor */}
       <mesh position={[0, 0.05, 0]} receiveShadow>
         <boxGeometry args={[w, 0.12, d]} />
-        <meshStandardMaterial {...concrete} />
+        <meshStandardMaterial color="#b0705a" roughness={0.95} flatShading />
       </mesh>
       {/* posts */}
-      {[-w / 2, 0, w / 2].flatMap((px) =>
-        [-d / 2, d / 2].map((pz) => <Post key={`${px}${pz}`} x={px} z={pz} height={postH} />),
+      {[-w / 2, -w / 6, w / 6, w / 2].flatMap((px) =>
+        [-d / 2, d / 2].map((pz) => <Post key={`${px}${pz}`} x={px} z={pz} height={postH} size={0.18} />),
       )}
-      {/* low back wall */}
-      <mesh position={[0, 0.45, -d / 2]} castShadow receiveShadow>
-        <boxGeometry args={[w, 0.8, 0.14]} />
+      {/* concrete feed wall and trough along the back */}
+      <mesh position={[0, 0.4, -d / 2 + 0.08]} castShadow receiveShadow>
+        <boxGeometry args={[w, 0.7, 0.16]} />
         <meshStandardMaterial {...concrete} />
       </mesh>
-      {/* feed trough */}
-      <mesh position={[0, 0.3, -d / 2 + 0.45]} castShadow>
-        <boxGeometry args={[w - 0.6, 0.35, 0.5]} />
-        <meshStandardMaterial color="#9f9a90" flatShading roughness={0.9} />
+      <mesh position={[0, 0.28, -d / 2 + 0.5]} castShadow>
+        <boxGeometry args={[w - 0.4, 0.34, 0.55]} />
+        <meshStandardMaterial color="#b8b2a6" flatShading roughness={0.9} />
       </mesh>
-      {/* eave beams */}
+      {/* galvanised pipe railings on the open sides (with a gap at the front for the cows) */}
+      {[0.55, 1.05].flatMap((ry) => [
+        <mesh key={`f${ry}a`} position={[-w / 2 + w / 6, ry, d / 2]}>
+          <boxGeometry args={[w / 3, 0.06, 0.06]} />
+          <meshStandardMaterial {...pipeMetal} />
+        </mesh>,
+        <mesh key={`f${ry}b`} position={[w / 2 - w / 6, ry, d / 2]}>
+          <boxGeometry args={[w / 3, 0.06, 0.06]} />
+          <meshStandardMaterial {...pipeMetal} />
+        </mesh>,
+        ...[-w / 2, w / 2].map((sx) => (
+          <mesh key={`s${ry}${sx}`} position={[sx, ry, 0]}>
+            <boxGeometry args={[0.06, 0.06, d]} />
+            <meshStandardMaterial {...pipeMetal} />
+          </mesh>
+        )),
+      ])}
+      {/* eave beams and the tall, steep roof with slatted gables */}
       {[-d / 2, d / 2].map((bz) => (
         <mesh key={bz} position={[0, postH, bz]}>
           <boxGeometry args={[w + 0.2, 0.14, 0.14]} />
           <meshStandardMaterial {...wood} />
         </mesh>
       ))}
-      <Roof width={w} depth={d} height={postH + 0.05} />
-      {/* blue water drums, like the ones in our photos */}
-      {[
-        [w / 2 + 0.45, d / 2 - 0.2],
-        [w / 2 + 0.5, d / 2 - 0.85],
-      ].map(([dx, dz], i) => (
-        <mesh key={i} position={[dx, 0.42, dz]} castShadow>
-          <cylinderGeometry args={[0.3, 0.3, 0.84, 10]} />
+      <group position={[0, postH + 0.05, 0]} rotation={[0, Math.PI / 2, 0]}>
+        <SlattedGable width={d + 0.5} rise={rise} z={w / 2 - 0.05} />
+        <SlattedGable width={d + 0.5} rise={rise} z={-w / 2 + 0.05} />
+      </group>
+      <Roof width={w} depth={d} height={postH + 0.05} pitch={pitch} color="#a39486" />
+      {/* blue water drum up on a steel stand, and one on the ground */}
+      <group position={[w / 2 + 0.55, 0, -d / 2 + 0.4]}>
+        {[-0.22, 0.22].flatMap((sx) =>
+          [-0.22, 0.22].map((sz) => (
+            <mesh key={`${sx}${sz}`} position={[sx, 0.5, sz]}>
+              <boxGeometry args={[0.05, 1.0, 0.05]} />
+              <meshStandardMaterial {...pipeMetal} />
+            </mesh>
+          )),
+        )}
+        <mesh position={[0, 1.02, 0]}>
+          <boxGeometry args={[0.55, 0.05, 0.55]} />
+          <meshStandardMaterial {...pipeMetal} />
+        </mesh>
+        <mesh position={[0, 1.45, 0]} castShadow>
+          <cylinderGeometry args={[0.28, 0.28, 0.8, 12]} />
           <meshStandardMaterial color="#1f6fb5" roughness={0.5} />
         </mesh>
-      ))}
+      </group>
+      <mesh position={[w / 2 + 0.5, 0.42, d / 2 - 0.4]} castShadow>
+        <cylinderGeometry args={[0.3, 0.3, 0.84, 12]} />
+        <meshStandardMaterial color="#1f6fb5" roughness={0.5} />
+      </mesh>
       {/* sign hanging from the front eave */}
       <group position={[0, postH - 0.35, d / 2 + 0.08]}>
         <Sign text="Cow Shed" />
       </group>
     </group>
+  )
+}
+
+/** Single-slope (lean-to) tin roof, higher at the back, like the real milking parlor. */
+function LeanToRoof({ width, depth, height }: { width: number; depth: number; height: number }) {
+  const slope = depth + 0.7
+  const sheet = useCorrugatedSheet(width + 0.6, Math.hypot(slope, 0.55))
+  const tilt = Math.atan2(0.55, slope)
+  return (
+    <mesh geometry={sheet} position={[0, height + 0.3, 0]} rotation={[-Math.PI / 2 + tilt, 0, 0]} castShadow receiveShadow>
+      <meshStandardMaterial color="#b9c1c4" metalness={0.3} roughness={0.5} side={DoubleSide} flatShading />
+    </mesh>
   )
 }
 
@@ -218,7 +302,7 @@ export function MilkingParlor({ x, z, rotation = 0 }: { x: number; z: number; ro
         <boxGeometry args={[w + 0.2, 0.14, 0.16]} />
         <meshStandardMaterial {...wood} />
       </mesh>
-      <Roof width={w} depth={d} height={wallH + 0.05} pitch={0.36} />
+      <LeanToRoof width={w} depth={d} height={wallH} />
       {/* our real 100 L pasteurizer, homogenizer and cooling tank, beside the parlor */}
       <ProcessingLine position={[w / 2 + 0.65, 0, -0.1]} />
       <group position={[0, wallH - 0.32, d / 2 + 0.1]}>

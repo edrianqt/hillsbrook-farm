@@ -51,7 +51,7 @@ export default function Cow({ position, yaw, calf = false, seed, onGreet }: Prop
   useBakeStatic(tail)
 
   // Each cow gets its own black-and-white pattern and rhythm
-  const { patches, phase, headBlaze, grazeAngle } = useMemo(() => {
+  const { patches, base, phase, headBlaze, grazeAngle } = useMemo(() => {
     const r = rng(seed * 97 + 13)
     const count = 2 + Math.floor(r() * 2)
     const list: Part[] = []
@@ -64,7 +64,16 @@ export default function Cow({ position, yaw, calf = false, seed, onGreet }: Prop
     }
     // a patch across the back
     list.push({ p: [-0.15 + r() * 0.3, 1.31, 0], s: [0.5 + r() * 0.3, 0.04, 0.4 + r() * 0.2], m: 'black' })
-    return { patches: list, phase: r() * Math.PI * 2, headBlaze: r() > 0.4, grazeAngle: -0.75 - r() * 0.25 }
+    // like our real crossbred Holsteins, some cows are mostly black with white markings
+    const dark = seed % 5 === 2 || seed % 5 === 4
+    const swap = (m: keyof typeof paint): keyof typeof paint => (!dark ? m : m === 'white' ? 'black' : m === 'black' ? 'white' : m)
+    return {
+      patches: list.map((p) => ({ ...p, m: swap(p.m) })),
+      base: swap('white'),
+      phase: r() * Math.PI * 2,
+      headBlaze: r() > 0.4,
+      grazeAngle: -0.75 - r() * 0.25,
+    }
   }, [seed])
 
   useFrame(({ clock }) => {
@@ -103,7 +112,7 @@ export default function Cow({ position, yaw, calf = false, seed, onGreet }: Prop
       >
         <group ref={body}>
         {/* body */}
-        <Block p={[0, 0.95, 0]} s={[1.5, 0.72, 0.64]} m="white" />
+        <Block p={[0, 0.95, 0]} s={[1.5, 0.72, 0.64]} m={base} />
         {patches.map((part, i) => (
           <Block key={i} {...part} />
         ))}
@@ -115,7 +124,7 @@ export default function Cow({ position, yaw, calf = false, seed, onGreet }: Prop
           [-0.55, -0.22],
         ].map(([lx, lz], i) => (
           <group key={i} position={[lx, 0, lz]}>
-            <Block p={[0, 0.36, 0]} s={[0.16, 0.6, 0.16]} m={i % 3 === 0 ? 'black' : 'white'} />
+            <Block p={[0, 0.36, 0]} s={[0.16, 0.6, 0.16]} m={i % 3 === 0 ? 'black' : base} />
             <Block p={[0, 0.04, 0]} s={[0.17, 0.08, 0.17]} m="hoof" />
           </group>
         ))}
@@ -124,7 +133,7 @@ export default function Cow({ position, yaw, calf = false, seed, onGreet }: Prop
         </group>
         {/* tail */}
         <group ref={tail} position={[-0.76, 1.22, 0]}>
-          <Block p={[0, -0.33, 0]} s={[0.05, 0.66, 0.05]} m="white" />
+          <Block p={[0, -0.33, 0]} s={[0.05, 0.66, 0.05]} m={base} />
           <Block p={[0, -0.7, 0]} s={[0.09, 0.16, 0.09]} m="black" />
         </group>
         {/* head (pivots at the neck) */}
