@@ -1,3 +1,4 @@
+import { SiargaoShore } from './journey/Shore'
 import { PerformanceMonitor } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import { useMemo, useState } from 'react'
@@ -92,6 +93,7 @@ export default function HeroScene({ active, soundOn, onReady, onPick, onHover }:
       <Lights quality={quality} touch={touch} />
       <Sky palette={palette} />
       <Farm herd={herd} soundOn={soundOn} onPick={onPick} onHover={onHover} />
+      <SiargaoShore />
     </Canvas>
   )
 }
