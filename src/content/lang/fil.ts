@@ -104,8 +104,8 @@ const fil: Translation = {
     orderLabel: 'Umorder sa Messenger',
     orderMessage: 'Hi Hillsbrook Farm! Gusto kong umorder ng {product}. Ihatid sa {place}.',
     items: [
-      { name: 'Pasteurized na gatas', container: 'PET na bote', size: '1 litro', description: 'Sariwang gatas ng baka, pinasteurize dito sa farm, sa malinaw na PET na bote.' },
-      { name: 'Pasteurized na gatas', container: 'HDPE na bote', size: '1 litro', description: 'Parehong sariwang pasteurized na gatas sa matibay na HDPE na bote.' },
+      { name: 'Pasteurized na gatas', container: 'PET na bote', size: '1 litro', wholesaleNote: 'min. 10 bote', description: 'Sariwang gatas ng baka, pinasteurize dito sa farm, sa malinaw na PET na bote.' },
+      { name: 'Pasteurized na gatas', container: 'HDPE na bote', size: '1 litro', wholesaleNote: 'min. 10 bote', description: 'Parehong sariwang pasteurized na gatas sa matibay na HDPE na bote.' },
       { name: 'Raw whole milk', container: 'PET na bote', size: '1 litro', description: 'Hindi pasteurized na whole milk, diretso mula sa aming mga baka. Ilagay sa ref.' },
       { name: 'Raw whole milk', container: 'PET na lalagyan', size: '10 litro', description: 'Hindi pasteurized na whole milk na pakyawan, para sa kusina ng resort, café at panaderya.' },
       { name: 'Chocolate milk', container: 'Bote', description: 'Aming sariwang gatas na may tsokolate. Ipinatikim namin ito sa mga runner sa Bucas Grande Half Marathon.' },
@@ -276,6 +276,16 @@ const fil: Translation = {
     tasteTheMilk: 'Tikman ang gatas mula sa farm na ito.',
     moreFromFarm: 'Higit pa mula sa farm',
     storiesInEnglish: 'Ang aming mga kuwento ay nasa English pa.',
+    skipToMain: 'Pumunta sa main content',
+    skipToFooter: 'Pumunta sa footer',
+    established: 'Itinatag',
+    stepOf: 'Hakbang {n} sa {total}',
+    swipeHint: 'I-swipe para makita lahat →',
+    about: 'tungkol sa',
+    photoOfSoon: 'Malapit na ang larawan ni {name}',
+    dateLocale: 'fil-PH',
+    allStories: 'Lahat ng kuwento',
+    backHome: 'Bumalik sa home page',
   },
 }
 

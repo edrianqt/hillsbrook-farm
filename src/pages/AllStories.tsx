@@ -14,7 +14,7 @@ export default function AllStories() {
     <main id="main" tabIndex={-1} className="bg-cream-50">
       <div className="mx-auto max-w-7xl px-6 pt-32 pb-24">
         <a href="#stories" className="inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-lagoon-ink hover:underline">
-          <span aria-hidden="true">←</span> Back to the home page
+          <span aria-hidden="true">←</span> {ui.backHome}
         </a>
         <div className="mt-6">
           <SectionHeading level="h1" eyebrow={storiesSection.eyebrow} title={storiesSection.title} intro={[storiesSection.intro, ui.storiesInEnglish].filter(Boolean).join(' ')} />

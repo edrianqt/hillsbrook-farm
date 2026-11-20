@@ -11,7 +11,7 @@ import Recognition from './components/Recognition'
 import Stories from './components/Stories'
 import Visit from './components/Visit'
 import { useLanguage } from './content/i18n'
-import { farm } from './content/site'
+import { farm, ui } from './content/site'
 import { useRoute } from './lib/router'
 import { jumpTo, scrollToSection, startSmoothScroll } from './lib/smoothScroll'
 
@@ -73,10 +73,10 @@ export default function App() {
     <>
       {/* Skip links: let keyboard and screen-reader users jump past the menu */}
       <a href="#main" className="skip-link">
-        Jump to main content
+        {ui.skipToMain}
       </a>
       <a href="#footer" className="skip-link">
-        Jump to footer
+        {ui.skipToFooter}
       </a>
 
       <Header />

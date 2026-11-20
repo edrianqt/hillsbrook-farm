@@ -60,7 +60,7 @@ export default function HeroScene({ active, soundOn, onReady, onPick, onHover }:
 
   return (
     <Canvas
-      shadows
+      shadows="percentage"
       dpr={dpr}
       frameloop={active ? 'always' : 'never'}
       camera={{ fov: 38, near: 0.5, far: 600, position: [0, 8, 20] }}

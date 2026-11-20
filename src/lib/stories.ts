@@ -1,3 +1,4 @@
+import { ui } from '../content/site'
 /**
  * Farm stories are Markdown files in src/content/stories/.
  * To add a story: copy one of the files, rename it (the file name becomes the web address),
@@ -58,5 +59,5 @@ export const homeStories = () => [...stories.filter((s) => s.featured), ...stori
 export function formatDate(date: string) {
   if (!date) return ''
   const d = new Date(`${date}T00:00:00`)
-  return d.toLocaleDateString('en-PH', { day: 'numeric', month: 'long', year: 'numeric' })
+  return d.toLocaleDateString(ui.dateLocale, { day: 'numeric', month: 'long', year: 'numeric' })
 }

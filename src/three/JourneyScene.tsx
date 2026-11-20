@@ -218,7 +218,7 @@ export default function JourneyScene({ state, active, onReady }: Props) {
 
   return (
     <Canvas
-      shadows={!lite}
+      shadows={lite ? false : "percentage"}
       dpr={dpr}
       frameloop={active ? 'always' : 'never'}
       camera={{ fov: 45, near: 0.1, far: 600 }}

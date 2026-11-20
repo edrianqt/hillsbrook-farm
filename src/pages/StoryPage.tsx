@@ -43,7 +43,7 @@ export default function StoryPage({ slug }: { slug: string }) {
     <main id="main" tabIndex={-1} className="bg-milk">
       <article className="mx-auto max-w-3xl px-6 pt-32 pb-16">
         <a href="#all-stories" className="inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-lagoon-ink hover:underline">
-          <span aria-hidden="true">←</span> All stories
+          <span aria-hidden="true">←</span> {ui.allStories}
         </a>
         <p className="mt-6 flex flex-wrap items-center gap-2 text-sm">
           <span className="rounded-full bg-cream px-3 py-1 font-semibold text-pasture">{story.category}</span>
@@ -87,7 +87,7 @@ export default function StoryPage({ slug }: { slug: string }) {
             ))}
           </ul>
           <a href="#stories" className="mt-8 inline-flex min-h-11 items-center gap-1 font-semibold text-lagoon-ink hover:underline">
-            <span aria-hidden="true">←</span> Back to the home page
+            <span aria-hidden="true">←</span> {ui.backHome}
           </a>
         </div>
       </section>

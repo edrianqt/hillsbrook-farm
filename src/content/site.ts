@@ -408,15 +408,16 @@ export const contactForm = {
  */
 export const recognition: {
   title: string
-  items: { short: string; text: string; org: string; logo?: string }[]
+  /** logoSize: the logo file's width and height in pixels (stops the page jumping while it loads) */
+  items: { short: string; text: string; org: string; logo?: string; logoSize?: [number, number] }[]
 } = {
   title: 'Recognised and supported by',
   items: [
-    { short: 'ATI', text: 'Accredited Learning Site on Diversified Farming', org: 'Agricultural Training Institute', logo: 'images/partners/ati.png' },
-    { short: 'TESDA', text: 'Accredited Farm School', org: 'Technical Education and Skills Development Authority', logo: 'images/partners/tesda.png' },
-    { short: 'NDA', text: 'Partner farm, Dairy Herd Build-Up Program', org: 'National Dairy Authority', logo: 'images/partners/nda.png' },
-    { short: 'PCA', text: 'Cow shed funded through the CFIDP', org: 'Philippine Coconut Authority', logo: 'images/partners/pca.png' },
-    { short: 'DOST', text: 'Food safety training for dairy farmers', org: 'Department of Science and Technology', logo: 'images/partners/dost.png' },
+    { short: 'ATI', text: 'Accredited Learning Site on Diversified Farming', org: 'Agricultural Training Institute', logo: 'images/partners/ati.png', logoSize: [198, 200] },
+    { short: 'TESDA', text: 'Accredited Farm School', org: 'Technical Education and Skills Development Authority', logo: 'images/partners/tesda.png', logoSize: [202, 200] },
+    { short: 'NDA', text: 'Partner farm, Dairy Herd Build-Up Program', org: 'National Dairy Authority', logo: 'images/partners/nda.png', logoSize: [316, 200] },
+    { short: 'PCA', text: 'Cow shed funded through the CFIDP', org: 'Philippine Coconut Authority', logo: 'images/partners/pca.png', logoSize: [191, 200] },
+    { short: 'DOST', text: 'Food safety training for dairy farmers', org: 'Department of Science and Technology', logo: 'images/partners/dost.png', logoSize: [200, 200] },
   ],
 }
 
@@ -570,4 +571,17 @@ export const ui = {
   tasteTheMilk: 'Taste the milk from this farm.',
   moreFromFarm: 'More from the farm',
   storiesInEnglish: '',
+  skipToMain: 'Jump to main content',
+  skipToFooter: 'Jump to footer',
+  established: 'Est.',
+  /** {n} and {total} are replaced with numbers */
+  stepOf: 'Step {n} of {total}',
+  swipeHint: 'Swipe to see all four →',
+  about: 'about',
+  /** {name} is replaced with the person's name */
+  photoOfSoon: 'Photo of {name} coming soon',
+  /** date format for story dates: 'en-PH' (English) or 'fil-PH' (Filipino month names) */
+  dateLocale: 'en-PH',
+  allStories: 'All stories',
+  backHome: 'Back to the home page',
 }

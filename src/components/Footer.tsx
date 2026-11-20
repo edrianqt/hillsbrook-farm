@@ -104,7 +104,7 @@ export default function Footer() {
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-7xl flex-col gap-2 px-6 py-6 text-sm sm:flex-row sm:justify-between">
           <p>
-            © {year} {farm.name}, Socorro, Surigao del Norte. Est. {farm.founded}.
+            © {year} {farm.name}, Socorro, Surigao del Norte. {ui.established} {farm.founded}.
           </p>
           <p>{farm.brand}</p>
         </div>

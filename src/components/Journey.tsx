@@ -15,7 +15,7 @@ const LAST = STATIONS.length - 1
 function StepLabel({ index }: { index: number }) {
   return (
     <p className="text-sm font-semibold text-lagoon-ink">
-      Step {index + 1} of {STATIONS.length} · {STATIONS[index].label}
+      {ui.stepOf.replace('{n}', String(index + 1)).replace('{total}', String(STATIONS.length))} · {STATIONS[index].label}
     </p>
   )
 }

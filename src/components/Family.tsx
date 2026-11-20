@@ -22,7 +22,7 @@ function Portrait({ member, size }: { member: Member; size: 'large' | 'thumb' })
   return (
     <div
       role={size === 'large' ? 'img' : undefined}
-      aria-label={size === 'large' ? `Photo of ${member.name} coming soon` : undefined}
+      aria-label={size === 'large' ? ui.photoOfSoon.replace('{name}', member.name) : undefined}
       className="relative flex size-full items-center justify-center overflow-hidden bg-[radial-gradient(120%_90%_at_30%_10%,var(--color-cream),var(--color-pasture-50)_55%,#b9d6cb)]"
     >
       {/* rolling hills */}

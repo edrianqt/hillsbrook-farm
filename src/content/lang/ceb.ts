@@ -105,8 +105,8 @@ const ceb: Translation = {
     orderLabel: 'Order sa Messenger',
     orderMessage: 'Hi Hillsbrook Farm! Gusto ko mo-order og {product}. Ihatod sa {place}.',
     items: [
-      { name: 'Pasteurized nga gatas', container: 'PET nga botelya', size: '1 litro', description: 'Presko nga gatas sa baka, gi-pasteurize dinhi sa farm, sa tin-aw nga PET nga botelya.' },
-      { name: 'Pasteurized nga gatas', container: 'HDPE nga botelya', size: '1 litro', description: 'Parehas nga presko nga pasteurized nga gatas sa lig-on nga HDPE nga botelya.' },
+      { name: 'Pasteurized nga gatas', container: 'PET nga botelya', size: '1 litro', wholesaleNote: 'min. 10 ka botelya', description: 'Presko nga gatas sa baka, gi-pasteurize dinhi sa farm, sa tin-aw nga PET nga botelya.' },
+      { name: 'Pasteurized nga gatas', container: 'HDPE nga botelya', size: '1 litro', wholesaleNote: 'min. 10 ka botelya', description: 'Parehas nga presko nga pasteurized nga gatas sa lig-on nga HDPE nga botelya.' },
       { name: 'Raw whole milk', container: 'PET nga botelya', size: '1 litro', description: 'Dili pasteurized nga whole milk, diretso gikan sa among mga baka. Ibutang sa ref.' },
       { name: 'Raw whole milk', container: 'PET nga sudlanan', size: '10 litro', description: 'Dili pasteurized nga whole milk nga bulto, para sa kusina sa resort, café ug panaderya.' },
       { name: 'Chocolate milk', container: 'Botelya', description: 'Among presko nga gatas nga may tsokolate. Gipatilaw namo kini sa mga runner sa Bucas Grande Half Marathon.' },
@@ -277,6 +277,16 @@ const ceb: Translation = {
     tasteTheMilk: 'Tilawi ang gatas gikan niini nga farm.',
     moreFromFarm: 'Dugang gikan sa farm',
     storiesInEnglish: 'Ang among mga istorya anaa pa sa English.',
+    skipToMain: 'Adto sa main content',
+    skipToFooter: 'Adto sa footer',
+    established: 'Sukad',
+    stepOf: 'Lakang {n} sa {total}',
+    swipeHint: 'I-swipe aron makita ang tanan →',
+    about: 'bahin sa',
+    photoOfSoon: 'Hapit na ang litrato ni {name}',
+    dateLocale: 'fil-PH',
+    allStories: 'Tanang istorya',
+    backHome: 'Balik sa home page',
   },
 }
 

@@ -16,7 +16,8 @@ export default function Recognition() {
                 <img
                   src={asset(item.logo)}
                   alt={`${item.org} logo`}
-                  height={72}
+                  width={item.logoSize?.[0]}
+                  height={item.logoSize?.[1]}
                   loading="lazy"
                   className="h-14 w-auto max-w-full shrink-0 object-contain sm:h-18"
                 />

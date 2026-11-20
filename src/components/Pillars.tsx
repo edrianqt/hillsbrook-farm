@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
-import { pillars } from '../content/site'
+import { pillars, ui } from '../content/site'
 import { hasWebGL, isTouchDevice, prefersReducedMotion } from '../lib/webgl'
 import PillarSvgIcon from './PillarSvgIcon'
 import Card from './ui/Card'
@@ -46,7 +46,7 @@ function PillarCard({ item, use3D, show3D }: { item: Item; use3D: boolean; show3
           className="mt-5 inline-flex min-h-11 items-center gap-1 self-start font-semibold text-lagoon-ink underline-offset-4 hover:underline"
         >
           {item.link.label}
-          <span className="sr-only"> about {item.title}</span>
+          <span className="sr-only"> {ui.about} {item.title}</span>
           <span aria-hidden="true">→</span>
         </a>
       </div>
@@ -78,7 +78,7 @@ export default function Pillars() {
           ))}
         </ul>
         <p className="mt-2 text-center text-sm text-soil-muted sm:hidden" aria-hidden="true">
-          Swipe to see all four →
+          {ui.swipeHint}
         </p>
       </div>
     </section>
